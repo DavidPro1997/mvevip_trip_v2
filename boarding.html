@@ -1,0 +1,43 @@
+
+<section id="hero" class="background-image" data-background="url(http://tagairlines.com/img/requisitos-viajes/requisitosmob.jpg)">
+	<div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+		<div class="intro_title">
+			<h3 class="animated fadeInDown" id="tituloDestino">BOARDING PASS</h3>
+			<p class="animated fadeInDown">Tu aventura de ensueño despega hoy.</p>
+		</div>
+	</div>
+	<!-- End opacity-mask-->
+</section>
+
+<div id="position">
+	<div class="container">
+		<ul>
+			<li><a href="#">Home</a>
+			</li>
+			<li>
+				Seguro
+			</li>
+		</ul>
+	</div>
+</div>
+		<!-- Position -->
+
+<div class="container margin_60" id="lista_boarding">
+	
+</div>
+
+<br><br><br><br><br>
+<script src="js/modulos/comun.js"></script>
+<script src="js/functions.js"></script>
+
+<script>
+
+	$(document).ready(e => {
+		scrollTop()
+		const usuario = JSON.parse(localStorage.getItem('usuario'));
+		const resultado = usuario.documentos.find(item => item.idTipoDocumento === 3)?.lista || [];
+		armarDocumentos(resultado,"lista_boarding", "Marketing-Vip_A4-Web_Boarding.jpg")
+	})
+
+
+</script>

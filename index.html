@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mvevip">
+
+<head>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="description" content="Marketing Vip - Viajes Internaciones Premium.">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="author" content="DavidP.">
+    <title>MARKETING VIP | OFICIAL</title>
+
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
+
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- COMMON CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css?v=1.0" rel="stylesheet">
+	<link href="css/vendors.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <link href="css/aloha.css" rel="stylesheet">
+    
+    <!-- REVOLUTION SLIDER CSS -->
+    <link href="layerslider/css/layerslider.css" rel="stylesheet">	
+	
+     <!-- CSS -->
+	<link href="css/blog.css" rel="stylesheet">
+    <!-- SPECIFIC CSS -->
+	<link href="css/shop.css" rel="stylesheet">
+	<link href="css/timeline.css" rel="stylesheet">
+	<!-- CUSTOM CSS -->
+	<link href="css/custom.css?v=1.0" rel="stylesheet">
+    <base href="/">
+</head>
+<body>
+
+    <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" inert>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">        
+                <div class="modal-body">
+                    <div class="col-12" style="display: flex; flex-direction: column; align-items: center; justify-content: center;" id="spinner">
+                        <div class="spinner-border avatar-lg m-2 spinner-cargando" role="status" style="color: var(--color-primario);"></div>
+                        <h4 class="spinner-cargando" id="mensajeSpinner" style="color: var(--color-primario);"></h4>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="preloader">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+    </div>
+    <!-- End Preload -->
+
+    <div class="layer"></div>
+    <!-- Mobile menu overlay mask -->
+
+    <!-- Header================================================== -->
+    <header>
+        <div id="top_line">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <a href="#" onclick="abrirChatWhatsApp('Hola quisiera tener mas información sobre sus servicios...'); return false" style="color: inherit; text-decoration: none;">
+                            <i class="fab fa-whatsapp"></i> <strong>Chat en línea</strong>
+                        </a>
+                    </div>
+                </div><!-- End row -->
+            </div><!-- End container-->
+        </div><!-- End top line-->
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <div id="logo_home">
+                    	<h1><a href="#" title="Web site mkv">Marketing Vip web site</a></h1>
+                    </div>
+                </div>
+                <nav class="col-9" >
+                    <ul id="top_tools">
+                        <li  id="botonCerrarSession"  style="margin-right: 15px; display: none;">
+                            <a href="#" onclick="cerrarSesion(); return false;"><i class="icon-logout"></i>Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div><!-- container -->
+    </header><!-- End Header -->
+
+    
+    <main ng-view>
+    </main>
+
+
+	<footer class="footer-fixed footer-hidden" id="footer_home" style="display: none;">
+        
+    </footer>
+    
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/common_scripts_min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/modulos/routes.js"></script>
+    <script src="js/modulos/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script src="js/modulos/comun.js"></script>
+    <script src="js/modulos/login.js"></script>
+    <script src="js/functions.js"></script>
+    <script>
+
+        $(document).ready(e => {
+            verificarSession()
+        })
+
+
+      
+        window.addEventListener('scroll', function () {
+            const footer = document.getElementById('footer_home');
+            if (window.scrollY === 0) {
+                footer.classList.add('footer-hidden'); // Oculta si está en el top
+            } else {
+                footer.classList.remove('footer-hidden'); // Muestra si haces scroll
+            }
+        });
+
+        
+    </script>  
+    
+</body>
+</html>

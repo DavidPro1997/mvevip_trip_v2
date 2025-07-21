@@ -1,0 +1,46 @@
+
+<section id="hero" class="background-image" data-background="url(https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/fc/92/cc/barcelo-salinas.jpg?w=1200&h=-1&s=1)">
+	<div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+		<div class="intro_title">
+			<h3 class="animated fadeInDown" id="tituloDestino">Hotel</h3>
+			<p class="animated fadeInDown">Despierta donde siempre soñaste.</p>
+		</div>
+	</div>
+	<!-- End opacity-mask-->
+</section>
+
+<div id="position">
+	<div class="container">
+		<ul>
+			<li><a href="#">Home</a>
+			</li>
+			<li>
+				FAQs
+			</li>
+		</ul>
+	</div>
+</div>
+		<!-- Position -->
+
+<div class="container margin_60" id="lista_hoteles">
+	
+</div>
+
+<br><br><br><br><br>
+<script src="js/modulos/comun.js"></script>
+<script src="js/functions.js"></script>
+
+<script>
+
+	$(document).ready(e => {
+		scrollTop()
+		const usuario = JSON.parse(localStorage.getItem('usuario'));
+		const resultado = usuario.documentos.find(item => item.idTipoDocumento === 1)?.lista || [];
+		armarDocumentos(resultado,"lista_hoteles", "Marketing-Vip_A4-Web_Hoteles.jpg")
+	})
+
+
+
+
+	
+</script>

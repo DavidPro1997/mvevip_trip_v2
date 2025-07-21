@@ -1,0 +1,46 @@
+
+<section id="hero" class="background-image" data-background="url(https://img.freepik.com/vector-premium/concepto-seguro-viaje-proteccion-seguro-viaje-negocios-viajero-vacaciones-avion-accidente-politica-vector-plano-banner-sitio-web-pagina-destino_128772-2113.jpg)">
+	<div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+		<div class="intro_title">
+			<h3 class="animated fadeInDown" id="tituloDestino">SEGURO DE VIAJES</h3>
+			<p class="animated fadeInDown">Viaja libre, viaja seguro.</p>
+		</div>
+	</div>
+	<!-- End opacity-mask-->
+</section>
+
+<div id="position">
+	<div class="container">
+		<ul>
+			<li><a href="#">Home</a>
+			</li>
+			<li>
+				Seguro
+			</li>
+		</ul>
+	</div>
+</div>
+		<!-- Position -->
+
+<div class="container margin_60" id="lista_seguro">
+	
+</div>
+
+<br><br><br><br><br>
+<script src="js/modulos/comun.js"></script>
+<script src="js/functions.js"></script>
+
+<script>
+
+	$(document).ready(e => {
+		scrollTop()
+		const usuario = JSON.parse(localStorage.getItem('usuario'));
+		const resultado = usuario.documentos.find(item => item.idTipoDocumento === 4)?.lista || [];
+		armarDocumentos(resultado,"lista_seguro", "Marketing-Vip_A4-Web_Seguro.jpg")
+	})
+
+
+
+
+	
+</script>

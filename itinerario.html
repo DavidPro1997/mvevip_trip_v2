@@ -1,0 +1,43 @@
+
+<section id="hero" class="background-image" data-background="url(https://muhimu.es/wp-content/uploads/2023/12/arte-de-viajar.jpg)">
+	<div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+		<div class="intro_title">
+			<h3 class="animated fadeInDown" id="tituloDestino">ITINERARIO</h3>
+			<p class="animated fadeInDown">Cada gran viaje comienza con un gran plan.</p>
+		</div>
+	</div>
+	<!-- End opacity-mask-->
+</section>
+
+<div id="position">
+	<div class="container">
+		<ul>
+			<li><a href="#">Home</a>
+			</li>
+			<li>
+				Itinerario
+			</li>
+		</ul>
+	</div>
+</div>
+		<!-- Position -->
+
+<div class="container margin_60" id="lista_itinerario">
+	
+</div>
+
+<br><br><br><br><br>
+<script src="js/modulos/comun.js"></script>
+<script src="js/functions.js"></script>
+
+<script>
+
+	$(document).ready(e => {
+		scrollTop()
+		const usuario = JSON.parse(localStorage.getItem('usuario'));
+		const resultado = usuario.documentos.find(item => item.idTipoDocumento === 6)?.lista || [];
+		armarDocumentos(resultado,"lista_itinerario", "Marketing-Vip_A4-Web_Itinerario.jpg")
+	})
+
+
+</script>

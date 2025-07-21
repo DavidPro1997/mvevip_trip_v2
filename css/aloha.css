@@ -1,0 +1,9 @@
+:root {
+    
+    
+    --color-primario: #9AC31C;  /*Azul*/
+    /* para usar en el futuro */
+    --color-secundario: #2ecc71; /* Verde */
+    --color-fondo: #f5f5f5; /* Gris claro */
+    --color-texto: #333; /* Gris oscuro */
+}
