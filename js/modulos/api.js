@@ -1,4 +1,5 @@
-var api_trip = "http://localhost:5006"
+const api_trip = "http://localhost:5006"
+// es igual que el de reservas brow
 var token = localStorage.getItem("token");
 
 

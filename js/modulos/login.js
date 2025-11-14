@@ -47,7 +47,6 @@ function verificarSession(){
             if (datos.estado) {
                 if(datos.consulta.documentos.length > 0){
                     conSession(datos.consulta)
-                    
                 }
                 else{
                     sinSession('No tiene documentos activos')
@@ -57,9 +56,6 @@ function verificarSession(){
             else{
                 sinSession()
             }
-        },() => {
-            console.log("No se pudo conectar al servidor. Mostrando modo sin conexión.");
-            verificarSessionSinConexion();
         })
     } else {
         verificarSessionSinConexion()
