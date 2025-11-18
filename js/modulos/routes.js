@@ -10,7 +10,6 @@ app.config(['$routeProvider', '$locationProvider',function($routeProvider, $loca
     });
 
 
-
     $routeProvider
         .when('/', {
             templateUrl : 'login.html',
@@ -24,34 +23,7 @@ app.config(['$routeProvider', '$locationProvider',function($routeProvider, $loca
             templateUrl : 'home.html',
             controller : 'HomeController'
         })
-        .when('/hotel', {
-            templateUrl : 'hotel.html',
-            controller : 'HotelController'
-        })
-        .when('/tickets', {
-            templateUrl : 'ticket.html',
-            controller : 'TicketController'
-        })
-        .when('/boarding', {
-            templateUrl : 'boarding.html',
-            controller : 'BoardingController'
-        })
-        .when('/seguro', {
-            templateUrl : 'seguro.html',
-            controller : 'SeguroController'
-        })
-        .when('/sim', {
-            templateUrl : 'sim.html',
-            controller : 'SimController'
-        })
-        .when('/itinerario', {
-            templateUrl : 'itinerario.html',
-            controller : 'ItinerarioController'
-        })
-        .when('/otro', {
-            templateUrl : 'otrosDocs.html',
-            controller : 'OtroController'
-        })
+        
         .otherwise({
             redirectTo: '/login'
         });
@@ -67,34 +39,6 @@ app.controller('HomeController', ['$scope', function($scope) {
 
 app.controller('LoginController', ['$scope', function($scope) {
     $scope.message = 'Bienvenido al login';
-}]);
-
-app.controller('HotelController', ['$scope', function($scope) {
-    $scope.message = 'Bienvenido al hotel';
-}]);
-
-app.controller('TicketController', ['$scope', function($scope) {
-    $scope.message = 'Bienvenido a los tickets';
-}]);
-
-app.controller('BoardingController', ['$scope', function($scope) {
-    $scope.message = 'Bienvenido a los boardings';
-}]);
-
-app.controller('SeguroController', ['$scope', function($scope) {
-    $scope.message = 'Bienvenido a los seguros';
-}]);
-
-app.controller('SimController', ['$scope', function($scope) {
-    $scope.message = 'Bienvenido a tus sims';
-}]);
-
-app.controller('ItinerarioController', ['$scope', function($scope) {
-    $scope.message = 'Bienvenido a tu itinerario';
-}]);
-
-app.controller('OtroController', ['$scope', function($scope) {
-    $scope.message = 'Bienvenido a tus otros documentos';
 }]);
 
 

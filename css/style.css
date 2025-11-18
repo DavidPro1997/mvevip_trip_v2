@@ -2500,7 +2500,7 @@ ul#contact-info {
 
 /*-------- 2.7 Login --------*/
 #hero.login {
-	height: auto;
+	min-height: 100vh; /* Ocupa toda la altura visible */
 	display: block;
 	text-transform: none;
 	font-size: 14px;
@@ -4243,13 +4243,19 @@ blockquote.styled {
     overflow: hidden; /* Esconde el desbordamiento del video */
     display: block;
     z-index: 99;
+
+	/*Si quieres el video comenta esto*/
+	background-image: url('../img/headers/Marketing-Vip_Portada-Web_Tickets_Cotiza.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 
 /* Media query para pantallas pequeñas (tablet y móvil) */
 @media (max-width: 768px) {
     #search_container {
-		background: url('../img/headers/avion.jpg') no-repeat center top;
+		background: url('../img/headers/Marketing-Vip_Responsive_Tickets_Cotiza.jpg') no-repeat center top;
 		height: 1000px; /* Aumenta la altura del contenedor en pantallas pequeñas */
         background-size: cover; /* Asegura que el fondo cubra todo */
 

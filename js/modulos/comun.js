@@ -108,37 +108,72 @@ function cerrarMenu(){
 
 
 
-function armarDocumentos(datos, id, imagen){
-    let lista = ""
-    datos.forEach(element => {
-        lista += `
-            <div class="main_title mt-3">
-                <h2>TU `+element.tipoDocumento.toUpperCase()+` <span>${element.destino ? 'EN '+element.destino.toUpperCase() : ''}</span> </h2>
-            </div>
-            <div class="row mt-4">
-                <div style="text-align: center; padding: 20px;">
-                    <button onclick="descargarDocumento('`+element.ruta+`')" style="padding: 0; border: none; background: none;">
-                        <img src="img/documentos/`+imagen+`" 
-                            style="width: 100%; height: auto; max-width: 800px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); border: 3px solid #9AC31C; cursor: pointer;" 
-                            alt="Imagen de reserva">
-                    </button>
-                </div>
-            </div>
-        `
-    });
-    $("#"+id).html(lista)
+
+
+
+function verificarSession(){
+    abrirSpinner("Consultando sus documentos")
+    if (navigator.onLine) {
+        Obtener_API_Trip(null, '/verificarSession', datos => {
+            setTimeout(() => {
+                cerrarSpinner()
+            }, 500);
+            if (datos.estado) {
+                conSession(datos)
+            }
+            else{
+                sinSession()
+            }
+        })
+    } else {
+        // verificarSessionSinConexion()
+    }        
 }
 
 
 
 
-function descargarDocumento(ruta) {
-    const rutaAux = encodeURIComponent(ruta);
-    Obtener_API_Trip(null, '/descargarDocumento?ruta=' + rutaAux, datos => {
-      if (datos?.estado) {
-        window.open(datos.linkDescarga, '_blank');
-      } else {
-        mensajeUsuario('info','Oops', datos.mensaje)
-      }
-  });
+
+
+function conSession(datos){
+    if(datos.consulta){
+        localStorage.setItem("usuario", JSON.stringify(datos.consulta));
+    }
+    localStorage.setItem("reservas", JSON.stringify(datos.reservas));
+    const rutaActual = window.location.pathname;
+    $("#botonCerrarSession").show()
+    if (rutaActual === "/" || rutaActual === "/login") {
+        window.location.href = "/home";
+    }
+    else{
+        cargarInformacion()
+    }  
+}
+
+
+
+
+
+
+function sinSession(mensaje){
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("token");
+    $("#botonCerrarSession").hide()
+    
+    if(mensaje){
+        mensajeUsuario('info','Información',mensaje).then(()=>{
+            const rutaActual = window.location.pathname;
+            if (rutaActual !== "/login") {
+                window.location.href = "/login";
+            }
+        })
+    }
+    else{
+        const rutaActual = window.location.pathname;
+        if (rutaActual !== "/login") {
+            window.location.href = "/login";
+        }
+    }
+    
+    
 }

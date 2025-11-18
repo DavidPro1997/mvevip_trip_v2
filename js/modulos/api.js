@@ -1,6 +1,7 @@
 const api_trip = "http://localhost:5006"
 // es igual que el de reservas brow
-var token = localStorage.getItem("token");
+var usuario = JSON.parse(localStorage.getItem("usuario"));
+var token = usuario.token || null
 
 
 

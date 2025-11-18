@@ -110,9 +110,7 @@
     </main>
 
 
-	<footer class="footer-fixed footer-hidden" id="footer_home" style="display: none;">
-        
-    </footer>
+	
     
 	<script src="js/jquery-3.6.0.min.js"></script>
 	<script src="js/common_scripts_min.js"></script>
@@ -130,20 +128,23 @@
     <script src="js/functions.js"></script>
     <script>
 
-        $(document).ready(e => {
-            verificarSession()
-        })
+        // $(document).ready(e => {
+        //     verificarSession()
+        // })
 
 
       
-        window.addEventListener('scroll', function () {
-            const footer = document.getElementById('footer_home');
-            if (window.scrollY === 0) {
-                footer.classList.add('footer-hidden'); // Oculta si está en el top
-            } else {
-                footer.classList.remove('footer-hidden'); // Muestra si haces scroll
-            }
-        });
+        // window.addEventListener('scroll', function () {
+        //     const footer = document.getElementById('footer_home');
+        //     if(footer){
+        //         if (window.scrollY === 0) {
+        //             footer.classList.add('footer-hidden'); // Oculta si está en el top
+        //         } else {
+        //             footer.classList.remove('footer-hidden'); // Muestra si haces scroll
+        //         }
+        //     }
+            
+        // });
 
         
     </script>  
