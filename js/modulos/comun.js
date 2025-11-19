@@ -115,15 +115,15 @@ function verificarSession(){
     abrirSpinner("Consultando sus documentos")
     if (navigator.onLine) {
         Obtener_API_Trip(null, '/verificarSession', datos => {
-            // setTimeout(() => {
-            //     cerrarSpinner()
-            // }, 500);
-            // if (datos.estado) {
-            //     conSession(datos)
-            // }
-            // else{
-            //     sinSession()
-            // }
+            setTimeout(() => {
+                cerrarSpinner()
+            }, 500);
+            if (datos.estado) {
+                conSession(datos)
+            }
+            else{
+                sinSession()
+            }
         })
     } else {
         // verificarSessionSinConexion()
@@ -177,3 +177,5 @@ function sinSession(mensaje){
     
     
 }
+
+

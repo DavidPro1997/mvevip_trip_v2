@@ -26,6 +26,23 @@ function iniciarSesion(){
 
 
 
+function verificarData(){
+    const datos = {
+        consulta: JSON.parse(localStorage.getItem("usuario")),
+        reservas: JSON.parse(localStorage.getItem("reservas"))
+    }
+    if (datos.consulta && datos.reservas){
+        conSession(datos)
+    }
+    else{
+        sinSession()
+    }
+}
+
+
+
+
+
 
 function cerrarSesion(){
     abrirSpinner("Cerrando Sesion")

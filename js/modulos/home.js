@@ -1,11 +1,17 @@
 function cargarInformacion(){
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const reservas = JSON.parse(localStorage.getItem("reservas"));
-    // console.log("Usuario: ",usuario)
-    // console.log("Reservas: ",reservas)
-    $("#botonCerrarSession").show()
-    selectPestana('home')
-    construirDOM(usuario, reservas)
+    console.log("Usuario: ",usuario)
+    console.log("Reservas: ",reservas)
+    if (usuario && reservas){
+        $("#botonCerrarSession").show()
+        selectPestana('home')
+        construirDOM(usuario, reservas)
+    }
+    else{
+        sinSession()
+    }
+    
 }
 
 
@@ -23,18 +29,17 @@ function selectPestana(id){
 
 
 function construirDOM(usuario, reservas){
-    console.log(usuario)
     $("#tituloPrincipal").html("¡HOLA " + usuario.nombres.toUpperCase() + " " + usuario.apellidos.toUpperCase() + "!");
     reservas.forEach(element => {
         // HOTELES
         if(element.hoteles.length>0 && element.urlFirmadaHoteles){
             let hotel = ""
             let tituloHotel = "🏨"+element.hoteles[0].fechaCheckIn+ " <br> "+element.hoteles.map(item => item.hotel).join(" - ");
-            hotel += armarDocumentos(element.urlFirmadaHoteles,tituloHotel)
+            hotel += armarDocumentos(element.urlFirmadaHoteles,tituloHotel,element.rutaHoteles)
             element.hoteles.forEach(documentos => {
                 documentos.docs.forEach(element_2 => {
                     if(element_2.idTipoDocumento != 15){
-                    hotel += armarDocumentos(element_2.urlFirmada) 
+                    hotel += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
                     }
                 });
             });
@@ -50,11 +55,11 @@ function construirDOM(usuario, reservas){
         if(element.actividades.length>0 && element.urlFirmadaActividades){
             let activ = ""
             let tituloActividad = "🏃‍♂️"+element.actividades[0].fechaInicio+ "<br>"+element.actividades.map(item => item.nombre).join("<br>");
-            activ += armarDocumentos(element.urlFirmadaActividades,tituloActividad)
+            activ += armarDocumentos(element.urlFirmadaActividades,tituloActividad,element.rutaActividades)
             element.actividades.forEach(documentos => {
                 documentos.docs.forEach(element_2 => {
                     if(element_2.idTipoDocumento != 16){
-                    activ += armarDocumentos(element_2.urlFirmada) 
+                    activ += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
                     }
                 });
             });
@@ -70,11 +75,11 @@ function construirDOM(usuario, reservas){
         if(element.transfer.length>0 && element.urlFirmadaTransfer){
             let transfer = ""
             let tituloTransfer = "🚌"+element.transfer[0].salida+ "<br>"+element.transfer.map(item => item.tipoTransfer).join("<br>");
-            transfer += armarDocumentos(element.urlFirmadaTransfer,tituloTransfer)
+            transfer += armarDocumentos(element.urlFirmadaTransfer,tituloTransfer,element.rutaActividades,element.rutaTransfers)
             element.transfer.forEach(documentos => {
                 documentos.docs.forEach(element_2 => {
                     if(element_2.idTipoDocumento != 17){
-                    transfer += armarDocumentos(element_2.urlFirmada) 
+                    transfer += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
                     }
                 });
             });
@@ -90,11 +95,11 @@ function construirDOM(usuario, reservas){
         if(element.autos.length>0 && element.urlFirmadaAutos){
             let carro = ""
             let tituloAuto = "🚗"+element.autos[0].inicio+ "<br>"+element.autos.map(item => item.nombreAuto).join("<br>");
-            carro += armarDocumentos(element.urlFirmadaAutos,tituloAuto)
+            carro += armarDocumentos(element.urlFirmadaAutos,tituloAuto,element.rutaAutos)
             element.autos.forEach(documentos => {
                 documentos.docs.forEach(element_2 => {
                     if(element_2.idTipoDocumento != 18){
-                        carro += armarDocumentos(element_2.urlFirmada) 
+                        carro += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
                     }
                 });
             });
@@ -113,7 +118,7 @@ function construirDOM(usuario, reservas){
                 const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
                 if(existe){
                     let tituloTkt = "✈️ Ticket Aéreo<br>"+tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join("-");
-                    vuelo += armarDocumentos(tkts.urlFirmada,tituloTkt) 
+                    vuelo += armarDocumentos(tkts.urlFirmada,tituloTkt,tkts.ruta) 
                 }
                 
             });
@@ -133,19 +138,19 @@ function construirDOM(usuario, reservas){
                     // SIM CARD
                     if(documento.idTipoDocumento == 5){
                         let titulo = "📲 SIM";
-                        docs_extras += armarDocumentos(documento.urlFirmada,titulo) 
+                        docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
                     }
 
                     // BOARDING
                     if(documento.idTipoDocumento == 3){
                         let titulo = "📄 Boarding Pass";
-                        docs_extras += armarDocumentos(documento.urlFirmada,titulo) 
+                        docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
                     }
 
                     // SEGURO VIAJE
                     if(documento.idTipoDocumento == 4){
                         let titulo = "🔒 Seguro de viajes";
-                        docs_extras += armarDocumentos(documento.urlFirmada,titulo) 
+                        docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
                     }
 
                     
@@ -162,38 +167,6 @@ function construirDOM(usuario, reservas){
 
 
     });
-
-    
-
-
-    // if(datos.actividades.length>0){
-    //     $("#pie_actividades").show()
-    //     armarDocumentos(datos.actividades, "lista_actividades")
-    // }
-    // else{
-    //      $("#pie_actividades").hide()
-    // }
-
-
-
-    // if(datos.transfers.length>0){
-    //     $("#pie_transfer").show()
-    //     armarDocumentos(datos.transfers, "lista_transfer")
-    // }
-    // else{
-    //      $("#pie_transfer").hide()
-    // }
-
-
-    // if(datos.autos.length>0){
-    //     $("#pie_auto").show()
-    //     armarDocumentos(datos.transfers, "lista_auto")
-        
-    // }
-    // else{
-    //      $("#pie_auto").hide()
-    // }
-
 }
 
 
@@ -201,7 +174,7 @@ function construirDOM(usuario, reservas){
 
 
 
-function armarDocumentos(url, titulo) {
+function armarDocumentos(url, titulo, ruta) {
     // Convertir PDF normal a visor de Google
     const googleViewer = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(url)}`;
 
@@ -223,6 +196,29 @@ function armarDocumentos(url, titulo) {
 
             <div class="pdf-frame">
                 <iframe src="${googleViewer}"></iframe>
+            </div>
+            <div style="text-align: center; margin-top: 12px;">
+                <a href="#"
+                    onclick="descargarDocumento('${ruta}'); return false;"
+                    style="
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                        background: #9AC31C;
+                        color: #fff;
+                        padding: 10px 18px;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        font-weight: 600;
+                        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                        transition: 0.2s ease-in-out;
+                    "
+                    onmouseover="this.style.background='#6a8613ff'"
+                    onmouseout="this.style.background='#9AC31C'"
+                >
+                    <i class="fas fa-download"></i>
+                    Descargar Documento
+                </a>
             </div>
         </div>
     `;
