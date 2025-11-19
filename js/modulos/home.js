@@ -201,10 +201,11 @@ function construirDOM(usuario, reservas){
 
 
 
-function armarDocumentos(url, titulo){
-    let lista = ""
-    // urls.forEach(element => {
-    lista += `
+function armarDocumentos(url, titulo) {
+    // Convertir PDF normal a visor de Google
+    const googleViewer = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(url)}`;
+
+    let lista = `
         <div class="pdf-container">
             <h3 style="
                 font-size: 18px;
@@ -214,20 +215,19 @@ function armarDocumentos(url, titulo){
                 display: flex;
                 align-items: center;
                 gap: 8px;
-                justify-content: center;   /* centra el contenido horizontalmente */
-                text-align: center;        /* centra el texto */
+                justify-content: center;
+                text-align: center;
             ">
                 ${titulo ? titulo : ''}
             </h3>
 
             <div class="pdf-frame">
-                <iframe src="${url}"></iframe>
+                <iframe src="${googleViewer}"></iframe>
             </div>
         </div>
-    `
-    return lista
-    // });
-    // $("#"+id).html(lista)
+    `;
+
+    return lista;
 }
 
 
