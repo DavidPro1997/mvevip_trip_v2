@@ -164,12 +164,58 @@
     
 
 </div>    
+
+
+<div id="pestana_docs">
+    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
+        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+            <div class="intro_title">
+                <h3 class="animated fadeInDown" id="tituloDestino">Documentos Indentificativos</h3>
+                <p class="animated fadeInDown">Tenemos un respaldo guardado para ti.</p>
+            </div>
+        </div>
+        <!-- End opacity-mask-->
+    </section>
+
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li>Home</li>
+                <li>Documentos</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_personales"></div>
+</div>
+
+
+<div id="pestana_ticket">
+    <section id="hero" class="background-image"  style="background-image: url('https://st2.depositphotos.com/2305339/7997/i/450/depositphotos_79972686-stock-photo-silhouette-of-a-man-waiting.jpg');">
+        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+            <div class="intro_title">
+                <h3 class="animated fadeInDown" id="tituloDestino">Tus Tickets</h3>
+                <p class="animated fadeInDown">¡Buen vuelo, que el cielo te acompañe!</p>
+            </div>
+        </div>
+    </section>
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li>Home</li>
+                <li>Tickets</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_tickets"></div>
+</div>
     
+
+
 <div id="pestana_hotel">
     <section id="hero" class="background-image"  style="background-image: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/fc/92/cc/barcelo-salinas.jpg?w=1200&h=-1&s=1');">
         <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
             <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Tus Hoteles Reservados</h3>
+                <h3 class="animated fadeInDown" id="tituloDestino">Tus Reservas listas</h3>
                 <p class="animated fadeInDown">Despierta donde siempre soñaste.</p>
             </div>
         </div>
@@ -180,7 +226,7 @@
         <div class="container">
             <ul>
                 <li>Home</li>
-                <li>Hoteles</li>
+                <li>Reservas</li>
             </ul>
         </div>
     </div>
@@ -189,6 +235,7 @@
 </div>
 
 
+<!-- 
 <div id="pestana_actividad">
     <section id="hero" class="background-image"  style="background-image: url('https://img.genial.ly/5fa8d406e8212c0f7007907c/510f78ba-90c4-4f91-a9f8-882a50c6ce9f.jpeg');">
         <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
@@ -197,7 +244,6 @@
                 <p class="animated fadeInDown">Explora actividades que te sorprenderán.</p>
             </div>
         </div>
-        <!-- End opacity-mask-->
     </section>
 
     <div id="position">
@@ -222,7 +268,6 @@
                 <p class="animated fadeInDown">Mantente cómodo con tus traslados</p>
             </div>
         </div>
-        <!-- End opacity-mask-->
     </section>
 
     <div id="position">
@@ -234,8 +279,8 @@
         </div>
     </div>
     <div class="container margin_60" id="lista_transfer"></div>
-
 </div>
+
 
 
 <div id="pestana_auto">
@@ -246,9 +291,7 @@
                 <p class="animated fadeInDown">Disfruta la comodidad de tu auto reservado</p>
             </div>
         </div>
-        <!-- End opacity-mask-->
     </section>
-
     <div id="position">
         <div class="container">
             <ul>
@@ -258,8 +301,8 @@
         </div>
     </div>
     <div class="container margin_60" id="lista_auto"></div>
-
 </div>
+
 
 
 <div id="pestana_ticket">
@@ -270,9 +313,7 @@
                 <p class="animated fadeInDown">¡Buen vuelo, que el cielo te acompañe!</p>
             </div>
         </div>
-        <!-- End opacity-mask-->
     </section>
-
     <div id="position">
         <div class="container">
             <ul>
@@ -282,7 +323,6 @@
         </div>
     </div>
     <div class="container margin_60" id="lista_tickets"></div>
-
 </div>
 
 
@@ -295,9 +335,7 @@
                 <p class="animated fadeInDown">Relájate, nosotros nos encargamos del resto.</p>
             </div>
         </div>
-        <!-- End opacity-mask-->
     </section>
-
     <div id="position">
         <div class="container">
             <ul>
@@ -307,8 +345,7 @@
         </div>
     </div>
     <div class="container margin_60" id="lista_adicionales"></div>
-
-</div>
+</div> -->
 
 
 
@@ -323,6 +360,13 @@
         </a> 
     </div>
 
+    <div class="footer-menu" style="display: none;"  id="pie_docs">
+        <a href="#" onclick="selectPestana('docs')" class="footer-item">
+            <i class="fas fa-user"></i>
+            <span style="font-size: 9px;">Documentos</span>
+        </a> 
+    </div>
+
     <div class="footer-menu" style="display: none;" id="pie_ticket">
         <a href="#" onclick="selectPestana('ticket')" class="footer-item">
             <i class="fas fa-plane"></i>
@@ -330,6 +374,17 @@
         </a> 
     </div>
 
+
+
+    <div class="footer-menu" style="display: none;"  id="pie_hotel">
+        <a href="#" onclick="selectPestana('hotel')" class="footer-item">
+            <i class="fas fa-hotel"></i>
+            <span style="font-size: 9px;">Reserva</span>
+        </a> 
+    </div>
+
+
+<!-- 
     <div class="footer-menu" style="display: none;"  id="pie_hotel">
         <a href="#" onclick="selectPestana('hotel')" class="footer-item">
             <i class="fas fa-hotel"></i>
@@ -365,7 +420,7 @@
             <i class="fas fa-file-alt"></i>
             <span style="font-size: 9px;">Adicionales</span>
         </a> 
-    </div>
+    </div> -->
 
 <!--     
 

@@ -31,84 +31,11 @@ function selectPestana(id){
 function construirDOM(usuario, reservas){
     $("#tituloPrincipal").html("¡HOLA " + usuario.nombres.toUpperCase() + " " + usuario.apellidos.toUpperCase() + "!");
     reservas.forEach(element => {
-        // HOTELES
-        if(element.hoteles.length>0 && element.urlFirmadaHoteles){
-            let hotel = ""
-            let tituloHotel = "🏨"+element.hoteles[0].fechaCheckIn+ " <br> "+element.hoteles.map(item => item.hotel).join(" - ");
-            hotel += armarDocumentos(element.urlFirmadaHoteles,tituloHotel,element.rutaHoteles)
-            element.hoteles.forEach(documentos => {
-                documentos.docs.forEach(element_2 => {
-                    if(element_2.idTipoDocumento != 15){
-                    hotel += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
-                    }
-                });
-            });
-            $("#pie_hotel").show()
-            $("#lista_hoteles").html(hotel)
-        }
-        else{
-            $("#pie_hotel").hide()
-        }
 
-
-        // ACTIVIDADES
-        if(element.actividades.length>0 && element.urlFirmadaActividades){
-            let activ = ""
-            let tituloActividad = "🏃‍♂️"+element.actividades[0].fechaInicio+ "<br>"+element.actividades.map(item => item.nombre).join("<br>");
-            activ += armarDocumentos(element.urlFirmadaActividades,tituloActividad,element.rutaActividades)
-            element.actividades.forEach(documentos => {
-                documentos.docs.forEach(element_2 => {
-                    if(element_2.idTipoDocumento != 16){
-                    activ += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
-                    }
-                });
-            });
-            $("#pie_actividades").show()
-            $("#lista_actividades").html(activ)
-        }
-        else{
-            $("#pie_actividades").hide()
-        }
-
-
-        // TRANSFER
-        if(element.transfer.length>0 && element.urlFirmadaTransfer){
-            let transfer = ""
-            let tituloTransfer = "🚌"+element.transfer[0].salida+ "<br>"+element.transfer.map(item => item.tipoTransfer).join("<br>");
-            transfer += armarDocumentos(element.urlFirmadaTransfer,tituloTransfer,element.rutaActividades,element.rutaTransfers)
-            element.transfer.forEach(documentos => {
-                documentos.docs.forEach(element_2 => {
-                    if(element_2.idTipoDocumento != 17){
-                    transfer += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
-                    }
-                });
-            });
-            $("#pie_transfer").show()
-            $("#lista_transfer").html(transfer)
-        }
-        else{
-            $("#pie_transfer").hide()
-        }
-
-
-        // AUTO
-        if(element.autos.length>0 && element.urlFirmadaAutos){
-            let carro = ""
-            let tituloAuto = "🚗"+element.autos[0].inicio+ "<br>"+element.autos.map(item => item.nombreAuto).join("<br>");
-            carro += armarDocumentos(element.urlFirmadaAutos,tituloAuto,element.rutaAutos)
-            element.autos.forEach(documentos => {
-                documentos.docs.forEach(element_2 => {
-                    if(element_2.idTipoDocumento != 18){
-                        carro += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
-                    }
-                });
-            });
-            $("#pie_auto").show()
-            $("#lista_auto").html(carro)
-        }
-        else{
-            $("#pie_auto").hide()
-        }
+        // RESERVAS
+        let reserva = armarDocumentos(element.urlFirmadaReservaCompleta,element.hoteles,element.rutaReservaCompleta)
+        $("#pie_hotel").show()
+        $("#lista_hoteles").html(reserva)
 
 
         // TICKETS
@@ -117,7 +44,7 @@ function construirDOM(usuario, reservas){
             element.tickets.forEach(tkts => {
                 const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
                 if(existe){
-                    let tituloTkt = "✈️ Ticket Aéreo<br>"+tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join("-");
+                    let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join(" | ");
                     vuelo += armarDocumentos(tkts.urlFirmada,tituloTkt,tkts.ruta) 
                 }
                 
@@ -130,39 +57,162 @@ function construirDOM(usuario, reservas){
         }
 
 
-        // EXTRAS
-        if(element.documentos.length>0){
-            let docs_extras = ""
-            element.documentos.forEach(documento => {
-                if(Number(documento.idViajero) == Number(usuario.idViajero)){
-                    // SIM CARD
-                    if(documento.idTipoDocumento == 5){
-                        let titulo = "📲 SIM";
-                        docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
-                    }
-
-                    // BOARDING
-                    if(documento.idTipoDocumento == 3){
-                        let titulo = "📄 Boarding Pass";
-                        docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
-                    }
-
-                    // SEGURO VIAJE
-                    if(documento.idTipoDocumento == 4){
-                        let titulo = "🔒 Seguro de viajes";
-                        docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
-                    }
-
-                    
-                }
-                
+        // DOCUMENTOS PERSONALES
+        if(element.viajeros.length>0){
+            let documentos = ""
+            element.viajeros.forEach(personal => {
+                if(Number(personal.idViajero) === Number(usuario.idViajero)){
+                    personal.docs.forEach(doc => {
+                        let tituloPersonal = doc.tipoDocumento
+                        documentos += armarDocumentos(doc.urlFirmada,tituloPersonal,doc.ruta)
+                    });
+                }                
             });
-            $("#pie_otro").show()
-            $("#lista_adicionales").html(docs_extras)
+            $("#pie_docs").show()
+            $("#lista_personales").html(documentos)
         }
         else{
-            $("#pie_otro").hide()
+            $("#pie_docs").hide()
         }
+       
+       
+
+
+
+
+
+        // // HOTELES
+        // if(element.hoteles.length>0 && element.urlFirmadaHoteles){
+        //     let hotel = ""
+        //     let tituloHotel = "🏨"+element.hoteles[0].fechaCheckIn+ " <br> "+element.hoteles.map(item => item.hotel).join(" - ");
+        //     hotel += armarDocumentos(element.urlFirmadaHoteles,tituloHotel,element.rutaHoteles)
+        //     element.hoteles.forEach(documentos => {
+        //         documentos.docs.forEach(element_2 => {
+        //             if(element_2.idTipoDocumento != 15){
+        //             hotel += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
+        //             }
+        //         });
+        //     });
+        //     $("#pie_hotel").show()
+        //     $("#lista_hoteles").html(hotel)
+        // }
+        // else{
+        //     $("#pie_hotel").hide()
+        // }
+
+
+        // // ACTIVIDADES
+        // if(element.actividades.length>0 && element.urlFirmadaActividades){
+        //     let activ = ""
+        //     let tituloActividad = "🏃‍♂️"+element.actividades[0].fechaInicio+ "<br>"+element.actividades.map(item => item.nombre).join("<br>");
+        //     activ += armarDocumentos(element.urlFirmadaActividades,tituloActividad,element.rutaActividades)
+        //     element.actividades.forEach(documentos => {
+        //         documentos.docs.forEach(element_2 => {
+        //             if(element_2.idTipoDocumento != 16){
+        //             activ += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
+        //             }
+        //         });
+        //     });
+        //     $("#pie_actividades").show()
+        //     $("#lista_actividades").html(activ)
+        // }
+        // else{
+        //     $("#pie_actividades").hide()
+        // }
+
+
+        // // TRANSFER
+        // if(element.transfer.length>0 && element.urlFirmadaTransfer){
+        //     let transfer = ""
+        //     let tituloTransfer = "🚌"+element.transfer[0].salida+ "<br>"+element.transfer.map(item => item.tipoTransfer).join("<br>");
+        //     transfer += armarDocumentos(element.urlFirmadaTransfer,tituloTransfer,element.rutaActividades,element.rutaTransfers)
+        //     element.transfer.forEach(documentos => {
+        //         documentos.docs.forEach(element_2 => {
+        //             if(element_2.idTipoDocumento != 17){
+        //             transfer += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
+        //             }
+        //         });
+        //     });
+        //     $("#pie_transfer").show()
+        //     $("#lista_transfer").html(transfer)
+        // }
+        // else{
+        //     $("#pie_transfer").hide()
+        // }
+
+
+        // // AUTO
+        // if(element.autos.length>0 && element.urlFirmadaAutos){
+        //     let carro = ""
+        //     let tituloAuto = "🚗"+element.autos[0].inicio+ "<br>"+element.autos.map(item => item.nombreAuto).join("<br>");
+        //     carro += armarDocumentos(element.urlFirmadaAutos,tituloAuto,element.rutaAutos)
+        //     element.autos.forEach(documentos => {
+        //         documentos.docs.forEach(element_2 => {
+        //             if(element_2.idTipoDocumento != 18){
+        //                 carro += armarDocumentos(element_2.urlFirmada,null,element_2.ruta) 
+        //             }
+        //         });
+        //     });
+        //     $("#pie_auto").show()
+        //     $("#lista_auto").html(carro)
+        // }
+        // else{
+        //     $("#pie_auto").hide()
+        // }
+
+
+        // // TICKETS
+        // if(element.tickets.length>0){
+        //     let vuelo = ""
+        //     element.tickets.forEach(tkts => {
+        //         const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
+        //         if(existe){
+        //             let tituloTkt = "✈️ Ticket Aéreo<br>"+tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join("-");
+        //             vuelo += armarDocumentos(tkts.urlFirmada,tituloTkt,tkts.ruta) 
+        //         }
+                
+        //     });
+        //     $("#pie_ticket").show()
+        //     $("#lista_tickets").html(vuelo)
+        // }
+        // else{
+        //     $("#pie_ticket").hide()
+        // }
+
+
+        // // EXTRAS
+        // if(element.documentos.length>0){
+        //     let docs_extras = ""
+        //     element.documentos.forEach(documento => {
+        //         if(Number(documento.idViajero) == Number(usuario.idViajero)){
+        //             // SIM CARD
+        //             if(documento.idTipoDocumento == 5){
+        //                 let titulo = "📲 SIM";
+        //                 docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
+        //             }
+
+        //             // BOARDING
+        //             if(documento.idTipoDocumento == 3){
+        //                 let titulo = "📄 Boarding Pass";
+        //                 docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
+        //             }
+
+        //             // SEGURO VIAJE
+        //             if(documento.idTipoDocumento == 4){
+        //                 let titulo = "🔒 Seguro de viajes";
+        //                 docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
+        //             }
+
+                    
+        //         }
+                
+        //     });
+        //     $("#pie_otro").show()
+        //     $("#lista_adicionales").html(docs_extras)
+        // }
+        // else{
+        //     $("#pie_otro").hide()
+        // }
 
 
 
@@ -220,6 +270,7 @@ function armarDocumentos(url, titulo, ruta) {
                     Descargar Documento
                 </a>
             </div>
+            <br>
         </div>
     `;
 
