@@ -73,6 +73,10 @@ Author URI: http://themeforest.net/user/Ansonika/
 
 /*-------- 1.1 Typography --------*/
 html, body {
+	overflow-x: hidden;
+	width: 100%;
+	position: relative;
+
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
