@@ -226,7 +226,7 @@ function construirDOM(usuario, reservas){
 
 function armarDocumentos(url, titulo, ruta) {
     // Convertir PDF normal a visor de Google
-    const googleViewer = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(url)}`;
+    const googleViewer = `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(url)}`;
 
     let lista = `
         <div class="pdf-container">
