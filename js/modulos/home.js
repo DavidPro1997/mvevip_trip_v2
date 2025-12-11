@@ -33,7 +33,7 @@ function construirDOM(usuario, reservas){
     reservas.forEach(element => {
 
         // RESERVAS
-        let reserva = armarDocumentos(element.urlFirmadaReservaCompleta,element.hoteles,element.rutaReservaCompleta)
+        let reserva = armarDocumentos(element.urlFirmadaReservaCompleta,element.hoteles,element.rutaReservaCompleta,"img/portadas/reserva.jpg")
         $("#pie_hotel").show()
         $("#lista_hoteles").html(reserva)
 
@@ -45,7 +45,7 @@ function construirDOM(usuario, reservas){
                 const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
                 if(existe){
                     let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join(" | ");
-                    vuelo += armarDocumentos(tkts.urlFirmada,tituloTkt,tkts.ruta) 
+                    vuelo += armarDocumentos(tkts.urlFirmada,tituloTkt,tkts.ruta,"img/portadas/tickets.jpg") 
                 }
                 
             });
@@ -64,7 +64,7 @@ function construirDOM(usuario, reservas){
                 if(Number(personal.idViajero) === Number(usuario.idViajero)){
                     personal.docs.forEach(doc => {
                         let tituloPersonal = doc.tipoDocumento
-                        documentos += armarDocumentos(doc.urlFirmada,tituloPersonal,doc.ruta)
+                        documentos += armarDocumentos(doc.urlFirmada,tituloPersonal,doc.ruta, "img/portadas/personales.jpg")
                     });
                 }                
             });
@@ -224,10 +224,12 @@ function construirDOM(usuario, reservas){
 
 
 
-function armarDocumentos(url, titulo, ruta) {
+function armarDocumentos(url, titulo, ruta, ruta_img) {
     // Convertir PDF normal a visor de Google
+    const platform = localStorage.getItem('platform');
+    console.log("Sistema operativo del usuario:", platform);
+    
     const googleViewer = `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(url)}`;
-
     let lista = `
         <div class="pdf-container">
             <h3 style="
@@ -244,8 +246,14 @@ function armarDocumentos(url, titulo, ruta) {
                 ${titulo ? titulo : ''}
             </h3>
 
-            <div class="pdf-frame">
-                <iframe src="${googleViewer}"></iframe>
+            <div class="pdf-frame">`
+                if(!platform || platform == "android"){
+                    lista += `<iframe src="${googleViewer}"></iframe>`
+                }
+                else{
+                    lista += `<img src="${ruta_img}" alt="vista previa" style="width: 100%; height: auto;">`
+                }
+            lista += `
             </div>
             <div style="text-align: center; margin-top: 12px;">
                 <a href="#"
