@@ -15,6 +15,17 @@ function cargarInformacion(){
 }
 
 
+function quitarFooter(){
+    $("#pie_docs").hide()
+    $("#pie_ticket").hide()
+    $("#pie_hotel").hide()
+    $("#pie_sim").hide()
+    $("#pie_boarding").hide()
+    $("#pie_seguro").hide()
+    $("#pie_otro").hide()
+}
+
+
 
 function selectPestana(id){
     document.querySelectorAll("[id^='pestana']").forEach(el => {
@@ -29,6 +40,7 @@ function selectPestana(id){
 
 
 function construirDOM(usuario, reservas){
+    quitarFooter()
     $("#tituloPrincipal").html("¡HOLA " + usuario.nombres.toUpperCase() + " " + usuario.apellidos.toUpperCase() + "!");
     reservas.forEach(element => {
 
