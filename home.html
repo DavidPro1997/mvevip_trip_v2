@@ -242,6 +242,98 @@
 </div>
 
 
+
+<div id="pestana_otro">
+    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
+        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+            <div class="intro_title">
+                <h3 class="animated fadeInDown" id="tituloDestino">Documentos Adicionales</h3>
+                <p class="animated fadeInDown">Relájate, nosotros nos encargamos del resto.</p>
+            </div>
+        </div>
+    </section>
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li>Home</li>
+                <li>Documentos Adicionales</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_documentos"></div>
+</div> 
+
+
+<div id="pestana_boarding">
+    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
+        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+            <div class="intro_title">
+                <h3 class="animated fadeInDown" id="tituloDestino">Boarding Pass</h3>
+                <p class="animated fadeInDown">Tus documentos de embarque listos.</p>
+            </div>
+        </div>
+    </section>
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li>Home</li>
+                <li>Boarding Pass</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_boarding"></div>
+</div> 
+
+
+
+<div id="pestana_seguro">
+    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
+        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+            <div class="intro_title">
+                <h3 class="animated fadeInDown" id="tituloDestino">Seguro de Viaje</h3>
+                <p class="animated fadeInDown">Que ningun imprevisto te sorprenda.</p>
+            </div>
+        </div>
+    </section>
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li>Home</li>
+                <li>Seguro de Viaje</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_seguro"></div>
+</div> 
+
+
+
+
+<div id="pestana_sim">
+    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
+        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+            <div class="intro_title">
+                <h3 class="animated fadeInDown" id="tituloDestino">SIM CARD</h3>
+                <p class="animated fadeInDown">Mantente comunicado en todo momento.</p>
+            </div>
+        </div>
+    </section>
+    <div id="position">
+        <div class="container">
+            <ul>
+                <li>Home</li>
+                <li>SIM CARD</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_sim"></div>
+</div> 
+
+
+
+
+
+
 <!-- 
 <div id="pestana_actividad">
     <section id="hero" class="background-image"  style="background-image: url('https://img.genial.ly/5fa8d406e8212c0f7007907c/510f78ba-90c4-4f91-a9f8-882a50c6ce9f.jpeg');">
@@ -334,25 +426,7 @@
 
 
 
-<div id="pestana_otro">
-    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Servicios Adicionales</h3>
-                <p class="animated fadeInDown">Relájate, nosotros nos encargamos del resto.</p>
-            </div>
-        </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Adicionales</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_adicionales"></div>
-</div> -->
+-->
 
 
 
@@ -380,6 +454,36 @@
             <span style="font-size: 9px;">Tickets</span>
         </a> 
     </div>
+
+
+    <div class="footer-menu" style="display: none;" id="pie_boarding">
+        <a href="#" onclick="selectPestana('boarding')" class="footer-item">
+            <i class="fas fa-passport"></i>
+            <span style="font-size: 9px;">Boarding</span>
+        </a> 
+    </div>
+
+    <div class="footer-menu" style="display: none;" id="pie_seguro">
+        <a href="#" onclick="selectPestana('seguro')" class="footer-item">
+            <i class="fas fa-shield-alt"></i>
+            <span style="font-size: 9px;">Seguro</span>
+        </a> 
+    </div>
+
+    <div class="footer-menu" style="display: none;" id="pie_sim">
+        <a href="#" onclick="selectPestana('sim')" class="footer-item">
+            <i class="fas fa-sim-card"></i>
+            <span style="font-size: 9px;">Sim</span>
+        </a> 
+    </div>
+    
+
+    <div class="footer-menu" style="display: none;" id="pie_otro">
+        <a href="#" onclick="selectPestana('otro')" class="footer-item">
+            <i class="fas fa-file-alt"></i>
+            <span style="font-size: 9px;">Adicionales</span>
+        </a> 
+    </div> 
 
 
 
@@ -420,44 +524,8 @@
             <span style="font-size: 9px;">Auto</span>
         </a> 
     </div>
-    
+    -->
 
-    <div class="footer-menu" style="display: none;" id="pie_otro">
-        <a href="#" onclick="selectPestana('otro')" class="footer-item">
-            <i class="fas fa-file-alt"></i>
-            <span style="font-size: 9px;">Adicionales</span>
-        </a> 
-    </div> -->
-
-<!--     
-
-    <div class="footer-menu" style="display: none;" id="pie_boarding">
-        <a href="#" onclick="selectPestana('boarding')" class="footer-item">
-            <i class="fas fa-passport"></i>
-            <span style="font-size: 9px;">Boarding</span>
-        </a> 
-    </div>
-
-    <div class="footer-menu" style="display: none;" id="pie_seguro">
-        <a href="#" onclick="selectPestana('seguro')" class="footer-item">
-            <i class="fas fa-shield-alt"></i>
-            <span style="font-size: 9px;">Seguro</span>
-        </a> 
-    </div>
-
-    <div class="footer-menu" style="display: none;" id="pie_sim">
-        <a href="#" onclick="selectPestana('sim')" class="footer-item">
-            <i class="fas fa-sim-card"></i>
-            <span style="font-size: 9px;">Sim</span>
-        </a> 
-    </div>
-
-    <div class="footer-menu" style="display: none;" id="pie_itinerario">
-        <a href="#" onclick="selectPestana('itinerario')" class="footer-item">
-            <i class="fas fa-route"></i>
-            <span style="font-size: 9px;">Itinerario</span>
-        </a> 
-    </div> -->
 
     
 

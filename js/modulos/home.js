@@ -33,9 +33,15 @@ function construirDOM(usuario, reservas){
     reservas.forEach(element => {
 
         // RESERVAS
-        let reserva = armarDocumentos(element.urlFirmadaReservaCompleta,element.hoteles,element.rutaReservaCompleta,"img/portadas/reserva.jpg")
-        $("#pie_hotel").show()
-        $("#lista_hoteles").html(reserva)
+        if(element.urlFirmadaReservaCompleta){
+            let reserva = armarDocumentos(element.urlFirmadaReservaCompleta,element.hoteles,element.rutaReservaCompleta,"img/portadas/reserva.jpg")
+            $("#pie_hotel").show()
+            $("#lista_hoteles").html(reserva)
+        }
+        else{
+            $("#pie_hotel").hide()
+        }
+        
 
 
         // TICKETS
@@ -74,6 +80,61 @@ function construirDOM(usuario, reservas){
         else{
             $("#pie_docs").hide()
         }
+
+
+
+
+        // EXTRAS
+        if(element.documentos.length>0){
+            let sim = ""
+            let boarding = ""
+            let seguro = ""
+            let extras = ""
+            element.documentos.forEach(documento => {
+                if(Number(documento.idViajero) == Number(usuario.idViajero) && documento.mostrarTrip == 1){
+                    // SIM CARD
+                    documento.docs.forEach(doc => {
+                        if(doc.idTipoDocumento == 5){
+                            $("#pie_sim").show()
+                            let titulo = "📲 SIM";
+                            sim += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/sim.jpg") 
+                        }
+
+                        // BOARDING
+                        if(doc.idTipoDocumento == 3){
+                            $("#pie_boarding").show()
+                            let titulo = "📄 Boarding Pass";
+                            boarding += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/boarding.jpg") 
+                        }
+
+                        // SEGURO VIAJE
+                        if(doc.idTipoDocumento == 4){
+                            $("#pie_seguro").show()
+                            let titulo = "🔒 Seguro de viajes";
+                            seguro += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/seguro.jpg") 
+                        }
+
+
+                        // OTRO
+                        if(doc.idTipoDocumento == 99){
+                            $("#pie_otro").show()
+                            let titulo = "📄 Documento Adicional";
+                            extras += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/extras.jpg") 
+                        }
+                        
+                    });
+                }
+                
+            });
+            
+            $("#lista_sim").html(sim)
+            $("#lista_boarding").html(boarding)
+            $("#lista_seguro").html(seguro)
+            $("#lista_adicionales").html(extras)
+        }
+        // else{
+        //     $("#pie_otro").hide()
+        // }
        
        
 
@@ -178,42 +239,6 @@ function construirDOM(usuario, reservas){
         // else{
         //     $("#pie_ticket").hide()
         // }
-
-
-        // // EXTRAS
-        // if(element.documentos.length>0){
-        //     let docs_extras = ""
-        //     element.documentos.forEach(documento => {
-        //         if(Number(documento.idViajero) == Number(usuario.idViajero)){
-        //             // SIM CARD
-        //             if(documento.idTipoDocumento == 5){
-        //                 let titulo = "📲 SIM";
-        //                 docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
-        //             }
-
-        //             // BOARDING
-        //             if(documento.idTipoDocumento == 3){
-        //                 let titulo = "📄 Boarding Pass";
-        //                 docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
-        //             }
-
-        //             // SEGURO VIAJE
-        //             if(documento.idTipoDocumento == 4){
-        //                 let titulo = "🔒 Seguro de viajes";
-        //                 docs_extras += armarDocumentos(documento.urlFirmada,titulo, documento.ruta) 
-        //             }
-
-                    
-        //         }
-                
-        //     });
-        //     $("#pie_otro").show()
-        //     $("#lista_adicionales").html(docs_extras)
-        // }
-        // else{
-        //     $("#pie_otro").hide()
-        // }
-
 
 
     });
