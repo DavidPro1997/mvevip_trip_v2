@@ -1,4 +1,4 @@
-var numeroTelefono = "+593993111114"
+var numeroTelefono = "+593997181693"
 var email = "info@mvevip.com"
 var facebook = "https://www.facebook.com/share/eAaQqQzrMvU7T4MV"
 var instagram = "https://www.instagram.com/marketingvipecuador"

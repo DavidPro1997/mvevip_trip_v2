@@ -29,48 +29,59 @@
     border: none;
 }
 
-.fab-refresh{
-  position: fixed;            /* lo fijas donde quieras (bottom-right por defecto) */
-  right: 20px;
-  bottom: 60px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(180deg,#c0ff03,#9AC31C); /* azul degradado tipo app */
-  color: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  cursor: pointer;
-  transition: transform 150ms ease, box-shadow 150ms ease, opacity 150ms;
-  z-index: 9999;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+/* Botón recargar (fijo en esquina inferior derecha) */
+#btnRecargar{
+    position:fixed;
+    right:20px;
+    bottom:60px; /* subido un poco */
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    border:none;
+    background: linear-gradient(180deg,#c0ff03,#9AC31C);
+    color:#fff;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,0.18);
+    cursor:pointer;
+    z-index:9999;
+    transition:transform .15s ease,box-shadow .15s ease,opacity .15s;
 }
+#btnRecargar svg{ width:20px; height:20px; fill:currentColor }
+#btnRecargar:hover{ transform:translateY(-4px); box-shadow:0 14px 36px rgba(0,0,0,0.22) }
+#btnRecargar:active{ transform:translateY(0) scale(.98) }
+#btnRecargar:focus{ outline:none; box-shadow:0 0 0 4px rgba(154,195,28,0.18) }
 
-/* efecto hover / active */
-.fab-refresh:hover{
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.30);
+.reservas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-top:12px}
+.reserva-card{background:linear-gradient(180deg,#ffffff,#fbffef);border-radius:14px;padding:16px;border:1px solid rgba(154,195,28,0.12);box-shadow:0 10px 30px rgba(20,20,20,0.04);cursor:pointer;transition:transform .14s ease,box-shadow .14s ease}
+.reserva-card:hover{transform:translateY(-6px);box-shadow:0 26px 50px rgba(20,20,20,0.08)}
+.reserva-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.reserva-header-left{display:flex;gap:12px;align-items:center}
+.reserva-emoji{font-size:2rem}
+.reserva-primer-fecha{font-weight:700;color:#2b2b2b}
+.reserva-count{background:#f0f9e8;color:#6a8613;padding:6px 10px;border-radius:999px;font-weight:700}
+.destinos-wrap{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.destino-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(1, 253, 89, 0.03);border-radius:10px}
+.destino-emoji{font-size:1.05rem}
+.destino-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
-.fab-refresh:active{
-  transform: translateY(0) scale(.98);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.22);
-  opacity: .95;
-}
+.destino-ciudad{font-weight:700}
+.destino-fecha{font-size:0.9rem;color:#555}
+.complementos-carousel{display:flex;gap:12px;padding:12px 8px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.complementos-carousel::-webkit-scrollbar{height:8px}
+.complementos-carousel::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:8px}
+.comp-card{min-width:68%;flex:0 0 68%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(20,20,20,0.06);scroll-snap-align:start}
+.comp-card img{width:100%;height:140px;object-fit:cover;display:block}
+.comp-body{padding:10px 12px}
+.comp-title{font-weight:900;color:var(--color-primario);margin-bottom:6px; font-size: 20px;}
+.comp-desc{font-size:0.95rem;color:#555}
 
-/* foco accesible (para teclado) */
-.fab-refresh:focus{
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(0,118,204,0.2), 0 10px 28px rgba(0,0,0,0.28);
-}
-
-/* tamaño del icono (hereda color con currentColor) */
-.fab-refresh svg{ width: 22px; height: 22px; }
 </style>
-
 
 <div id="pestana_home">
 
@@ -92,11 +103,48 @@
         </div>
     </div>
 
+
+    <!-- Reservas del cliente: tarjetas -->
+    <div class="container margin_60">
+        <div class="main_title">
+            <h2>Tus <span>Reservas</span></h2>
+        </div>
+        <div id="reservas_section">
+            <div id="reservas_list" class="reservas-grid" aria-live="polite">
+                <!-- Tarjetas renderizadas por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Complementos: carousel mobile swipe -->
+    <div class="container margin_40 mt-4 mb-4">
+        <!-- <div class="main_title mt-2">
+            <h2>Servicios <span>Complementarias</span></h2>
+        </div> -->
+        <div id="complementos_carousel" class="complementos-carousel" aria-label="Compras complementarias">
+            
+        </div>
+    </div>
+
+    <br><br>
+
+    <section class="promo_full mt-4">
+        <div class="promo_full_wp magnific">
+            <div>
+                <h3>CONOCE MAS SOBRE NOSOTROS</h3>
+                <p style="text-align: justify;">
+                    Descubre quiénes somos y por qué somos tu mejor opción en viajes. En nuestro video, te mostramos nuestra pasión por crear experiencias únicas y personalizadas, respaldadas por años de experiencia y un compromiso inquebrantable con tu satisfacción. Conoce nuestro equipo, nuestras historias de éxito y cómo transformamos cada viaje en una experiencia inolvidable. ¡Haz clic para ver el video y déjate inspirar!					</p>
+                <a href="https://www.youtube.com/watch?v=xCBQn-PxhI0" class="video"><i class="icon-play-circled2-1"></i></a>
+            </div>
+        </div>
+
+    </section>
+
     
    
     <div class="container margin_60">
         <div class="main_title mt-3">
-            <h2>CONOCE NUESTRA<span> ORGANIZACION</span></h2>
+            <h2>NUESTRA<span> ORGANIZACION</span></h2>
             <p></p>
         </div>
         <!-- <p class="text-center nopadding">
@@ -158,67 +206,14 @@
     </div>
     
 
-    <section class="promo_full">
-        <div class="promo_full_wp magnific">
-            <div>
-                <h3>CONOCE MAS SOBRE NOSOTROS</h3>
-                <p style="text-align: justify;">
-                    Descubre quiénes somos y por qué somos tu mejor opción en viajes. En nuestro video, te mostramos nuestra pasión por crear experiencias únicas y personalizadas, respaldadas por años de experiencia y un compromiso inquebrantable con tu satisfacción. Conoce nuestro equipo, nuestras historias de éxito y cómo transformamos cada viaje en una experiencia inolvidable. ¡Haz clic para ver el video y déjate inspirar!					</p>
-                <a href="https://www.youtube.com/watch?v=xCBQn-PxhI0" class="video"><i class="icon-play-circled2-1"></i></a>
-            </div>
-        </div>
-    </section>
+    
+
     
 
 </div>    
-
-
-<div id="pestana_docs">
-    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Documentos Indentificativos</h3>
-                <p class="animated fadeInDown">Tenemos un respaldo guardado para ti.</p>
-            </div>
-        </div>
-        <!-- End opacity-mask-->
-    </section>
-
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Documentos</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_personales"></div>
-</div>
-
-
-<div id="pestana_ticket">
-    <section id="hero" class="background-image"  style="background-image: url('https://st2.depositphotos.com/2305339/7997/i/450/depositphotos_79972686-stock-photo-silhouette-of-a-man-waiting.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Tus Tickets</h3>
-                <p class="animated fadeInDown">¡Buen vuelo, que el cielo te acompañe!</p>
-            </div>
-        </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Tickets</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_tickets"></div>
-</div>
     
 
-
-<div id="pestana_hotel">
+<div id="pestana_reserva">
     <section id="hero" class="background-image"  style="background-image: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/fc/92/cc/barcelo-salinas.jpg?w=1200&h=-1&s=1');">
         <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
             <div class="intro_title">
@@ -237,202 +232,66 @@
             </ul>
         </div>
     </div>
-    <div class="container margin_60" id="lista_hoteles"></div>
+    <div class="container margin_60" id="lista_hotel" style="display: none;"></div>
+    <div class="container margin_60" id="lista_documentos" style="display: none;">
 
-</div>
-
-
-
-<div id="pestana_otro">
-    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Documentos Adicionales</h3>
-                <p class="animated fadeInDown">Relájate, nosotros nos encargamos del resto.</p>
+        <div class="container margin_60">
+            <div class="main_title">
+                <h2>Tus Documentos<span> de identidad</span></h2>
             </div>
         </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Documentos Adicionales</li>
-            </ul>
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 32px;">
+            <div style="position: relative; width: 70%; height: auto;">
+                <!-- Fondo apilado 2 (más oscuro) -->
+                <img src="img/documentos/CI.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 25px; left: 25px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 1; filter: brightness(0.60);">
+                <!-- Fondo apilado 1 (menos oscuro) -->
+                <img src="img/documentos/CI.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 9px; left: 9px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.13); z-index: 2; filter: brightness(0.80);">
+                <!-- Imagen principal (sin oscurecer) -->
+                <img src="img/documentos/CI.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: relative; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); z-index: 3;">
+            </div>
         </div>
     </div>
-    <div class="container margin_60" id="lista_documentos"></div>
+    <div class="container margin_60" id="lista_boarding" style="display: none;">
+
+        <div class="container margin_60">
+            <div class="main_title">
+                <h2>Tus Boardings<span> Pass</span></h2>
+            </div>
+        </div>
+
+
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 32px;">
+            <div style="position: relative; width: 70%; height: auto;">
+                <!-- Fondo apilado 2 (más oscuro) -->
+                <img src="img/documentos/boarding.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 25px; left: 25px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 1; filter: brightness(0.60);">
+                <!-- Fondo apilado 1 (menos oscuro) -->
+                <img src="img/documentos/boarding.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 9px; left: 9px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.13); z-index: 2; filter: brightness(0.80);">
+                <!-- Imagen principal (sin oscurecer) -->
+                <img src="img/documentos/boarding.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: relative; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); z-index: 3;">
+            </div>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_seguro" style="display: none;"></div>
+    <div class="container margin_60" id="lista_sim" style="display: none;"></div>
+    <div class="container margin_60" id="lista_tickets" style="display: none;">
+        <div class="container margin_60">
+            <div class="main_title">
+                <h2>Tus Tickets<span> aéreos</span></h2>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <div style="width: 70%; height: auto;">
+                <img src="img/documentos/tkts.png" alt="Destino" onclick="abrirModalPdfs();" style="width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+    <div class="container margin_60" id="lista_otro" style="display: none;"></div>
+    <br><br><br>
 </div> 
 
 
-<div id="pestana_boarding">
-    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Boarding Pass</h3>
-                <p class="animated fadeInDown">Tus documentos de embarque listos.</p>
-            </div>
-        </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Boarding Pass</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_boarding"></div>
-</div> 
-
-
-
-<div id="pestana_seguro">
-    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Seguro de Viaje</h3>
-                <p class="animated fadeInDown">Que ningun imprevisto te sorprenda.</p>
-            </div>
-        </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Seguro de Viaje</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_seguro"></div>
-</div> 
-
-
-
-
-<div id="pestana_sim">
-    <section id="hero" class="background-image"  style="background-image: url('https://juritecnia.net/wp-content/uploads/2023/12/Ciclo-de-Agencia-de-Viajes-1030x686.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">SIM CARD</h3>
-                <p class="animated fadeInDown">Mantente comunicado en todo momento.</p>
-            </div>
-        </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>SIM CARD</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_sim"></div>
-</div> 
-
-
-
-
-
-
-<!-- 
-<div id="pestana_actividad">
-    <section id="hero" class="background-image"  style="background-image: url('https://img.genial.ly/5fa8d406e8212c0f7007907c/510f78ba-90c4-4f91-a9f8-882a50c6ce9f.jpeg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Tus Actividades Reservadas</h3>
-                <p class="animated fadeInDown">Explora actividades que te sorprenderán.</p>
-            </div>
-        </div>
-    </section>
-
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Actividades</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_actividades"></div>
-
-</div>
-
-
-
-<div id="pestana_transfer">
-    <section id="hero" class="background-image"  style="background-image: url('https://media.tacdn.com/media/attractions-splice-spp-674x446/0a/ca/6b/96.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Tus Traslados Reservados</h3>
-                <p class="animated fadeInDown">Mantente cómodo con tus traslados</p>
-            </div>
-        </div>
-    </section>
-
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Traslados</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_transfer"></div>
-</div>
-
-
-
-<div id="pestana_auto">
-    <section id="hero" class="background-image"  style="background-image: url('https://andinarentacar.com/wp-content/uploads/2023/09/Articulo-de-blog-Andina.webp');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Tus Autos Reservados</h3>
-                <p class="animated fadeInDown">Disfruta la comodidad de tu auto reservado</p>
-            </div>
-        </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Autos</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_auto"></div>
-</div>
-
-
-
-<div id="pestana_ticket">
-    <section id="hero" class="background-image"  style="background-image: url('https://st2.depositphotos.com/2305339/7997/i/450/depositphotos_79972686-stock-photo-silhouette-of-a-man-waiting.jpg');">
-        <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
-            <div class="intro_title">
-                <h3 class="animated fadeInDown" id="tituloDestino">Tus Tickets</h3>
-                <p class="animated fadeInDown">¡Buen vuelo, que el cielo te acompañe!</p>
-            </div>
-        </div>
-    </section>
-    <div id="position">
-        <div class="container">
-            <ul>
-                <li>Home</li>
-                <li>Tickets</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container margin_60" id="lista_tickets"></div>
-</div>
-
-
-
--->
-
-
-
-<br><br><br><br><br><br><br><br>
-
-<footer class="footer-fixed" id="footer_home">
+<footer class="footer-fixed" id="footer_home" style="display: none;">
 
     <div class="footer-menu">
         <a href="#" onclick="selectPestana('home')" class="footer-item" id="pie_home">
@@ -441,58 +300,58 @@
         </a> 
     </div>
 
-    <div class="footer-menu" style="display: none;"  id="pie_docs">
-        <a href="#" onclick="selectPestana('docs')" class="footer-item">
+    <div class="footer-menu" style="display: none;" id="pie_documentos">
+        <a href="#" onclick="selectSubPestana('documentos')" class="footer-item" >
             <i class="fas fa-user"></i>
             <span style="font-size: 9px;">Documentos</span>
         </a> 
     </div>
 
-    <div class="footer-menu" style="display: none;" id="pie_ticket">
-        <a href="#" onclick="selectPestana('ticket')" class="footer-item">
+    <div class="footer-menu" style="display: none;" id="pie_tickets">
+        <a href="#" onclick="selectSubPestana('tickets')" class="footer-item">
             <i class="fas fa-plane"></i>
             <span style="font-size: 9px;">Tickets</span>
         </a> 
     </div>
 
-
     <div class="footer-menu" style="display: none;" id="pie_boarding">
-        <a href="#" onclick="selectPestana('boarding')" class="footer-item">
+        <a href="#" onclick="selectSubPestana('boarding')" class="footer-item">
             <i class="fas fa-passport"></i>
             <span style="font-size: 9px;">Boarding</span>
         </a> 
     </div>
 
     <div class="footer-menu" style="display: none;" id="pie_seguro">
-        <a href="#" onclick="selectPestana('seguro')" class="footer-item">
+        <a href="#" onclick="selectSubPestana('seguro')" class="footer-item">
             <i class="fas fa-shield-alt"></i>
             <span style="font-size: 9px;">Seguro</span>
         </a> 
     </div>
 
     <div class="footer-menu" style="display: none;" id="pie_sim">
-        <a href="#" onclick="selectPestana('sim')" class="footer-item">
+        <a href="#" onclick="selectSubPestana('sim')" class="footer-item">
             <i class="fas fa-sim-card"></i>
             <span style="font-size: 9px;">Sim</span>
         </a> 
     </div>
     
-
     <div class="footer-menu" style="display: none;" id="pie_otro">
-        <a href="#" onclick="selectPestana('otro')" class="footer-item">
+        <a href="#" onclick="selectSubPestana('otro')" class="footer-item">
             <i class="fas fa-file-alt"></i>
             <span style="font-size: 9px;">Adicionales</span>
         </a> 
     </div> 
 
-
-
     <div class="footer-menu" style="display: none;"  id="pie_hotel">
-        <a href="#" onclick="selectPestana('hotel')" class="footer-item">
+        <a href="#" onclick="selectSubPestana('hotel')" class="footer-item">
             <i class="fas fa-hotel"></i>
             <span style="font-size: 9px;">Reserva</span>
         </a> 
     </div>
+</footer>
+
+
+
 
 
 <!-- 
@@ -532,9 +391,8 @@
     
 </footer>
 
-
+<!-- Floating recargar button (derecha, un poco más arriba) -->
 <button id="btnRecargar" class="fab-refresh" aria-label="Recargar información" title="Recargar" onclick="verificarSession()">
-  <!-- SVG icon (refresh) -->
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
     <path fill="currentColor" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6c1.66 0 3.14.69 4.24 1.76L13 12h7V5l-2.35 1.35z"/>
   </svg>
@@ -544,8 +402,10 @@
 <script src="/js/modulos/comun.js"></script>
 <script src="js/modulos/home.js"></script>
 
+
 <script>
     $(document).ready(e => {
-        cargarInformacion()
+        cargarInformacion();
+        
     })
 </script>

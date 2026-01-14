@@ -59,6 +59,117 @@
         </div>
     </div>
 
+
+
+    
+    <!-- Modal PDF: tarjeta flotante (80% viewport) con swipe táctil -->
+    <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered pdf-modal-dialog" role="document">
+            <div class="modal-content pdf-modal-content">
+                <!-- Botón cerrar flotante arriba derecha -->
+                <button type="button" class="close pdf-close-btn" aria-label="Close" onclick="$('#pdfModal').modal('hide');" style="position:absolute;top:12px;right:16px;z-index:10;background:rgba(255,255,255,0.85);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                    <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                </button>
+                <div class="modal-body" style="padding: 12px; height: calc(100% - 56px); display:flex; flex-direction:column; position:relative;">
+                    <!-- Flecha izquierda -->
+                    <div class="pdf-arrow pdf-arrow-left" style="position:absolute;left:0;top:50%;transform:translateY(-50%);z-index:9;pointer-events:none;">
+                        <i class="fas fa-chevron-left" style="font-size:3rem;color:#bbb;"></i>
+                    </div>
+                    <!-- Flecha derecha -->
+                    <div class="pdf-arrow pdf-arrow-right" style="position:absolute;right:0;top:50%;transform:translateY(-50%);z-index:9;pointer-events:none;">
+                        <i class="fas fa-chevron-right" style="font-size:3rem;color:#bbb;"></i>
+                    </div>
+                    <div id="pdfCarousel" class="pdf-carousel" style="flex:1;">
+                        <div id="carousel-pdfs" class="pdf-items" style="height:100%;">
+                            <!-- Aquí se insertan los iframes dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* PDF modal: tarjeta flotante centrada al 80% del viewport */
+        .pdf-modal-dialog {
+            max-width: 80vw !important;
+            max-height: 80vh !important;
+            margin: 0 auto;
+        }
+        .pdf-modal-content {
+            background: transparent;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            border-radius: 12px;
+            border: none;
+            height: 80vh;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Scroll-snap horizontal para deslizar PDFs con el dedo */
+        .pdf-items {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            height: 100%;
+        }
+        .pdf-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 6px 8px;
+            box-sizing: border-box;
+        }
+        .pdf-frame{
+            flex: 1 1 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f6f6f6;
+        }
+        .pdf-frame iframe{
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .pdf-footer{
+            display:flex;
+            justify-content:center;
+            gap:10px;
+            padding:8px 4px;
+        }
+        /* .modal-backdrop.show {
+            opacity: 0 !important;
+            background: transparent !important;
+        } */
+        /* Ocultar scroll horizontal en modal PDF */
+        #pdfModal.in {
+            pointer-events: auto;
+        }
+        /* Flechas laterales */
+        .pdf-arrow {
+            user-select: none;
+            pointer-events: none;
+        }
+        .pdf-arrow-left {
+            left: 0;
+        }
+        .pdf-arrow-right {
+            right: 0;
+        }
+        /* Botón cerrar flotante */
+        .pdf-close-btn:hover {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+    </style>
+    
+
+
+
+
     <div id="preloader">
         <div class="sk-spinner sk-spinner-wave">
             <div class="sk-rect1"></div>
