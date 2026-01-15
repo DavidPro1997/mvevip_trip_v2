@@ -58,9 +58,12 @@ function selectSubPestana(id){
 
     var $carousel = $('#carousel-pdfs');
     $carousel.empty();
-    pdfsGlobales[id].forEach((doc,index) => {
+    (pdfsGlobales[id]||[]).forEach((doc,index) => {
         var item = `
             <div class="pdf-item">
+                <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
+                    ${doc.titulo ? escapeHtml(doc.titulo) : ''}
+                </div>
                 <div class="pdf-frame">
                     <iframe src="${doc.url}" frameborder="0"></iframe>
                 </div>
@@ -71,6 +74,10 @@ function selectSubPestana(id){
         `;
         $carousel.append(item);
     });
+    // posicionar al inicio para que se vea el primer item y parte del siguiente (1.5)
+    setTimeout(function(){
+        $carousel.scrollLeft(0);
+    },60);
 }
 
 

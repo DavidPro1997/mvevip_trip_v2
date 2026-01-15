@@ -1,4 +1,90 @@
 <style>
+        /* PDF modal: tarjeta flotante centrada al 80% del viewport */
+        .pdf-modal-dialog {
+            max-width: 80vw !important;
+            max-height: 80vh !important;
+            margin: 0 auto;
+        }
+        .pdf-modal-content {
+            background: transparent;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            border-radius: 12px;
+            border: none;
+            height: 80vh;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Scroll-snap horizontal para deslizar PDFs con el dedo */
+        .pdf-items {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            gap: 12px;
+            padding: 8px;
+            height: 100%;
+        }
+        .pdf-item {
+            flex: 0 0 68%;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 6px 8px;
+            box-sizing: border-box;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .pdf-frame{
+            flex: 1 1 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f6f6f6;
+        }
+        .pdf-frame iframe{
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .pdf-footer{
+            display:flex;
+            justify-content:center;
+            gap:10px;
+            padding:8px 4px;
+        }
+        /* .modal-backdrop.show {
+            opacity: 0 !important;
+            background: transparent !important;
+        } */
+        /* Ocultar scroll horizontal en modal PDF */
+        #pdfModal.in {
+            pointer-events: auto;
+        }
+        /* Flechas laterales */
+        .pdf-arrow {
+            user-select: none;
+            pointer-events: none;
+        }
+        .pdf-arrow-left {
+            left: 0;
+        }
+        .pdf-arrow-right {
+            right: 0;
+        }
+        /* Botón cerrar flotante */
+        .pdf-close-btn:hover {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+
+
+
+
     .pdf-container {
     width: 90%;
     max-width: 700px;
@@ -10,24 +96,35 @@
     border: 1px solid #eee;
 }
 
+    /* Wrapper específico para el carrusel dentro de la pestaña reserva */
+    .pdf-carousel-wrapper{
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        padding: 8px 6px;
+    }
 
+/* 
 .pdf-frame {
     width: 100%;
-    height: 80vh; /* altura en pantalla grande */
+    height: 80vh; 
     background: #f4f4f4;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* evita scroll */
+    overflow: hidden; 
 }
 
 .pdf-frame iframe,
 .pdf-frame img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* se ajusta dentro del contenedor sin deformarse */
+    object-fit: contain; 
     border: none;
-}
+} */
 
 /* Botón recargar (fijo en esquina inferior derecha) */
 #btnRecargar{
@@ -232,6 +329,9 @@
             </ul>
         </div>
     </div>
+
+
+
     <div class="container margin_60" id="lista_hotel" style="display: none;"></div>
     <div class="container margin_60" id="lista_documentos" style="display: none;">
 
@@ -240,16 +340,7 @@
                 <h2>Tus Documentos<span> de identidad</span></h2>
             </div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 32px;">
-            <div style="position: relative; width: 70%; height: auto;">
-                <!-- Fondo apilado 2 (más oscuro) -->
-                <img src="img/documentos/CI.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 25px; left: 25px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 1; filter: brightness(0.60);">
-                <!-- Fondo apilado 1 (menos oscuro) -->
-                <img src="img/documentos/CI.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 9px; left: 9px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.13); z-index: 2; filter: brightness(0.80);">
-                <!-- Imagen principal (sin oscurecer) -->
-                <img src="img/documentos/CI.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: relative; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); z-index: 3;">
-            </div>
-        </div>
+        
     </div>
     <div class="container margin_60" id="lista_boarding" style="display: none;">
 
@@ -259,17 +350,6 @@
             </div>
         </div>
 
-
-        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 32px;">
-            <div style="position: relative; width: 70%; height: auto;">
-                <!-- Fondo apilado 2 (más oscuro) -->
-                <img src="img/documentos/boarding.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 25px; left: 25px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 1; filter: brightness(0.60);">
-                <!-- Fondo apilado 1 (menos oscuro) -->
-                <img src="img/documentos/boarding.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: absolute; top: 9px; left: 9px; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.13); z-index: 2; filter: brightness(0.80);">
-                <!-- Imagen principal (sin oscurecer) -->
-                <img src="img/documentos/boarding.jpg" alt="Destino" onclick="abrirModalPdfs();" style="position: relative; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); z-index: 3;">
-            </div>
-        </div>
     </div>
     <div class="container margin_60" id="lista_seguro" style="display: none;"></div>
     <div class="container margin_60" id="lista_sim" style="display: none;"></div>
@@ -280,13 +360,23 @@
             </div>
         </div>
 
-        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-            <div style="width: 70%; height: auto;">
-                <img src="img/documentos/tkts.png" alt="Destino" onclick="abrirModalPdfs();" style="width: 100%; height: auto;">
-            </div>
-        </div>
     </div>
     <div class="container margin_60" id="lista_otro" style="display: none;"></div>
+
+    
+    <div id="pdfViewer" class="pdf-carousel-wrapper">
+        <!-- Botón cerrar flotante arriba derecha -->
+        <button type="button" class="close pdf-close-btn" aria-label="Close" onclick="document.getElementById('pdfViewer').style.display='none';" style="position:absolute;top:12px;right:16px;z-index:10;background:rgba(255,255,255,0.85);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+            <span aria-hidden="true"><i class="fas fa-times"></i></span>
+        </button>
+        <div class="pdf-body" style="padding: 12px; height: calc(100% - 56px); display:flex; flex-direction:column; position:relative;">
+                <div id="pdfCarousel" class="pdf-carousel" style="flex:1;">
+                    <div id="carousel-pdfs" class="pdf-items" style="height:100%;">
+                        <!-- Aquí se insertan los iframes dinámicamente -->
+                    </div>
+                </div>
+        </div>
+    </div>
     <br><br><br>
 </div> 
 
