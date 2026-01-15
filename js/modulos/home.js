@@ -61,15 +61,15 @@ function selectSubPestana(id){
     (pdfsGlobales[id]||[]).forEach((doc,index) => {
         var item = `
             <div class="pdf-item">
-                <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
-                    ${doc.titulo ? escapeHtml(doc.titulo) : ''}
-                </div>
-                <div class="pdf-frame">
-                    <iframe src="${doc.url}" frameborder="0"></iframe>
-                </div>
-                <div class="pdf-footer">
-                    <a href="#" class="btn btn-sm btn-primary" onclick="abrirPdfEnPestana('${encodeURIComponent(doc.url)}'); return false;">Descargar / Abrir</a>
-                </div>
+            <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
+                ${doc.titulo ? escapeHtml(doc.titulo) : ''}
+            </div>
+            <div class="pdf-frame" style="overflow:hidden;">
+                <iframe src="${doc.url}" frameborder="0" style="width:200%;height:200%;transform:scale(0.5);transform-origin:0 0;zoom:50%;border:0;"></iframe>
+            </div>
+            <div class="pdf-footer">
+                <a href="#" class="btn btn-sm btn-primary" onclick="abrirPdfEnPestana('${encodeURIComponent(doc.url)}'); return false;">Descargar / Abrir</a>
+            </div>
             </div>
         `;
         $carousel.append(item);
