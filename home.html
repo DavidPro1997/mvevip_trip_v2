@@ -105,6 +105,7 @@
         box-shadow: none;
         border: none;
         padding: 8px 6px;
+        height: 600px;
     }
 
 /* 
@@ -365,16 +366,13 @@
 
     
     <div id="pdfViewer" class="pdf-carousel-wrapper">
-        <!-- Botón cerrar flotante arriba derecha -->
-        <button type="button" class="close pdf-close-btn" aria-label="Close" onclick="document.getElementById('pdfViewer').style.display='none';" style="position:absolute;top:12px;right:16px;z-index:10;background:rgba(255,255,255,0.85);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
-            <span aria-hidden="true"><i class="fas fa-times"></i></span>
-        </button>
+        
         <div class="pdf-body" style="padding: 12px; height: calc(100% - 56px); display:flex; flex-direction:column; position:relative;">
-                <div id="pdfCarousel" class="pdf-carousel" style="flex:1;">
-                    <div id="carousel-pdfs" class="pdf-items" style="height:100%;">
-                        <!-- Aquí se insertan los iframes dinámicamente -->
-                    </div>
+            <div id="pdfCarousel" class="pdf-carousel" style="flex:1;">
+                <div id="carousel-pdfs" class="pdf-items" style="height:100%;">
+                    <!-- Aquí se insertan los iframes dinámicamente -->
                 </div>
+            </div>
         </div>
     </div>
     <br><br><br>
