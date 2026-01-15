@@ -151,25 +151,25 @@
 #btnRecargar:active{ transform:translateY(0) scale(.98) }
 #btnRecargar:focus{ outline:none; box-shadow:0 0 0 4px rgba(154,195,28,0.18) }
 
-.reservas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-top:12px}
-.reserva-card{background:linear-gradient(180deg,#ffffff,#fbffef);border-radius:14px;padding:16px;border:1px solid rgba(154,195,28,0.12);box-shadow:0 10px 30px rgba(20,20,20,0.04);cursor:pointer;transition:transform .14s ease,box-shadow .14s ease}
-.reserva-card:hover{transform:translateY(-6px);box-shadow:0 26px 50px rgba(20,20,20,0.08)}
-.reserva-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.reserva-header-left{display:flex;gap:12px;align-items:center}
-.reserva-emoji{font-size:2rem}
+/* .reservas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-top:12px} */
+/* .reserva-card{background:linear-gradient(180deg,#ffffff,#fbffef);border-radius:14px;padding:16px;border:1px solid rgba(154,195,28,0.12);box-shadow:0 10px 30px rgba(20,20,20,0.04);cursor:pointer;transition:transform .14s ease,box-shadow .14s ease}
+.reserva-card:hover{transform:translateY(-6px);box-shadow:0 26px 50px rgba(20,20,20,0.08)} */
+/* .reserva-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.reserva-header-left{display:flex;gap:12px;align-items:center} */
+/* .reserva-emoji{font-size:2rem}
 .reserva-primer-fecha{font-weight:700;color:#2b2b2b}
 .reserva-count{background:#f0f9e8;color:#6a8613;padding:6px 10px;border-radius:999px;font-weight:700}
-.destinos-wrap{display:flex;flex-direction:column;gap:8px;margin-top:6px}
-.destino-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(1, 253, 89, 0.03);border-radius:10px}
-.destino-emoji{font-size:1.05rem}
+.destinos-wrap{display:flex;flex-direction:column;gap:8px;margin-top:6px} */
+/* .destino-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(1, 253, 89, 0.03);border-radius:10px} */
+/* .destino-emoji{font-size:1.05rem}
 .destino-text {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-}
-.destino-ciudad{font-weight:700}
-.destino-fecha{font-size:0.9rem;color:#555}
+} */
+/* .destino-ciudad{font-weight:700}
+.destino-fecha{font-size:0.9rem;color:#555} */
 .complementos-carousel{display:flex;gap:12px;padding:12px 8px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
 .complementos-carousel::-webkit-scrollbar{height:8px}
 .complementos-carousel::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:8px}
@@ -208,17 +208,21 @@
             <h2>Tus <span>Reservas</span></h2>
         </div>
         <div id="reservas_section">
-            <div id="reservas_list" class="reservas-grid" aria-live="polite">
+            <!-- <div id="reservas_list" class="reservas-grid" aria-live="polite"> -->
+            <div id="reservas_list" class="complementos-carousel" aria-label="Reservas">
                 <!-- Tarjetas renderizadas por JS -->
             </div>
         </div>
     </div>
 
+
+
+
     <!-- Complementos: carousel mobile swipe -->
     <div class="container margin_40 mt-4 mb-4">
-        <!-- <div class="main_title mt-2">
+        <div class="main_title mt-2">
             <h2>Servicios <span>Complementarias</span></h2>
-        </div> -->
+        </div>
         <div id="complementos_carousel" class="complementos-carousel" aria-label="Compras complementarias">
             
         </div>
@@ -312,7 +316,7 @@
     
 
 <div id="pestana_reserva">
-    <section id="hero" class="background-image"  style="background-image: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/fc/92/cc/barcelo-salinas.jpg?w=1200&h=-1&s=1');">
+    <section id="hero" class="background-image"  style="background-image: url('img/headers/avion.jpg');">
         <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
             <div class="intro_title">
                 <h3 class="animated fadeInDown" id="tituloDestino">Tus Reservas listas</h3>

@@ -62,13 +62,13 @@ function selectSubPestana(id){
         var item = `
             <div class="pdf-item">
             <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
-            ${doc.titulo ? escapeHtml(doc.titulo) : ''}
+            ${doc.titulo ? doc.titulo : ''}
             </div>
             <div class="pdf-frame" style="overflow:hidden;">
             <iframe src="${doc.url}" frameborder="0" style="width:300%;height:300%;transform:scale(0.35);transform-origin:0 0;zoom:35%;border:0;"></iframe>
             </div>
             <div class="pdf-footer">
-            <a href="#" class="btn btn-sm btn-primary" onclick="abrirPdfEnPestana('${encodeURIComponent(doc.url)}'); return false;">Descargar / Abrir</a>
+            <a href="#" class="btn btn-sm btn-primary" onclick="descargarDocumento('${doc.ruta}'); return false;">Descargar</a>
             </div>
             </div>
         `;
@@ -114,7 +114,7 @@ function construirDOM(usuario, reservas){
             element.tickets.forEach(tkts => {
                 const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
                 if(existe){
-                    let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join(" | ");
+                    let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join("<br>");
                     pdfsGlobales.tickets.push({
                         url: tkts.urlFirmada,
                         ruta: tkts.ruta,
@@ -217,188 +217,7 @@ function construirDOM(usuario, reservas){
             
         }
 
-    //     // RESERVAS
-    //     if(element.urlFirmadaReservaCompleta){
-    //         let reserva = armarDocumentos(element.urlFirmadaReservaCompleta,element.hoteles,element.rutaReservaCompleta,"img/portadas/reserva.jpg")
-    //         $("#pie_hotel").show()
-    //         $("#lista_hoteles").html(reserva)
-    //     }
-    //     else{
-    //         $("#pie_hotel").hide()
-    //     }
-        
-
-
-    //     // TICKETS
-    //     if(element.tickets.length>0){
-    //         let vuelo = ""
-    //         element.tickets.forEach(tkts => {
-    //             const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
-    //             if(existe){
-    //                 let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join(" | ");
-    //                 vuelo += armarDocumentos(tkts.urlFirmada,tituloTkt,tkts.ruta,"img/portadas/tickets.jpg") 
-    //             }
-                
-    //         });
-    //         $("#pie_tickets").show()
-    //         // $("#lista_tickets").html(vuelo)
-    //     }
-    //     else{
-    //         console.log("No hay tickets")
-    //         $("#pie_tickets").hide()
-    //     }
-
-
-    //     // DOCUMENTOS PERSONALES
-    //     if(element.viajeros.length>0){
-
-    //         var $carousel = $('#carousel-pdfs');
-    //         $carousel.empty();
-
-    //         element.viajeros.forEach(personal => {
-    //             if(Number(personal.idViajero) === Number(usuario.idViajero)){
-    //                 personal.docs.forEach((doc,index) => {
-    //                     var item = `
-    //                         <div class="pdf-item">
-    //                             <div class="pdf-frame">
-    //                                 <iframe src="${doc.urlFirmada}" frameborder="0"></iframe>
-    //                             </div>
-    //                             <div class="pdf-footer">
-    //                                 <a href="#" class="btn btn-sm btn-primary" onclick="abrirPdfEnPestana('${encodeURIComponent(doc.urlFirmada)}'); return false;">Descargar / Abrir</a>
-    //                             </div>
-    //                         </div>
-    //                     `;
-    //                     $carousel.append(item);
-    //                 });
-    //             }
-    //         });
-    //         $("#pie_documentos").show()
-    //         // $("#lista_documentos").html(documentos)
-    //     }
-    //     else{
-    //         $("#pie_documentos").hide()
-    //     }
-
-
-
-
-    //     // EXTRAS
-    //     if(element.documentos.length>0){
-    //         let sim = ""
-    //         let boarding = ""
-    //         let seguro = ""
-    //         let extras = ""
-    //         element.documentos.forEach(documento => {
-    //             if(Number(documento.idViajero) == Number(usuario.idViajero) && documento.mostrarTrip == 1){
-    //                 // SIM CARD
-    //                 documento.docs.forEach(doc => {
-    //                     if(doc.idTipoDocumento == 5){
-    //                         $("#pie_sim").show()
-    //                         let titulo = "📲 SIM";
-    //                         sim += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/sim.jpg") 
-    //                     }
-
-    //                     // BOARDING
-    //                     if(doc.idTipoDocumento == 3){
-    //                         $("#pie_boarding").show()
-    //                         let titulo = "📄 Boarding Pass";
-    //                         boarding += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/boarding.jpg") 
-    //                     }
-
-    //                     // SEGURO VIAJE
-    //                     if(doc.idTipoDocumento == 4){
-    //                         $("#pie_seguro").show()
-    //                         let titulo = "🔒 Seguro de viajes";
-    //                         seguro += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/seguro.jpg") 
-    //                     }
-
-
-    //                     // OTRO
-    //                     if(doc.idTipoDocumento == 99){
-    //                         $("#pie_otro").show()
-    //                         let titulo = "📄 Documento Adicional";
-    //                         extras += armarDocumentos(doc.urlFirmada,titulo, doc.ruta, "img/portadas/extras.jpg") 
-    //                     }
-                        
-    //                 });
-    //             }
-                
-    //         });
-            
-    //         $("#lista_sim").html(sim)
-    //         $("#lista_boarding").html(boarding)
-    //         $("#lista_seguro").html(seguro)
-    //         $("#lista_adicionales").html(extras)
-    //     }
-
     });
-}
-
-
-
-
-
-
-
-function armarDocumentos(url, titulo, ruta, ruta_img) {
-    // Convertir PDF normal a visor de Google
-    const platform = localStorage.getItem('platform');
-    console.log("Sistema operativo del usuario:", platform);
-    
-    const googleViewer = `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(url)}`;
-    let lista = `
-        <div class="pdf-container">
-            <h3 style="
-                font-size: 18px;
-                font-weight: 600;
-                margin-bottom: 10px;
-                color: #333;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                justify-content: center;
-                text-align: center;
-            ">
-                ${titulo ? titulo : ''}
-            </h3>
-
-            <div class="pdf-frame">`
-                if(!platform || platform == "android"){
-                    lista += `<iframe src="${googleViewer}"></iframe>`
-                }
-                else{
-                    lista += `<img src="${ruta_img}" alt="vista previa" style="width: 100%; height: auto;">`
-                }
-            lista += `
-            </div>
-            <div style="text-align: center; margin-top: 12px;">
-                <a href="#"
-                    onclick="descargarDocumento('${ruta}'); return false;"
-                    style="
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 8px;
-                        background: #9AC31C;
-                        color: #fff;
-                        padding: 10px 18px;
-                        border-radius: 8px;
-                        text-decoration: none;
-                        font-weight: 600;
-                        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-                        transition: 0.2s ease-in-out;
-                    "
-                    onmouseover="this.style.background='#6a8613ff'"
-                    onmouseout="this.style.background='#9AC31C'"
-                >
-                    <i class="fas fa-download"></i>
-                    Descargar Documento
-                </a>
-            </div>
-            <br>
-        </div>
-    `;
-
-    return lista;
 }
 
 
@@ -419,12 +238,6 @@ function descargarDocumento(ruta) {
 
 
 
-// Datos de ejemplo y funciones para renderizar reservas
-// const reservasEjemplo = [
-//     { id: 101, destino: 'Cancún, México', fecha: '2026-02-10' },
-//     { id: 102, destino: 'Lima, Perú', fecha: '2026-03-05' },
-//     { id: 103, destino: 'Cartagena, Colombia', fecha: '2026-04-12' }
-// ];
 
 function formatDate(dateString){
     if(!dateString) return '';
@@ -448,43 +261,49 @@ function renderReservations(reservas) {
         return;
     }
 
-    container.innerHTML = list.map(r => {
-        // soporta tanto `destinos` como `destino` por compatibilidad
-        const destinos = Array.isArray(r.destinos) ? r.destinos : (Array.isArray(r.destino) ? r.destino : []);
-        const primer = destinos[0] || {};
-        const primerFecha = formatDate(primer.fechaViaje) || '—';
+    let lista = ""
+    reservas.forEach((element) => {
+        const destinos = Array.isArray(element.destinos) ? element.destinos : (Array.isArray(element.destino) ? element.destino : []);
+        const idReserva = element.idReserva || element.id || '';
 
-        const destinosHtml = destinos.map(d => `
-            <div class="destino-item">
-                <div class="destino-emoji">🌍</div>
-                <div class="destino-text">
-                    <div class="destino-ciudad">${escapeHtml(d.ciudad || '—')}</div>
-                    <div class="destino-fecha"> ${formatDate(d.fechaViaje) || ''}</div>
+        // concatenar ciudades
+        const ciudadesConcat = destinos.map(d => d.ciudad || '').filter(Boolean).join(' - ');
+
+        // obtener fecha más temprana y su urlImagen
+        let primeraFecha = '';
+        let imagenPrimera = '';
+        if (destinos.length > 0) {
+            const mapped = destinos.map(d => ({
+                orig: d,
+                date: new Date(String(d.fechaViaje || '').replace(' ', 'T'))
+            }));
+            const valid = mapped.filter(m => !isNaN(m.date));
+            const earliest = valid.length ? valid.reduce((a, b) => a.date <= b.date ? a : b).orig : mapped[0].orig;
+            primeraFecha = earliest && earliest.fechaViaje ? formatDate(earliest.fechaViaje) : '';
+            imagenPrimera = earliest && earliest.urlImagen ? earliest.urlImagen : '';
+        }
+
+        // objeto usado en el template
+        const it = {
+            id: idReserva,
+            title: ciudadesConcat || 'Sin destino',
+            img: imagenPrimera || 'img/headers/avion.jpg',
+            desc: primeraFecha || ''
+        };
+        lista += `
+            <div class="comp-card" role="button" tabindex="0" onclick='showReservaId(${JSON.stringify(destinos)})'>
+                <img src="${escapeHtml(it.img)}" alt="${escapeHtml(it.title)}">
+                <div class="comp-body">
+                    <div class="comp-title">${escapeHtml(it.title)}</div>
+                    <div class="comp-desc">${escapeHtml(it.desc)}</div>
                 </div>
             </div>
-        `).join('');
-
-        return `
-            <article class="reserva-card" tabindex="0" role="button" onclick='showReservaId(${JSON.stringify(destinos)})' onkeydown="if(event.key==='Enter') showReservaId(${JSON.stringify(destinos)})" style="cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:box-shadow 0.2s;">
-            <div class="reserva-header">
-                <div class="reserva-header-left">
-                <div class="reserva-emoji">✈️</div>
-                <div class="reserva-primer-fecha">${primerFecha}</div>
-                </div>
-                <div class="reserva-count">${destinos.length} destino${destinos.length===1?'':'s'}</div>
-            </div>
-            <div class="destinos-wrap">
-                ${destinosHtml}
-            </div>
-            <div class="reserva-action" style="margin-top:12px;text-align:center;">
-                <button class="btn btn-success" style="background:#9AC31C;border-color:#9AC31C;color:#fff;padding:10px 20px;font-size:16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.07);font-weight:600;display:inline-flex;align-items:center;gap:8px;">
-                <i class="fas fa-mouse-pointer"></i> Ver detalles de la reserva
-                </button>
-            </div>
-            </article>
-        `;
-    }).join('');
+        `
+    });
+    container.innerHTML = lista
 }
+
+
 
 function escapeHtml(str){
     return String(str)
@@ -498,6 +317,7 @@ function escapeHtml(str){
 
 
 function showReservaId(destinosArray) {
+    console.log('Mostrando detalles para destinos:', destinosArray);
     // Si recibe un string JSON, decodifica
     let destinos = destinosArray;
     if (typeof destinosArray === 'string') {
@@ -507,6 +327,10 @@ function showReservaId(destinosArray) {
             console.error('No se pudo decodificar destinos:', destinosArray);
             destinos = [];
         }
+    }
+    if (destinos.length > 0 && destinos[0].urlImagen) {
+        const hero = document.getElementById("hero");
+        hero.style.backgroundImage = `url('${destinos[0].urlImagen}')`;
     }
     $("#tituloDestino").html(destinos.map(d => d.ciudad).filter(Boolean).join(' - '))
     selectPestana('reserva');
