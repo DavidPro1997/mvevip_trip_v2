@@ -78,6 +78,9 @@ function selectSubPestana(id){
     setTimeout(function(){
         $carousel.scrollLeft(0);
     },60);
+
+    // Actualizar indicador de páginas (si la función está disponible)
+    try{ if(typeof setupPdfIndicators === 'function') setupPdfIndicators(); }catch(e){console.warn('setupPdfIndicators no disponible', e)};
 }
 
 
@@ -368,3 +371,87 @@ function abrirModalPdfs(){
     console.log("Abriendo modal de PDFs");
     $('#pdfModal').modal('show');
 }
+
+
+
+
+// --- PDF indicator setup: reusable, callable after dynamic inserts ---
+var pdfIndicatorState = { io: null, mo: null };
+
+function setupPdfIndicators(){
+    const container = document.getElementById('carousel-pdfs');
+    const currentEl = () => document.getElementById('pdfCurrent');
+    const totalEl = () => document.getElementById('pdfTotal');
+    const dotsWrap = () => document.getElementById('pdfDots');
+
+    if(!container) return;
+
+    function setupObservers(items){
+        if(pdfIndicatorState.io){ try{ pdfIndicatorState.io.disconnect(); }catch(e){} }
+        dotsWrap().innerHTML = '';
+        items.forEach((_, i) => {
+            const d = document.createElement('div');
+            d.className = 'pdf-dot';
+            d.setAttribute('role','tab');
+            d.setAttribute('aria-label', `Página ${i+1}`);
+            d.dataset.index = i;
+            d.addEventListener('click', () => {
+                const item = items[i];
+                item.scrollIntoView({behavior:'smooth', inline:'start'});
+            });
+            dotsWrap().appendChild(d);
+        });
+
+        totalEl().textContent = items.length || 0;
+        if(items.length === 0){
+            currentEl().textContent = 0;
+            return;
+        }
+
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting && entry.intersectionRatio > 0.45){
+                    const idx = Array.prototype.indexOf.call(items, entry.target);
+                    currentEl().textContent = idx + 1;
+                    const ds = dotsWrap().children;
+                    for(let i=0;i<ds.length;i++){
+                        ds[i].classList.toggle('active', i===idx);
+                    }
+                }
+            });
+        }, { root: container, threshold: [0.45, 0.6] });
+
+        items.forEach(it => io.observe(it));
+        pdfIndicatorState.io = io;
+
+        requestAnimationFrame(() => {
+            const first = items[0];
+            if(first){
+                currentEl().textContent = 1;
+                dotsWrap().children[0]?.classList.add('active');
+            }
+        });
+    }
+
+    // Recreate MutationObserver so future changes re-trigger observer setup
+    if(pdfIndicatorState.mo){ try{ pdfIndicatorState.mo.disconnect(); }catch(e){} }
+    const mo = new MutationObserver(() => {
+        const items = container.querySelectorAll('.pdf-item');
+        if(items.length){
+            setupObservers(items);
+        } else {
+            totalEl().textContent = 0;
+            currentEl().textContent = 0;
+            dotsWrap().innerHTML = '';
+            if(pdfIndicatorState.io){ try{ pdfIndicatorState.io.disconnect(); }catch(e){} pdfIndicatorState.io = null; }
+        }
+    });
+    pdfIndicatorState.mo = mo;
+    mo.observe(container, { childList: true, subtree: true });
+
+    const initialItems = container.querySelectorAll('.pdf-item');
+    if(initialItems.length) setupObservers(initialItems);
+}
+
+// Inicializar en carga
+try{ setupPdfIndicators(); }catch(e){console.warn('Error inicializando indicadores PDF', e)}
