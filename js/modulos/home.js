@@ -36,6 +36,20 @@ function selectPestana(id){
         $("#footer_home").hide()
     }
     else{
+        // simular click en el pie de documentos (si existe)
+        setTimeout(() => {
+            var pie = document.getElementById('pie_documentos');
+            if (pie) {
+                try { 
+                    console.log("Simulando click en el pie de documentos");
+                    pie.click(); 
+                } catch (e) { 
+                    console.error("Error al simular click en el pie de documentos:", e);
+                    $('#pie_documentos').trigger('click'); 
+                }
+            }
+        }, 500);
+        
         selectSubPestana('documentos')
         $("#pestana_home").hide()
         $("#pestana_reserva").show()
@@ -90,7 +104,7 @@ function selectSubPestana(id){
 
 
 
-var pdfsGlobales = {reserva:[], tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
+var pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
 
 function construirDOM(usuario, reservas){
     quitarFooter()
@@ -105,7 +119,7 @@ function construirDOM(usuario, reservas){
                 titulo: "Reserva",
                 imagen: "img/portadas/reserva.jpg"
             }
-            pdfsGlobales.reserva.push(info);
+            pdfsGlobales.hotel.push(info);
             $("#pie_hotel").show()
         }
         else{
@@ -351,8 +365,14 @@ function renderComplementos(idReserva){
         { id: 'esim', title: 'eSIM', desc: 'Mantente conectado', img: 'https://i.insider.com/608c561d35c46f0018c0bb1c?width=1200&format=jpeg' },
         { id: 'seguro', title: 'Seguro de Viaje', desc: 'Protección durante el viaje', img: 'https://drakarelia.ec/mt-content/uploads/2024/01/seguros-medicos-1024x679.webp' },
         { id: 'actividades', title: 'Actividades', desc: 'Tours y experiencias', img: 'https://thumbs.dreamstime.com/b/elegante-experiencia-gastron%C3%B3mica-de-negocios-chef-profesional-que-prepara-comida-gourmet-en-una-estaci%C3%B3n-personal-con-vidrios-y-391222890.jpg' },
-        { id: 'hoteles', title: 'Hoteles', desc: 'Reservas y upgrades', img: 'https://hips.hearstapps.com/hmg-prod/images/mejores-hoteles-lujo-espana-europa-ritz-madrid-1643808946.jpeg' },
-        { id: 'dias_extra', title: 'Días Extra', desc: 'Extiende tu estadía', img: 'https://confiabogado.com/blog/wp-content/uploads/2024/01/horas-extras-vacaciones.jpg' }
+        { id: 'vip', title: 'Salas Vip', desc: 'Comodidad y Exclusividad', img: 'https://aeronotas.com/wp-content/uploads/2022/09/Salon-Admirals-Club-de-AA.jpg' },
+        { id: 'dias_extra', title: 'Días Extra', desc: 'Extiende tu estadía', img: 'https://confiabogado.com/blog/wp-content/uploads/2024/01/horas-extras-vacaciones.jpg' },
+        { id: 'migratoria', title: 'Orientación Migratoria', desc: 'Acompañamos tu proceso de visa', img: 'https://imagenes.primicias.ec/files/image_480_270/uploads/2025/08/22/68a8a5691c2f2.jpeg'},
+        { id: 'fast', title: 'Fast Track', desc: 'Evita Filas y ahorra tiempo', img: 'https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_971/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/k40dij9mmfu2c66b1lab/ServicioVIPdelAeropuertoInternacionaldeHangzhouXiaoshan.jpg'},
+        { id: 'traslados', title: 'Traslados', desc: 'Aereopuerto ↔️ Hotel', img: 'https://media.tacdn.com/media/attractions-splice-spp-360x240/06/71/93/51.jpg'},
+        
+
+
     ];
 
     const list = defaults;

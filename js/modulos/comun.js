@@ -112,6 +112,7 @@ function cerrarMenu(){
 
 
 function verificarSession(){
+    pdfsGlobales = {reserva:[], tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
     abrirSpinner("Consultando sus documentos")
     if (navigator.onLine) {
         Obtener_API_Trip(null, '/verificarSession', datos => {
