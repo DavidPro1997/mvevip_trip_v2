@@ -90,11 +90,11 @@ function selectSubPestana(id){
                 ${doc.titulo ? doc.titulo : ''}
             </div>
             <div class="pdf-frame" style="overflow:hidden;">
-                <iframe 
-                    src="${doc.url}#zoom=90&view=FitH"
-                    style="width:100%; height:400px; border:0;"
-                    frameborder="0">
+                <iframe
+                    src="https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(doc.url)}"
+                    style="width:100%; height:400px; border:0;">
                 </iframe>
+
             </div>
             
             </div>
@@ -111,7 +111,16 @@ function selectSubPestana(id){
 }
 
 
-{/* <div class="pdf-item">
+{/* 
+    
+
+    <iframe 
+                    src="${doc.url}#zoom=90&view=FitH"
+                    style="width:100%; height:400px; border:0;"
+                    frameborder="0">
+                </iframe>
+
+    <div class="pdf-item">
                 <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
                     ${doc.titulo ? doc.titulo : ''}
                 </div>
