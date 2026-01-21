@@ -89,8 +89,12 @@ function selectSubPestana(id){
             <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
                 ${doc.titulo ? doc.titulo : ''}
             </div>
-            <div class="pdf-frame" style="overflow:auto;max-height:600px;">
-                <iframe src="${doc.url}" frameborder="0" scrolling="yes" style="width:100%;height:100%;border:0;display:block;" allowfullscreen></iframe>
+            <div class="pdf-frame" style="overflow:hidden;">
+                <iframe 
+                    src="${doc.url}#zoom=90&view=FitH"
+                    style="width:100%; height:400px; border:0;"
+                    frameborder="0">
+                </iframe>
             </div>
             
             </div>
