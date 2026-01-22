@@ -78,26 +78,21 @@ function selectSubPestana(id){
     $carousel.empty();
     (pdfsGlobales[id]||[]).forEach((doc,index) => {
         var item = `
-            <div class="pdf-item" style="position:relative;">
-            <a href="#" onclick="descargarDocumento('${doc.ruta}'); return false;" aria-label="Descargar" style="position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#007bff;color:#fff;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:10;font-size:14px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-            </a>
-            <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
-                ${doc.titulo ? doc.titulo : ''}
-            </div>
-            <div class="pdf-frame" style="overflow:hidden;">
-                <iframe
-                    src="https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(doc.url)}"
-                    style="width:100%; height:400px; border:0;">
-                </iframe>
+                
+                
+                <div class="pdf-item">
+                    <a href="#" onclick="abrirModalPdfFullscreen('${doc.url.replace(/'/g, "\'")}','${doc.ruta.replace(/'/g, "\'")}'); return false;" aria-label="Abrir en pantalla completa" style="position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#007bff;color:#fff;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:10;font-size:14px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                    </a>
 
-            </div>
-            
-            </div>
+                    <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
+                        ${doc.titulo ? doc.titulo : ''}
+                    </div>
+                    <div class="pdf-frame" style="overflow:hidden;">
+                        <iframe src="${doc.url}" frameborder="0" style="width:100%;height:100%;border:0;"></iframe>
+                    </div>
+                    
+                </div>             
         `;
         $carousel.append(item);
     });
@@ -125,7 +120,7 @@ function selectSubPestana(id){
                     ${doc.titulo ? doc.titulo : ''}
                 </div>
                 <div class="pdf-frame" style="overflow:hidden;">
-                    <iframe src="${doc.url}" frameborder="0" style="width:300%;height:300%;transform:scale(0.50);transform-origin:0 0;zoom:50%;border:0;"></iframe>
+                    <iframe src="${doc.url}" frameborder="0" style="width:100%;height:100%;border:0;"></iframe>
                 </div>
                 
             </div> */}
