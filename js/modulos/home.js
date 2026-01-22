@@ -77,29 +77,95 @@ function selectSubPestana(id){
     var $carousel = $('#carousel-pdfs');
     $carousel.empty();
     (pdfsGlobales[id]||[]).forEach((doc,index) => {
-        var item = `
+        var item = $(`
             <div class="pdf-item" style="position:relative;">
-            <a href="#" onclick="descargarDocumento('${doc.ruta}'); return false;" aria-label="Descargar" style="position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#007bff;color:#fff;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:10;font-size:14px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-            </a>
-            <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
-                ${doc.titulo ? doc.titulo : ''}
-            </div>
-            <div class="pdf-frame" style="overflow:hidden;">
-                <iframe
-                    src="https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(doc.url)}"
-                    style="width:100%; height:400px; border:0;">
-                </iframe>
+                <!-- Botón de descarga -->
+                <a href="#" onclick="descargarDocumento('${doc.ruta}'); return false;" aria-label="Descargar"
+                    style="position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#007bff;color:#fff;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:10;font-size:14px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </a>
 
+                <!-- Título -->
+                <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
+                    ${doc.titulo ? doc.titulo : ''}
+                </div>
+
+                <!-- Contenedor del PDF -->
+                <div class="pdf-frame" style="overflow:auto;"></div>
             </div>
-            
-            </div>
-        `;
+        `);
+
         $carousel.append(item);
+
+        // PDF.js responsive rendering: escala según ancho del contenedor y devicePixelRatio
+        const container = item.find('.pdf-frame')[0];
+        const url = doc.url; // URL del PDF
+
+        // Intentar obtener la variable global de pdf.js de forma robusta
+        const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib || window['pdfjsLib'] || window['PDFJS'];
+
+        // Si no está disponible, usar iframe fallback para evitar errores
+        if (!pdfjsLib) {
+            console.warn('pdfjsLib no disponible en window, usando iframe como fallback para', url);
+            container.innerHTML = '';
+            const iframe = document.createElement('iframe');
+            iframe.src = url + '#toolbar=0&navpanes=0&scrollbar=1&view=FitH';
+            iframe.style.width = '100%';
+            iframe.style.height = '480px';
+            iframe.style.border = '0';
+            iframe.setAttribute('aria-label', doc.titulo || 'Documento PDF');
+            container.appendChild(iframe);
+            return;
+        }
+
+        try{
+            if (pdfjsLib.GlobalWorkerOptions) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.239/pdf.worker.min.js';
+            }
+        }catch(e){ console.warn('No se pudo establecer workerSrc de pdfjsLib', e); }
+
+        // limpiar contenedor
+        container.innerHTML = '';
+
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            const pagePromises = [];
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                pagePromises.push(
+                    pdf.getPage(pageNum).then(page => {
+                        // viewport base a escala 1
+                        const baseViewport = page.getViewport({ scale: 1 });
+                        const containerWidth = Math.max(200, container.clientWidth || 600);
+                        // calcular escala para ajustar al ancho del contenedor
+                        const desiredScale = (containerWidth / baseViewport.width) * 0.95; // dejar pequeño margen
+                        const dpr = window.devicePixelRatio || 1;
+                        const renderViewport = page.getViewport({ scale: desiredScale * dpr });
+
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+
+                        // tamaño real en pixels (teniendo en cuenta DPR)
+                        canvas.width = Math.floor(renderViewport.width);
+                        canvas.height = Math.floor(renderViewport.height);
+                        // tamaño CSS para que sea responsivo y ajuste al contenedor
+                        canvas.style.width = Math.floor(renderViewport.width / dpr) + 'px';
+                        canvas.style.height = Math.floor(renderViewport.height / dpr) + 'px';
+                        canvas.style.display = 'block';
+                        canvas.style.margin = '0 auto 12px auto';
+                        canvas.className = 'pdf-canvas';
+
+                        container.appendChild(canvas);
+
+                        return page.render({ canvasContext: context, viewport: renderViewport }).promise;
+                    })
+                );
+            }
+
+            return Promise.all(pagePromises);
+        }).catch(err => console.error('Error cargando PDF:', err));
     });
     // posicionar al inicio para que se vea el primer item y parte del siguiente (1.5)
     setTimeout(function(){
