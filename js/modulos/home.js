@@ -102,6 +102,15 @@ function selectSubPestana(id){
 
 function abrirModalPdfFullscreen(el){
     if(!el) return;
+    mostrarSpinnerPdf();
+    document.getElementById('pdfHintMsg').style.display = 'none';
+    el._pdfRetries = el._pdfRetries ?? 0;
+
+    if(el._pdfRetries >= 3){
+        console.error('❌ PDF no cargó tras 3 intentos');
+        document.getElementById('pdfHintMsg').style.display = 'flex';
+        return;
+    }
 
     const raw = el.dataset?.documento;
     if(!raw) return console.warn('No dataset.documento encontrado');
@@ -129,6 +138,31 @@ function abrirModalPdfFullscreen(el){
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = '0';
+
+    let iframeLoaded = false;
+    const startTime = Date.now();
+
+    iframe.onload = () => {
+        iframeLoaded = true;
+        el._pdfRetries = 0;
+
+        ocultarSpinnerPdf();
+        console.log('✅ PDF iframe cargado correctamente');
+        console.log('⏱ Tiempo de carga:', Date.now() - startTime, 'ms');
+    };
+
+    iframe.onerror = () => {
+        console.error('❌ Error cargando el iframe PDF');
+    };
+
+
+    setTimeout(() => {
+        if (!iframeLoaded) {
+            el._pdfRetries++;
+            console.warn('🔁 Reintentando carga PDF', el._pdfRetries);
+            abrirModalPdfFullscreen(el);
+        }
+    }, 2500);
 
     container.appendChild(iframe);
 
@@ -180,24 +214,20 @@ function abrirModalPdfFullscreen(el){
 }
 
 
-{/* 
-    
 
-    <iframe 
-                    src="${doc.url}#zoom=90&view=FitH"
-                    style="width:100%; height:400px; border:0;"
-                    frameborder="0">
-                </iframe>
 
-    <div class="pdf-item">
-                <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
-                    ${doc.titulo ? doc.titulo : ''}
-                </div>
-                <div class="pdf-frame" style="overflow:hidden;">
-                    <iframe src="${doc.url}" frameborder="0" style="width:100%;height:100%;border:0;"></iframe>
-                </div>
-                
-            </div> */}
+const mostrarSpinnerPdf = () => {
+    const s = document.getElementById('pdfSpinner');
+    if(s) s.style.display = 'flex';
+};
+
+const ocultarSpinnerPdf = () => {
+    const s = document.getElementById('pdfSpinner');
+    if(s) s.style.display = 'none';
+};
+
+
+
 
 
 

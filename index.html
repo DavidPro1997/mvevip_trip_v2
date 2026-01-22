@@ -73,8 +73,53 @@
                     style="position:fixed; top:16px; right:16px; z-index:2000; display:flex; gap:10px;">
                 </div>
 
+
+                <div id="pdfHintMsg"
+                    style="
+                        position:fixed;
+                        inset:0;
+                        display:none;
+                        align-items:center;
+                        justify-content:center;
+                        z-index:1500;
+                        pointer-events:none;
+                        color:#fff;
+                        text-align:center;
+                    ">
+                    <div style="max-width:420px; opacity:.85;">
+                        <i class="mdi mdi-information-outline"
+                        style="font-size:52px; display:block; margin-bottom:12px;"></i>
+
+                        <p style="font-size:16px; line-height:1.4;">
+                            El documento no se pudo cargar.<br>
+                            Puedes <b>recargar</b> o <b>descargar</b> usando los botones
+                            en la esquina superior derecha.
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Body -->
                 <div class="modal-body p-0" style="height:100vh; overflow:hidden;">
+                    <div id="pdfSpinner"
+                        style="
+                            position:fixed;
+                            inset:0;
+                            background:rgba(0,0,0,0.85);
+                            z-index:1500;
+                            display:none;
+                            align-items:center;
+                            justify-content:center;
+                            flex-direction:column;
+                            color:#fff;
+                            font-size:16px;
+                        ">
+                        <div class="spinner-border text-light" role="status"
+                            style="width:4rem;height:4rem;">
+                        </div>
+                        <div style="margin-top:14px; opacity:.85">
+                            Cargando documento…
+                        </div>
+                    </div>
                     <div id="contenidoModalPdf"
                         style="width:100%; height:100%; overflow:auto;">
                         <!-- iframe aquí -->
