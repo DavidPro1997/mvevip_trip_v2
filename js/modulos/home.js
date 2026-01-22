@@ -147,6 +147,7 @@ function abrirModalPdfFullscreen(el){
         b.style.alignItems = 'center';
         b.style.justifyContent = 'center';
         b.style.boxShadow = '0 2px 8px rgba(0,0,0,0.4)';
+        b.style.fontSize = '22px';
         b.innerHTML = icon;
         b.onclick = fn;
         return b;
