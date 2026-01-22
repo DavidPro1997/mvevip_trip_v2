@@ -36,19 +36,6 @@ function selectPestana(id){
         $("#footer_home").hide()
     }
     else{
-        // simular click en el pie de documentos (si existe)
-        setTimeout(() => {
-            var pie = document.getElementById('pie_documentos');
-            if (pie) {
-                try { 
-                    console.log("Simulando click en el pie de documentos");
-                    pie.click(); 
-                } catch (e) { 
-                    console.error("Error al simular click en el pie de documentos:", e);
-                    $('#pie_documentos').trigger('click'); 
-                }
-            }
-        }, 500);
         
         selectSubPestana('documentos')
         $("#pestana_home").hide()
@@ -80,19 +67,19 @@ function selectSubPestana(id){
         var item = `
             
             <div class="pdf-item" style="position:relative;">
-                <a href="#" onclick="abrirModalPdfFullscreen('${doc.url.replace(/'/g, "\'")}','${doc.ruta.replace(/'/g, "\'")}'); return false;" aria-label="Abrir en pantalla completa" style="position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#007bff;color:#fff;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:10;font-size:14px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-                </a>
+            <a href="#" data-documento='${JSON.stringify(doc)}' onclick="abrirModalPdfFullscreen(this); return false;" aria-label="Abrir en pantalla completa" style="position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#007bff;color:#fff;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:10;font-size:14px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            </a>
 
-                <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
-                    ${doc.titulo ? doc.titulo : ''}
-                </div>
-                <div class="pdf-frame" style="width:100%;height:500px;overflow:hidden;">
-                    <object data="${doc.url}" type="application/pdf" width="100%" height="100%">
-                        <p>Tu navegador no soporta PDFs. <a href="${doc.url}">Descargar PDF</a></p>
-                    </object>
-                </div>
-                
+            <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
+                ${doc.titulo ? doc.titulo : ''}
+            </div>
+            <div class="pdf-frame" style="width:100%;height:500px;overflow:hidden;">
+                <object data="${doc.url}" type="application/pdf" width="100%" height="100%">
+                <p>Tu navegador no soporta PDFs. <a href="${doc.url}">Descargar PDF</a></p>
+                </object>
+            </div>
+            
             </div> 
             
         `;
@@ -105,6 +92,90 @@ function selectSubPestana(id){
 
     // Actualizar indicador de páginas (si la función está disponible)
     try{ if(typeof setupPdfIndicators === 'function') setupPdfIndicators(); }catch(e){console.warn('setupPdfIndicators no disponible', e)};
+}
+
+
+
+
+
+
+
+function abrirModalPdfFullscreen(el){
+    if(!el) return;
+
+    const raw = el.dataset?.documento;
+    if(!raw) return console.warn('No dataset.documento encontrado');
+
+    let doc;
+    try { doc = JSON.parse(raw); }
+    catch(e){ return console.error('Error parseando dataset.documento:', e); }
+
+    if(!doc.url) return console.warn('doc.url no existe');
+
+    const viewerUrl = 'https://docs.google.com/gview?embedded=true&url=' + encodeURIComponent(doc.url);
+
+    const container = document.getElementById('contenidoModalPdf');
+    const controls = document.getElementById('pdfControls');
+    controls.style.top = '72px'; 
+    if(!container || !controls) return;
+
+    /* limpiar */
+    container.innerHTML = '';
+    controls.innerHTML = '';
+
+    /* iframe */
+    const iframe = document.createElement('iframe');
+    iframe.src = viewerUrl;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = '0';
+
+    container.appendChild(iframe);
+
+    /* botones */
+    const makeBtn = (icon, title, fn, bg='#007bff')=>{
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.title = title;
+        b.style.width = '44px';
+        b.style.height = '44px';
+        b.style.borderRadius = '50%';
+        b.style.border = '0';
+        b.style.background = bg;
+        b.style.color = '#fff';
+        b.style.display = 'flex';
+        b.style.alignItems = 'center';
+        b.style.justifyContent = 'center';
+        b.style.boxShadow = '0 2px 8px rgba(0,0,0,0.4)';
+        b.innerHTML = icon;
+        b.onclick = fn;
+        return b;
+    };
+
+    controls.appendChild(makeBtn(
+        '<i class="mdi mdi-download"></i>',
+        'Descargar',
+        ()=>{ doc.ruta ? descargarDocumento(doc.ruta) : window.open(doc.url,'_blank'); }
+    ));
+
+    controls.appendChild(makeBtn(
+        '<i class="mdi mdi-refresh"></i>',
+        'Recargar',
+        ()=>{ abrirModalPdfFullscreen(el); }
+    ));
+
+    controls.appendChild(makeBtn(
+        '<i class="mdi mdi-close"></i>',
+        'Cerrar',
+        ()=>{ $('#modalPdfBootstrap').modal('hide'); },
+        '#dc3545'
+    ));
+
+    /* abrir modal */
+    $('#modalPdfBootstrap').modal({
+        backdrop: 'static',
+        keyboard: true
+    }).modal('show');
 }
 
 
