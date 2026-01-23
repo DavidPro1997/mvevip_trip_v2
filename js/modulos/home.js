@@ -1,14 +1,16 @@
+var reservasGlobales = []
 function cargarInformacion(){
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const reservas = JSON.parse(localStorage.getItem("reservas"));
+    reservasGlobales = JSON.parse(localStorage.getItem("reservas"));
     console.log("Usuario: ",usuario)
-    console.log("Reservas: ",reservas)
-    if (usuario && reservas){
-        renderReservations(reservas);
-        renderComplementos(reservas[reservas.length - 1].idReserva);
+    console.log("Reservas: ",reservasGlobales)
+    if (usuario && reservasGlobales){
+        renderReservations(reservasGlobales);
+        renderComplementos(reservasGlobales[reservasGlobales.length - 1].idReserva);
         $("#botonCerrarSession").show()
         selectPestana('home')
-        construirDOM(usuario, reservas)
+        quitarFooter()
+        $("#tituloPrincipal").html("¡HOLA " + usuario.nombres.toUpperCase() + " " + usuario.apellidos.toUpperCase() + "!");
     }
     else{
         sinSession()
@@ -29,14 +31,14 @@ function quitarFooter(){
 
 
 
-function selectPestana(id){
+function selectPestana(id,idReserva){
     if(id == "home"){
         $("#pestana_home").show()
         $("#pestana_reserva").hide()
         $("#footer_home").hide()
     }
     else{
-        
+        construirDOMPDFS(idReserva)
         selectSubPestana('documentos')
         $("#pestana_home").hide()
         $("#pestana_reserva").show()
@@ -233,137 +235,139 @@ const ocultarSpinnerPdf = () => {
 
 var pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
 
-function construirDOM(usuario, reservas){
-    quitarFooter()
-    $("#tituloPrincipal").html("¡HOLA " + usuario.nombres.toUpperCase() + " " + usuario.apellidos.toUpperCase() + "!");
-    reservas.forEach(element => {
+function construirDOMPDFS(idReserva){
+    pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], extras: []}
+    let element = Array.isArray(reservasGlobales) ? reservasGlobales.slice() : [];
+    if (typeof idReserva !== 'undefined' && idReserva !== null && idReserva !== '') {
+        element = element.filter(r => String(r.idReserva) === String(idReserva));
+    }
+    console.log("Reserva seleccionada para PDFs: ", element);
+    if(element.length === 0) return;
+    element = element[0]; // tomar el primero si hay varios
+    // RESERVAS
+    if(element.urlFirmadaReservaCompleta){
+        const info = {
+            url: element.urlFirmadaReservaCompleta,
+            ruta: element.rutaReservaCompleta,
+            titulo: "Reserva",
+            imagen: "img/portadas/reserva.jpg"
+        }
+        pdfsGlobales.hotel.push(info);
+        $("#pie_hotel").show()
+    }
+    else{
+        $("#pie_hotel").hide()
+    }
+    
 
-        // RESERVAS
-        if(element.urlFirmadaReservaCompleta){
-            const info = {
-                url: element.urlFirmadaReservaCompleta,
-                ruta: element.rutaReservaCompleta,
-                titulo: "Reserva",
-                imagen: "img/portadas/reserva.jpg"
+
+    // TICKETS
+    if(element.tickets.length>0){
+        element.tickets.forEach(tkts => {
+            const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
+            if(existe){
+                let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join("<br>");
+                pdfsGlobales.tickets.push({
+                    url: tkts.urlFirmada,
+                    ruta: tkts.ruta,
+                    titulo: tituloTkt,
+                    imagen: "img/portadas/tickets.jpg"
+                })
             }
-            pdfsGlobales.hotel.push(info);
-            $("#pie_hotel").show()
-        }
-        else{
-            $("#pie_hotel").hide()
-        }
-        
+            
+        });
+        $("#pie_tickets").show()
+    }
+    else{
+        $("#pie_tickets").hide()
+    }
 
 
-        // TICKETS
-        if(element.tickets.length>0){
-            element.tickets.forEach(tkts => {
-                const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
-                if(existe){
-                    let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join("<br>");
-                    pdfsGlobales.tickets.push({
-                        url: tkts.urlFirmada,
-                        ruta: tkts.ruta,
-                        titulo: tituloTkt,
-                        imagen: "img/portadas/tickets.jpg"
+    // DOCUMENTOS PERSONALES
+    if(element.viajeros.length>0){
+        element.viajeros.forEach(personal => {
+            if(Number(personal.idViajero) === Number(usuario.idViajero)){
+                personal.docs.forEach(doc => {
+                    let tituloPersonal = doc.tipoDocumento
+                    pdfsGlobales.documentos.push({
+                        url: doc.urlFirmada,
+                        ruta: doc.ruta,
+                        titulo: tituloPersonal,
+                        imagen: "img/portadas/personales.jpg"
                     })
-                }
-                
-            });
-            $("#pie_tickets").show()
-        }
-        else{
-            $("#pie_tickets").hide()
-        }
+                });
+            }                
+        });
+        $("#pie_documentos").show()
+    }
+    else{
+        $("#pie_documentos").hide()
+    }
 
 
-        // DOCUMENTOS PERSONALES
-        if(element.viajeros.length>0){
-            element.viajeros.forEach(personal => {
-                if(Number(personal.idViajero) === Number(usuario.idViajero)){
-                    personal.docs.forEach(doc => {
-                        let tituloPersonal = doc.tipoDocumento
-                        pdfsGlobales.documentos.push({
+
+
+    // EXTRAS
+    if(element.documentos.length>0){
+        element.documentos.forEach(documento => {
+            if(Number(documento.idViajero) == Number(usuario.idViajero) && documento.mostrarTrip == 1){
+                // SIM CARD
+                documento.docs.forEach(doc => {
+                    if(doc.idTipoDocumento == 5){
+                        $("#pie_sim").show()
+                        let titulo = "📲 SIM";
+                        pdfsGlobales.sim.push({
                             url: doc.urlFirmada,
                             ruta: doc.ruta,
-                            titulo: tituloPersonal,
-                            imagen: "img/portadas/personales.jpg"
+                            titulo: titulo,
+                            imagen: "img/portadas/sim.jpg"
                         })
-                    });
-                }                
-            });
-            $("#pie_documentos").show()
-        }
-        else{
-            $("#pie_documentos").hide()
-        }
+                    }
+
+                    // BOARDING
+                    if(doc.idTipoDocumento == 3){
+                        $("#pie_boarding").show()
+                        let titulo = "📄 Boarding Pass";
+                        pdfsGlobales.boarding.push({
+                            url: doc.urlFirmada,
+                            ruta: doc.ruta,
+                            titulo: titulo,
+                            imagen: "img/portadas/boarding.jpg"
+                        })
+                    }
+
+                    // SEGURO VIAJE
+                    if(doc.idTipoDocumento == 4){
+                        $("#pie_seguro").show()
+                        let titulo = "🔒 Seguro de viajes";
+                        pdfsGlobales.seguro.push({
+                            url: doc.urlFirmada,
+                            ruta: doc.ruta,
+                            titulo: titulo,
+                            imagen: "img/portadas/seguro.jpg"
+                        })
+                    }
 
 
-
-
-        // EXTRAS
-        if(element.documentos.length>0){
-            element.documentos.forEach(documento => {
-                if(Number(documento.idViajero) == Number(usuario.idViajero) && documento.mostrarTrip == 1){
-                    // SIM CARD
-                    documento.docs.forEach(doc => {
-                        if(doc.idTipoDocumento == 5){
-                            $("#pie_sim").show()
-                            let titulo = "📲 SIM";
-                            pdfsGlobales.sim.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/sim.jpg"
-                            })
-                        }
-
-                        // BOARDING
-                        if(doc.idTipoDocumento == 3){
-                            $("#pie_boarding").show()
-                            let titulo = "📄 Boarding Pass";
-                            pdfsGlobales.boarding.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/boarding.jpg"
-                            })
-                        }
-
-                        // SEGURO VIAJE
-                        if(doc.idTipoDocumento == 4){
-                            $("#pie_seguro").show()
-                            let titulo = "🔒 Seguro de viajes";
-                            pdfsGlobales.seguro.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/seguro.jpg"
-                            })
-                        }
-
-
-                        // OTRO
-                        if(doc.idTipoDocumento == 99){
-                            $("#pie_otro").show()
-                            let titulo = "📄 Documento Adicional";
-                            pdfsGlobales.extras.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/extras.jpg"
-                            })
-                        }
-                        
-                    });
-                }
-                
-            });
+                    // OTRO
+                    if(doc.idTipoDocumento == 99){
+                        $("#pie_otro").show()
+                        let titulo = "📄 Documento Adicional";
+                        pdfsGlobales.extras.push({
+                            url: doc.urlFirmada,
+                            ruta: doc.ruta,
+                            titulo: titulo,
+                            imagen: "img/portadas/extras.jpg"
+                        })
+                    }
+                    
+                });
+            }
             
-            
-        }
+        });
+        
+    }
 
-    });
 }
 
 
@@ -475,11 +479,10 @@ function showReservaId(destinosArray) {
         }
     }
     if (destinos.length > 0 && destinos[0].urlImagen) {
-        const hero = document.getElementById("hero");
-        hero.style.backgroundImage = `url('${destinos[0].urlImagen}')`;
+        document.querySelector('[data-hero="reserva"]').style.backgroundImage = `url('${destinos[0].urlImagen}')`;
     }
     $("#tituloDestino").html(destinos.map(d => d.ciudad).filter(Boolean).join(' - '))
-    selectPestana('reserva');
+    selectPestana('reserva', destinos[0]?.idReserva);
 }
 
 
