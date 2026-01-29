@@ -33,11 +33,13 @@ function quitarFooter(){
 
 function selectPestana(id,idReserva){
     if(id == "home"){
+        $("#btnHome").hide()
         $("#pestana_home").show()
         $("#pestana_reserva").hide()
         $("#footer_home").hide()
     }
     else{
+        $("#btnHome").show()
         construirDOMPDFS(idReserva)
         selectSubPestana('home')
         $("#pestana_home").hide()
@@ -52,6 +54,12 @@ function selectPestana(id,idReserva){
 
 
 function selectSubPestana(id){
+    if(id == 'home'){
+        $("#pdfViewer").hide()
+    }
+    else{
+        $("#pdfViewer").show()
+    }
     document.querySelectorAll("[id^='lista']").forEach(el => {
         el.style.display = "none";
     });
