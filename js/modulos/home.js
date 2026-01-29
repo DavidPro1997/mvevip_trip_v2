@@ -39,7 +39,7 @@ function selectPestana(id,idReserva){
     }
     else{
         construirDOMPDFS(idReserva)
-        selectSubPestana('documentos')
+        selectSubPestana('home')
         $("#pestana_home").hide()
         $("#pestana_reserva").show()
         $("#footer_home").show()
@@ -73,10 +73,10 @@ function selectSubPestana(id){
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
             </a>
 
-            <div class="pdf-title" style="font-weight:600;font-size:16px;text-align:center;margin-bottom:8px;">
+            <div class="pdf-title" style="font-weight:600;font-size:8px;text-align:center;margin-bottom:8px;">
                 ${doc.titulo ? doc.titulo : ''}
             </div>
-            <div class="pdf-frame" style="width:100%;height:500px;overflow:hidden;">
+            <div class="pdf-frame" style="width:100%;height:400px;overflow:hidden;">
                 <object data="${doc.url}" type="application/pdf" width="100%" height="100%">
                 <p>Tu navegador no soporta PDFs. <a href="${doc.url}">Descargar PDF</a></p>
                 </object>
@@ -244,6 +244,53 @@ function construirDOMPDFS(idReserva){
     console.log("Reserva seleccionada para PDFs: ", element);
     if(element.length === 0) return;
     element = element[0]; // tomar el primero si hay varios
+
+
+    //OBTENER SI TENGO BILLETERA CONJUNTA
+    const currentUser = (typeof usuario !== 'undefined' && usuario) ? usuario : (JSON.parse(localStorage.getItem('usuario')||'{}'));
+    const viajeroEncontrado = Array.isArray(element.viajeros) ? element.viajeros.find(v => String(v.idViajero) === String(currentUser.idViajero)) : null;
+    const billeteraConjuntaUsuario = Boolean(viajeroEncontrado && Number(viajeroEncontrado.billeteraConjunta) === 1);
+    console.log("Billetera conjunta usuario:", billeteraConjuntaUsuario);
+    
+
+    // DOCUMENTOS PERSONALES
+    if(element.viajeros.length>0){
+        element.viajeros.forEach(personal => {
+            if(billeteraConjuntaUsuario){
+                personal.docs.forEach(doc => {
+                    let tituloPersonal = `${doc.tipoDocumento} - ${personal.nombres} ${personal.apellidos}`;
+                    pdfsGlobales.documentos.push({
+                        url: doc.urlFirmada,
+                        ruta: doc.ruta,
+                        titulo: tituloPersonal,
+                        imagen: "img/portadas/personales.jpg"
+                    })
+                });
+            }
+            else{
+                if(Number(personal.idViajero) === Number(usuario.idViajero)){
+                    personal.docs.forEach(doc => {
+                        let tituloPersonal = `${doc.tipoDocumento} - ${personal.nombres} ${personal.apellidos}`;
+                        pdfsGlobales.documentos.push({
+                            url: doc.urlFirmada,
+                            ruta: doc.ruta,
+                            titulo: tituloPersonal,
+                            imagen: "img/portadas/personales.jpg"
+                        })
+                    });
+                } 
+            }
+                           
+        });
+        $("#pie_documentos").show()
+    }
+    else{
+        $("#pie_documentos").hide()
+    }
+
+
+
+
     // RESERVAS
     if(element.urlFirmadaReservaCompleta){
         const info = {
@@ -264,9 +311,10 @@ function construirDOMPDFS(idReserva){
     // TICKETS
     if(element.tickets.length>0){
         element.tickets.forEach(tkts => {
-            const existe = tkts.viajeros.some(item => Number(item.idViajero) === Number(usuario.idViajero));
-            if(existe){
-                let tituloTkt = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join("<br>");
+            if(billeteraConjuntaUsuario){
+                const tramo = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join(", ")
+                const personas = tkts.viajeros.map(item => `${item.nombres} ${item.apellidos}`).join(", ")
+                const tituloTkt = `${tramo} - ${personas}`;
                 pdfsGlobales.tickets.push({
                     url: tkts.urlFirmada,
                     ruta: tkts.ruta,
@@ -274,6 +322,20 @@ function construirDOMPDFS(idReserva){
                     imagen: "img/portadas/tickets.jpg"
                 })
             }
+            else{
+                const existe = tkts.viajeros.find(item => (Number(item.idViajero) === Number(usuario.idViajero)));
+                if(existe){
+                    const tramo = tkts.tramos.map(item => `${item.codigoCiudadSalida}➡️${item.codigoCiudadDestino}`).join(", ")
+                    const tituloTkt = `${tramo} - ${existe.nombres} ${existe.apellidos}`;
+                    pdfsGlobales.tickets.push({
+                        url: tkts.urlFirmada,
+                        ruta: tkts.ruta,
+                        titulo: tituloTkt,
+                        imagen: "img/portadas/tickets.jpg"
+                    })
+                }
+            }
+            
             
         });
         $("#pie_tickets").show()
@@ -283,26 +345,7 @@ function construirDOMPDFS(idReserva){
     }
 
 
-    // DOCUMENTOS PERSONALES
-    if(element.viajeros.length>0){
-        element.viajeros.forEach(personal => {
-            if(Number(personal.idViajero) === Number(usuario.idViajero)){
-                personal.docs.forEach(doc => {
-                    let tituloPersonal = doc.tipoDocumento
-                    pdfsGlobales.documentos.push({
-                        url: doc.urlFirmada,
-                        ruta: doc.ruta,
-                        titulo: tituloPersonal,
-                        imagen: "img/portadas/personales.jpg"
-                    })
-                });
-            }                
-        });
-        $("#pie_documentos").show()
-    }
-    else{
-        $("#pie_documentos").hide()
-    }
+    
 
 
 
@@ -310,58 +353,114 @@ function construirDOMPDFS(idReserva){
     // EXTRAS
     if(element.documentos.length>0){
         element.documentos.forEach(documento => {
-            if(Number(documento.idViajero) == Number(usuario.idViajero) && documento.mostrarTrip == 1){
-                // SIM CARD
-                documento.docs.forEach(doc => {
-                    if(doc.idTipoDocumento == 5){
-                        $("#pie_sim").show()
-                        let titulo = "📲 SIM";
-                        pdfsGlobales.sim.push({
-                            url: doc.urlFirmada,
-                            ruta: doc.ruta,
-                            titulo: titulo,
-                            imagen: "img/portadas/sim.jpg"
-                        })
-                    }
+            if(Number(documento.mostrarTrip) == 1){
+                if(billeteraConjuntaUsuario){
+                    documento.docs.forEach(doc => {
+                        if(doc.idTipoDocumento == 5){
+                            $("#pie_sim").show()
+                            let titulo = "📲 SIM -"+documento.nombres +" "+ documento.apellidos;
+                            pdfsGlobales.sim.push({
+                                url: doc.urlFirmada,
+                                ruta: doc.ruta,
+                                titulo: titulo,
+                                imagen: "img/portadas/sim.jpg"
+                            })
+                        }
 
-                    // BOARDING
-                    if(doc.idTipoDocumento == 3){
-                        $("#pie_boarding").show()
-                        let titulo = "📄 Boarding Pass";
-                        pdfsGlobales.boarding.push({
-                            url: doc.urlFirmada,
-                            ruta: doc.ruta,
-                            titulo: titulo,
-                            imagen: "img/portadas/boarding.jpg"
-                        })
-                    }
+                        // BOARDING
+                        if(doc.idTipoDocumento == 3){
+                            $("#pie_boarding").show()
+                            let titulo = "📄 Boarding Pass -"+documento.nombres +" "+ documento.apellidos;
+                            pdfsGlobales.boarding.push({
+                                url: doc.urlFirmada,
+                                ruta: doc.ruta,
+                                titulo: titulo,
+                                imagen: "img/portadas/boarding.jpg"
+                            })
+                        }
 
-                    // SEGURO VIAJE
-                    if(doc.idTipoDocumento == 4){
-                        $("#pie_seguro").show()
-                        let titulo = "🔒 Seguro de viajes";
-                        pdfsGlobales.seguro.push({
-                            url: doc.urlFirmada,
-                            ruta: doc.ruta,
-                            titulo: titulo,
-                            imagen: "img/portadas/seguro.jpg"
-                        })
-                    }
+                        // SEGURO VIAJE
+                        if(doc.idTipoDocumento == 4){
+                            $("#pie_seguro").show()
+                            let titulo = "🔒 Seguro de viajes -"+documento.nombres +" "+ documento.apellidos;
+                            pdfsGlobales.seguro.push({
+                                url: doc.urlFirmada,
+                                ruta: doc.ruta,
+                                titulo: titulo,
+                                imagen: "img/portadas/seguro.jpg"
+                            })
+                        }
 
 
-                    // OTRO
-                    if(doc.idTipoDocumento == 99){
-                        $("#pie_otro").show()
-                        let titulo = "📄 Documento Adicional";
-                        pdfsGlobales.extras.push({
-                            url: doc.urlFirmada,
-                            ruta: doc.ruta,
-                            titulo: titulo,
-                            imagen: "img/portadas/extras.jpg"
-                        })
+                        // OTRO
+                        if(doc.idTipoDocumento == 99){
+                            $("#pie_otro").show()
+                            let titulo = "📄 Documento Adicional -"+documento.nombres +" "+ documento.apellidos;
+                            pdfsGlobales.extras.push({
+                                url: doc.urlFirmada,
+                                ruta: doc.ruta,
+                                titulo: titulo,
+                                imagen: "img/portadas/extras.jpg"
+                            })
+                        }
+                        
+                    });
+                }
+                else{
+                    if(Number(documento.idViajero) !== Number(usuario.idViajero)){
+                        documento.docs.forEach(doc => {
+                            if(doc.idTipoDocumento == 5){
+                                $("#pie_sim").show()
+                                let titulo = "📲 SIM -"+documento.nombres +" "+ documento.apellidos;
+                                pdfsGlobales.sim.push({
+                                    url: doc.urlFirmada,
+                                    ruta: doc.ruta,
+                                    titulo: titulo,
+                                    imagen: "img/portadas/sim.jpg"
+                                })
+                            }
+
+                            // BOARDING
+                            if(doc.idTipoDocumento == 3){
+                                $("#pie_boarding").show()
+                                let titulo = "📄 Boarding Pass -"+documento.nombres +" "+ documento.apellidos;
+                                pdfsGlobales.boarding.push({
+                                    url: doc.urlFirmada,
+                                    ruta: doc.ruta,
+                                    titulo: titulo,
+                                    imagen: "img/portadas/boarding.jpg"
+                                })
+                            }
+
+                            // SEGURO VIAJE
+                            if(doc.idTipoDocumento == 4){
+                                $("#pie_seguro").show()
+                                let titulo = "🔒 Seguro de viajes -"+documento.nombres +" "+ documento.apellidos;
+                                pdfsGlobales.seguro.push({
+                                    url: doc.urlFirmada,
+                                    ruta: doc.ruta,
+                                    titulo: titulo,
+                                    imagen: "img/portadas/seguro.jpg"
+                                })
+                            }
+
+
+                            // OTRO
+                            if(doc.idTipoDocumento == 99){
+                                $("#pie_otro").show()
+                                let titulo = "📄 Documento Adicional -"+documento.nombres +" "+ documento.apellidos;
+                                pdfsGlobales.extras.push({
+                                    url: doc.urlFirmada,
+                                    ruta: doc.ruta,
+                                    titulo: titulo,
+                                    imagen: "img/portadas/extras.jpg"
+                                })
+                            }
+                            
+                        });
                     }
-                    
-                });
+                }
+              
             }
             
         });

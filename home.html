@@ -242,6 +242,35 @@
                 transform:scale(1.4);
                 box-shadow:0 6px 16px rgba(154,195,28,0.12);
             }
+            /* Floating action buttons container: mantener en fila abajo a la derecha */
+            #fabContainer {
+                position: fixed;
+                right: 20px;
+                bottom: 60px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                justify-content: flex-end;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                z-index: 9999;
+                pointer-events: auto;
+            }
+            #fabContainer .fab-refresh {
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                border: none;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+                cursor: pointer;
+            }
+            @media (max-width:420px) {
+                #fabContainer { right: 12px; bottom: 70px; gap:8px; }
+                #fabContainer .fab-refresh { width:48px; height:48px; }
+            }
         </style>
 
 <div id="pestana_home">
@@ -265,7 +294,7 @@
         <div id="reservas_section">
             <!-- <div id="reservas_list" class="reservas-grid" aria-live="polite"> -->
             <div id="reservas_list" class="complementos-carousel" aria-label="Reservas">
-                <!-- Tarjetas renderizadas por JS -->
+                Tarjetas renderizadas por JS
             </div>
         </div>
     </div>
@@ -274,12 +303,12 @@
 
 
     <!-- Complementos: carousel mobile swipe -->
-    <div class="container margin_40 mt-4 mb-4">
+    <div class="container margin_40 mt-4 mb-4" style="display: none;">
         <div class="main_title mt-2">
             <h2>Servicios <span>Complementarias</span></h2>
             <p>Juan Luis guerra</p>
         </div>
-        <div id="complementos_carousel" class="complementos-carousel" aria-label="Compras complementarias">
+        <!-- <div id="complementos_carousel" class="complementos-carousel" aria-label="Compras complementarias"> -->
             
         </div>
     </div>
@@ -376,11 +405,25 @@
         </div>
         <!-- End opacity-mask-->
     </section>
+    <br>
 
 
 
 
     <!-- <div class="container margin_60"> -->
+        <div id="lista_home" style="display: none;">
+            <!-- <div class="main_title">
+                <h2>Tus Reservas<span> de hotel</span></h2>
+            </div> -->
+            <!-- <div class="container margin_40 mt-4 mb-4" > -->
+                <div class="main_title">
+                    <h2>Servicios <span>Complementarias</span></h2>
+                </div>
+                <div id="complementos_carousel" class="complementos-carousel" aria-label="Compras complementarias">
+                    
+                </div>
+            <!-- </div> -->
+        </div>
         <div id="lista_hotel" style="display: none;">
             <div class="main_title">
                 <h2>Tus Reservas<span> de hotel</span></h2>
@@ -442,10 +485,17 @@
 
 <footer class="footer-fixed" id="footer_home" style="display: none;">
 
-    <div class="footer-menu">
+    <!-- <div class="footer-menu">
         <a href="#" onclick="selectPestana('home')" class="footer-item" id="pie_home">
             <i class="fas fa-home"></i>
             <span style="font-size: 9px;">Inicio</span>
+        </a> 
+    </div> -->
+
+    <div class="footer-menu"  id="pie_home">
+        <a href="#" onclick="selectSubPestana('home')" class="footer-item" >
+            <i class="fas fa-home"></i>
+            <span style="font-size: 9px;">Home</span>
         </a> 
     </div>
 
@@ -541,11 +591,21 @@
 </footer>
 
 <!-- Floating recargar button (derecha, un poco más arriba) -->
-<button id="btnRecargar" class="fab-refresh" aria-label="Recargar información" title="Recargar" onclick="verificarSession()">
-  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-    <path fill="currentColor" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6c1.66 0 3.14.69 4.24 1.76L13 12h7V5l-2.35 1.35z"/>
-  </svg>
-</button>
+<div id="fabContainer" aria-hidden="false">
+    <button id="btnHome" class="fab-refresh" aria-label="Ir a inicio" title="Inicio" onclick="selectPestana('home')"
+                    style="background:linear-gradient(180deg,#1e88ff,#1565c0); color:#fff;">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </button>
+
+    <button id="btnRecargarFab" class="fab-refresh" aria-label="Recargar información" title="Recargar" onclick="verificarSession()"
+                    style="background: linear-gradient(180deg,#c0ff03,#9AC31C); color:#fff;">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6c1.66 0 3.14.69 4.24 1.76L13 12h7V5l-2.35 1.35z"/>
+        </svg>
+    </button>
+</div>
 
 
 <script src="/js/modulos/comun.js"></script>
