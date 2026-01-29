@@ -67,6 +67,13 @@ function selectSubPestana(id){
     $("#lista_" + id).show();
     console.log("Mostrando subpestaña: ", pdfsGlobales[id]);
 
+    // Resaltar el item del footer que se presionó y quitar el resaltado a los demás
+    try{
+        document.querySelectorAll('.footer-item').forEach(el => el.classList.remove('active'));
+        const footerItem = document.querySelector(`#pie_${id} .footer-item`);
+        if(footerItem) footerItem.classList.add('active');
+    }catch(e){ console.warn('Error actualizando estado activo del footer', e); }
+
     // <div class="pdf-footer">
     //                 <a href="#" class="btn btn-sm btn-primary" onclick="descargarDocumento('${doc.ruta}'); return false;">Descargar</a>
     //             </div>
