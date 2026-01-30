@@ -41,7 +41,7 @@ function selectPestana(id,idReserva){
     else{
         $("#btnHome").show()
         construirDOMPDFS(idReserva)
-        selectSubPestana('home')
+        selectSubPestana('documentos')
         $("#pestana_home").hide()
         $("#pestana_reserva").show()
         $("#footer_home").show()
