@@ -1,5 +1,5 @@
 // const api_trip = "http://localhost:5006"
-const api_trip = "https://apibeta.mvevip.com/api/v1/reservas"
+const api_trip = "https://68rpfit7kh.execute-api.us-west-2.amazonaws.com"
 // es igual que el de reservas brow
 var usuario = JSON.parse(localStorage.getItem("usuario"));
 var token = usuario.token || null
