@@ -41,6 +41,18 @@ app.controller('LoginController', ['$scope', function($scope) {
     $scope.message = 'Bienvenido al login';
 }]);
 
+// Ocultar header en rutas sin sesión
+app.run(['$rootScope', function($rootScope) {
+    var rutasSinHeader = ['/login', '/'];
+    $rootScope.$on('$routeChangeSuccess', function(e, current) {
+        var path = current && current.$$route && current.$$route.originalPath;
+        var header = document.querySelector('header');
+        if (header) {
+            header.style.display = rutasSinHeader.indexOf(path) !== -1 ? 'none' : '';
+        }
+    });
+}]);
+
 
 
 
