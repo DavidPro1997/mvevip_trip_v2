@@ -557,6 +557,12 @@ function showReservaId(destinosArray) {
 
 // Complementos carousel
 function renderComplementos(idReserva){
+    const reservasServicios = [
+        {
+            idReserva: 364,
+            servicios: [0]
+        }
+    ]
     const container = document.getElementById('complementos_carousel');
     if(!container) return;
 
@@ -569,12 +575,12 @@ function renderComplementos(idReserva){
         { id: 'migratoria', title: 'Orientación Migratoria', desc: 'Acompañamos tu proceso de visa', img: 'https://imagenes.primicias.ec/files/image_480_270/uploads/2025/08/22/68a8a5691c2f2.jpeg'},
         { id: 'fast', title: 'Fast Track', desc: 'Evita Filas y ahorra tiempo', img: 'https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_971/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/k40dij9mmfu2c66b1lab/ServicioVIPdelAeropuertoInternacionaldeHangzhouXiaoshan.jpg'},
         { id: 'traslados', title: 'Traslados', desc: 'Aereopuerto ↔️ Hotel', img: 'https://media.tacdn.com/media/attractions-splice-spp-360x240/06/71/93/51.jpg'},
-        
-
-
     ];
 
-    const list = defaults;
+    const reservaServicioConfig = reservasServicios.find(r => String(r.idReserva) === String(idReserva));
+    const list = reservaServicioConfig
+        ? reservaServicioConfig.servicios.map(i => defaults[i]).filter(Boolean)
+        : defaults;
 
     container.innerHTML = list.map(it => `
         <div class="comp-card" role="button" tabindex="0" onclick="abrirChatWhatsApp('Hola equipo de reservas de Marketing Vip, quisiera adquerir el servicio complmentario de ${escapeHtml(String(it.title))} para mi reserva. Mi ID de reserva es: ${idReserva}')" onkeydown="if(event.key==='Enter') onComplementoClick('${escapeHtml(String(it.id))}')">
@@ -694,9 +700,13 @@ function mostrarModalBienvenida(nombre, p) {
         }
     }
 
-    // Imágenes
-    if (p.imagen1) { $('#modalImagen1').attr('src', p.imagen1).show(); }
-    if (p.imagen2) { $('#modalImagen2').attr('src', p.imagen2).show(); }
+    // Imágenes — imagen1 como fondo del modal, imagen2 en la fila del botón
+    var bgUrl = p.imagen1 || p.imagen2 || '';
+    if (bgUrl) {
+        $('#modalBgImagen').css('background-image', 'url(' + bgUrl + ')');
+    }
+    if (p.imagen1) { $('#modalImagen1').attr('src', p.imagen1); }
+    if (p.imagen2) { $('#modalImagen2').attr('src', p.imagen2); $('#modalImagen2Thumb').attr('src', p.imagen2).show(); }
 
     // Descripción del viaje
     if (p.descripcion) {
@@ -781,32 +791,96 @@ function renderTimeline() {
         return;
     }
 
-    var html = '';
+    // ── Agrupar por día (clave: "YYYY-MM-DD") ────────────────────────────────
+    var diasMap = {};   // { "2026-05-10": { label: "10 may 2026", acts: [...] } }
+    var diasOrden = []; // keys en orden
+
     actividadesGlobales.forEach(function(act) {
         var dt = (act.fechaInicio || '').replace(' ', 'T');
-        var d = new Date(dt);
-        var fecha = isNaN(d) ? (act.fechaInicio || '') :
-            d.toLocaleDateString('es', {day: '2-digit', month: 'short', year: 'numeric'});
-        var hora = isNaN(d) ? '' :
-            d.toLocaleTimeString('es', {hour: '2-digit', minute: '2-digit'});
-        var desc = act.descripcion || '';
-        if (desc.length > 220) desc = desc.substring(0, 217) + '\u2026';
+        var d  = new Date(dt);
+        var key, label;
+        if (!isNaN(d)) {
+            // key para agrupar (solo fecha)
+            key   = d.getFullYear() + '-' +
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0');
+            label = d.toLocaleDateString('es', {weekday:'long', day:'2-digit', month:'long', year:'numeric'});
+        } else {
+            key   = act.fechaInicio || 'sin-fecha';
+            label = act.fechaInicio || 'Sin fecha';
+        }
+        if (!diasMap[key]) {
+            diasMap[key] = { label: label, acts: [] };
+            diasOrden.push(key);
+        }
+        diasMap[key].acts.push(act);
+    });
+
+    // ── Construir HTML ────────────────────────────────────────────────────────
+    var html = '';
+    diasOrden.forEach(function(key, dIdx) {
+        var dia  = diasMap[key];
+        var nDia = dIdx + 1;
 
         html += '<div class="tl-item">';
-        html += '<div class="tl-dot-wrap"><div class="tl-dot">\uD83D\uDDFA\uFE0F</div></div>';
-        html += '<div class="tl-card">';
-        html +=   '<div class="tl-meta">';
-        html +=     '<span class="tl-date">' + escapeHtml(fecha) + '</span>';
-        if (hora)                           html += '<span class="tl-hora">\u00B7 ' + escapeHtml(hora) + '</span>';
-        if (act.ciudadNombre || act.ciudad) html += '<span class="tl-city">' + escapeHtml(act.ciudadNombre || act.ciudad) + '</span>';
-        html +=   '</div>';
-        if (act.nombre)       html += '<div class="tl-title">' + escapeHtml(act.nombre) + '</div>';
-        if (desc)             html += '<div class="tl-desc">' + escapeHtml(desc) + '</div>';
-        if (act.indicaciones) html += '<div class="tl-note">\uD83D\uDCCC ' + escapeHtml(act.indicaciones) + '</div>';
-        if (act.proveedor)    html += '<div class="tl-proveedor">\uD83C\uDFE2 ' + escapeHtml(act.proveedor) + '</div>';
-        if (act.docs && act.docs.length)
-            html += '<div class="tl-docs-count">\uD83D\uDCCE ' + act.docs.length + ' documento' + (act.docs.length > 1 ? 's' : '') + '</div>';
-        html += '</div></div>';
+        // Dot del día
+        html += '<div class="tl-dot-wrap"><div class="tl-dot" style="background:#eef7d6;color:#6a9a10;border:2px solid #c8e870;font-weight:800;font-size:11px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;letter-spacing:.5px;">D' + nDia + '</div></div>';
+        html += '<div class="tl-card" style="width:100%;background:#fafcf5;border:1px solid #eef3e0;border-radius:12px;padding:14px 16px;">';
+
+        // Cabecera del día
+        html += '<div style="font-size:12px;font-weight:700;color:#7aaa1a;margin-bottom:12px;text-transform:capitalize;letter-spacing:.3px;">'
+              + '\uD83D\uDCC5 ' + escapeHtml(dia.label) + '</div>';
+
+        // Lista de actividades del día
+        dia.acts.forEach(function(act) {
+            var dt2  = (act.fechaInicio || '').replace(' ', 'T');
+            var d2   = new Date(dt2);
+            var hora = (!isNaN(d2))
+                ? d2.toLocaleTimeString('es', {hour: '2-digit', minute: '2-digit'})
+                : '';
+            var desc = act.descripcion || '';
+            if (desc.length > 220) desc = desc.substring(0, 217) + '\u2026';
+
+            html += '<div style="display:flex;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;">';
+
+            // Hora badge
+            html += '<div style="flex-shrink:0;min-width:48px;padding-top:2px;text-align:center;">';
+            if (hora) {
+                html += '<span style="display:inline-block;background:#eef7d6;color:#6a9a10;border-radius:8px;padding:4px 7px;font-size:11px;font-weight:700;line-height:1.3;letter-spacing:.3px;">' + escapeHtml(hora) + '</span>';
+            } else {
+                html += '<span style="font-size:11px;color:#ccc;font-style:italic;">--:--</span>';
+            }
+            html += '</div>';
+
+            // Detalle actividad
+            html += '<div style="flex:1;min-width:0;">';
+            // Nombre de la actividad — protagonista, con miniatura si hay imagen
+            var imgAct = act.urlFirmada || act.urlImagen || '';
+            if (act.nombre) {
+                html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">';
+                if (imgAct) {
+                    html += '<img src="' + escapeHtml(imgAct) + '" alt="" style="width:36px;height:36px;object-fit:cover;border-radius:8px;flex-shrink:0;opacity:.9;">';
+                }
+                html += '<span style="font-weight:700;font-size:14px;color:#2d3a1a;line-height:1.3;">' + escapeHtml(act.nombre) + '</span>';
+                html += '</div>';
+            }
+            // Ciudad — sutil, debajo del nombre
+            if (act.ciudadNombre || act.ciudad)
+                html += '<div style="font-size:11px;color:#b0b8a0;margin-bottom:4px;letter-spacing:.2px;">\uD83D\uDCCD ' + escapeHtml(act.ciudadNombre || act.ciudad) + '</div>';
+            if (desc)
+                html += '<div class="tl-desc" style="font-size:12px;color:#5a6a4a;line-height:1.5;">' + escapeHtml(desc) + '</div>';
+            if (act.indicaciones)
+                html += '<div style="font-size:11px;color:#6a7a60;background:#f4f5f2;border-radius:6px;padding:5px 8px;margin-top:5px;">\uD83D\uDCCC ' + escapeHtml(act.indicaciones) + '</div>';
+            if (act.proveedor)
+                html += '<div style="font-size:11px;color:#8a9a7a;margin-top:2px;">\uD83C\uDFE2 ' + escapeHtml(act.proveedor) + '</div>';
+            if (act.docs && act.docs.length)
+                html += '<div style="font-size:11px;color:#a0b080;margin-top:3px;">\uD83D\uDCCE ' + act.docs.length + ' documento' + (act.docs.length > 1 ? 's' : '') + '</div>';
+            html += '</div>';
+
+            html += '</div>'; // fin actividad
+        });
+
+        html += '</div></div>'; // fin tl-card + tl-item
     });
 
     inner.innerHTML = html;

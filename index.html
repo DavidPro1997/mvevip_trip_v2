@@ -205,58 +205,74 @@
     <!-- Modal Bienvenida Personalizada -->
     <div class="modal fade" id="modalBienvenida" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="false" style="z-index:99999;">
         <div class="modal-dialog modal-dialog-centered" role="document"
-             style="max-width:480px;width:92%;margin:auto;">
+             style="max-width:460px;width:92%;margin:auto;">
             <div class="modal-content"
-                 style="background:linear-gradient(180deg,#cdf0bc 0%,#c5f277 20%,#9AC31C 100%);
-                        border:1px solid rgba(154,195,28,0.3);border-radius:20px;overflow:hidden;
+                 style="position:relative;background:#111;
+                        border:none;
+                        border-radius:24px;
+                        overflow:hidden;
+                        box-shadow:0 40px 100px rgba(0,0,0,0.45);
                         max-height:92dvh;display:flex;flex-direction:column;">
 
-                <!-- Logos -->
-                <div style="display:flex;justify-content:center;align-items:center;gap:16px;padding:20px 20px 0;flex-shrink:0;">
-                    <img id="modalLogoPersonalizado" src="" alt="Logo"
-                         style="height:52px;object-fit:contain;display:none;border-radius:10px;">
-                    <img src="img/logo_sticky.png" alt="Marketing Vip"
-                         style="height:42px;object-fit:contain;">
-                </div>
+                <!-- Imagen de fondo dinámica -->
+                <div id="modalBgImagen"
+                     style="position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0;"></div>
+                <!-- Overlay oscuro con gradiente -->
+                <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.88) 100%);z-index:1;"></div>
 
-                <!-- Saludo -->
-                <div style="text-align:center;padding:14px 20px 8px;flex-shrink:0;">
-                    <h2 id="modalNombreBienvenida"
-                        style="font-size:clamp(1.1rem,4vw,1.4rem);font-weight:900;color:#3a5a0a;margin-bottom:6px;line-height:1.3;"></h2>
-                    <p style="color:#4a5240;font-size:clamp(0.8rem,3vw,0.9rem);margin:0;line-height:1.5;">
-                        ✨ Mira lo que <strong style="color:#2d3a1a;">Marketing Vip</strong> tiene preparado especialmente para ti en este viaje 🌍
-                    </p>
-                </div>
+                <!-- Contenido (encima del overlay) -->
+                <div style="position:relative;z-index:2;display:flex;flex-direction:column;max-height:92dvh;">
 
-                <!-- Cuerpo con scroll -->
-                <div style="overflow-y:auto;flex:1 1 auto;min-height:0;padding:0 20px 4px;display:flex;flex-direction:column;gap:10px;">
-
-                    <!-- Imágenes -->
-                    <div id="modalImagenesContainer" style="display:flex;gap:8px;">
-                        <img id="modalImagen1" src="" alt="Imagen 1"
-                             style="flex:1;width:50%;height:clamp(100px,28vw,160px);object-fit:cover;border-radius:12px;display:none;">
-                        <img id="modalImagen2" src="" alt="Imagen 2"
-                             style="flex:1;width:50%;height:clamp(100px,28vw,160px);object-fit:cover;border-radius:12px;display:none;">
+                    <!-- Logos -->
+                    <div style="display:flex;justify-content:center;align-items:center;gap:14px;padding:28px 24px 0;flex-shrink:0;">
+                        <img id="modalLogoPersonalizado" src="" alt="Logo"
+                             style="height:48px;object-fit:contain;display:none;border-radius:10px;">
+                        <img src="img/logo_sticky.png" alt="Marketing Vip"
+                             style="height:38px;object-fit:contain;">
                     </div>
 
-                    <!-- Descripción del viaje -->
-                    <div id="modalDescripcionViaje"
-                         style="display:none;background:rgba(255,255,255,0.45);border-radius:12px;padding:12px 14px;">
-                        <p id="modalDescripcionTexto"
-                           style="color:#3a4a2a;font-size:clamp(0.78rem,3vw,0.88rem);line-height:1.6;margin:0;white-space:pre-wrap;"></p>
+                    <!-- Saludo -->
+                    <div style="text-align:center;padding:18px 24px 10px;flex-shrink:0;">
+                        <h2 id="modalNombreBienvenida"
+                            style="font-size:clamp(1.1rem,4vw,1.4rem);font-weight:800;color:#ffffff;margin-bottom:8px;line-height:1.3;letter-spacing:-.3px;text-shadow:0 2px 12px rgba(0,0,0,0.4);"></h2>
+                        <p style="color:rgba(255,255,255,0.7);font-size:clamp(0.78rem,3vw,0.85rem);margin:0;line-height:1.5;font-weight:400;">
+                            Mira lo que hemos preparado especialmente para ti en este viaje ✦
+                        </p>
                     </div>
 
-                </div>
+                    <!-- Cuerpo con scroll -->
+                    <div style="overflow-y:auto;flex:1 1 auto;min-height:0;padding:10px 20px 4px;display:flex;flex-direction:column;gap:10px;">
 
-                <!-- Botón cerrar -->
-                <div style="padding:10px 20px 22px;text-align:center;flex-shrink:0;">
-                    <button onclick="$('#modalBienvenida').modal('hide')"
-                            style="background:linear-gradient(135deg,#9AC31C,#7aa315);color:#fff;border:none;
-                                   padding:11px 36px;border-radius:999px;font-weight:800;
-                                   font-size:clamp(0.85rem,3vw,1rem);cursor:pointer;
-                                   box-shadow:0 8px 24px rgba(154,195,28,0.35);letter-spacing:.5px;">
-                        ¡Empecemos este viaje! 🚀
-                    </button>
+                        <!-- Imágenes — img1 solo como bg -->
+                        <div id="modalImagenesContainer" style="display:none;">
+                            <img id="modalImagen1" src="" alt="Imagen 1" style="display:none;">
+                            <img id="modalImagen2" src="" alt="Imagen 2" style="display:none;">
+                        </div>
+
+                        <!-- Descripción del viaje -->
+                        <div id="modalDescripcionViaje"
+                             style="display:none;background:rgba(255,255,255,0.1);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(8px);">
+                            <p id="modalDescripcionTexto"
+                               style="color:rgba(255,255,255,0.88);font-size:clamp(0.78rem,3vw,0.85rem);line-height:1.75;margin:0;white-space:pre-wrap;font-weight:400;"></p>
+                        </div>
+
+                    </div>
+
+                    <!-- Fila inferior: imagen2 izquierda + botón derecha -->
+                    <div style="padding:16px 24px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;">
+                        <img id="modalImagen2Thumb" src="" alt="Imagen"
+                             style="display:none;width:120px;height:80px;object-fit:cover;border-radius:12px;flex-shrink:0;border:1px solid rgba(255,255,255,0.2);">
+                        <div style="flex:1;text-align:right;">
+                            <button onclick="$('#modalBienvenida').modal('hide')"
+                                    style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);
+                                           padding:12px 32px;border-radius:999px;font-weight:700;
+                                           font-size:clamp(0.82rem,3vw,0.95rem);cursor:pointer;
+                                           backdrop-filter:blur(10px);letter-spacing:.3px;">
+                                Empecemos 🚀
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
