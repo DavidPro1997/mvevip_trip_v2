@@ -1,4 +1,8 @@
 var reservasGlobales = []
+var _audioPersonalizado = null;
+var _musicaReproduciendo = false;
+var actividadesGlobales = [];
+
 function cargarInformacion(){
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     reservasGlobales = JSON.parse(localStorage.getItem("reservas"));
@@ -11,6 +15,19 @@ function cargarInformacion(){
         selectPestana('home')
         quitarFooter()
         $("#tituloPrincipal").html("¡HOLA " + usuario.nombres.toUpperCase() + " " + usuario.apellidos.toUpperCase() + "!");
+        // === LOG DEBUG personalizacion ===
+        console.log("[DEBUG] reservasGlobales completo:", JSON.parse(JSON.stringify(reservasGlobales)));
+        reservasGlobales.forEach(function(r, i){
+            console.log("[DEBUG] reserva[" + i + "] idReserva=" + r.idReserva + " | personalizacion=", r.personalizacion);
+        });
+        // Mostrar modal de bienvenida personalizada si alguna reserva tiene datos
+        var personalizacionData = reservasGlobales.find(function(r){
+            return r.personalizacion && (r.personalizacion.imagen1 || r.personalizacion.imagen2 || r.personalizacion.logo || r.personalizacion.musica);
+        });
+        console.log("[DEBUG] personalizacionData encontrado:", personalizacionData ? personalizacionData.personalizacion : "NINGUNO");
+        if (personalizacionData) {
+            mostrarModalBienvenida(usuario.nombres, personalizacionData.personalizacion);
+        }
     }
     else{
         sinSession()
@@ -54,7 +71,7 @@ function selectPestana(id,idReserva){
 
 
 function selectSubPestana(id){
-    if(id == 'home'){
+    if(id == 'home' || id == 'actividades'){
         $("#pdfViewer").hide()
     }
     else{
@@ -73,6 +90,9 @@ function selectSubPestana(id){
         const footerItem = document.querySelector(`#pie_${id} .footer-item`);
         if(footerItem) footerItem.classList.add('active');
     }catch(e){ console.warn('Error actualizando estado activo del footer', e); }
+
+    // Timeline para actividades — muestra itinerario, no el carrusel de PDFs
+    if(id === 'actividades'){ renderTimeline(); return; }
 
     // <div class="pdf-footer">
     //                 <a href="#" class="btn btn-sm btn-primary" onclick="descargarDocumento('${doc.ruta}'); return false;">Descargar</a>
@@ -365,121 +385,56 @@ function construirDOMPDFS(idReserva){
 
 
 
-    // EXTRAS
+    // EXTRAS — categoría determinada por el TIPO DE SERVICIO del extra (texto),
+    // no por el idTipoDocumento del archivo (que puede ser factura=19 u otro)
+    var BILLING_TIPOS = [15, 16, 17, 18, 19];
+    function _pushExtra(documento, doc) {
+        if (!doc.urlFirmada) return;
+        // Ignorar documentos de facturación interna
+        if (BILLING_TIPOS.indexOf(Number(doc.idTipoDocumento)) >= 0) return;
+        var tipoTexto = (documento.tipoDocumento || '').toLowerCase();
+        var nombres   = documento.nombres + ' ' + documento.apellidos;
+        if (tipoTexto.indexOf('sim') >= 0) {
+            $("#pie_sim").show();
+            pdfsGlobales.sim.push({ url: doc.urlFirmada, ruta: doc.ruta, titulo: '📲 SIM - ' + nombres, imagen: 'img/portadas/sim.jpg' });
+        } else if (tipoTexto.indexOf('board') >= 0) {
+            $("#pie_boarding").show();
+            pdfsGlobales.boarding.push({ url: doc.urlFirmada, ruta: doc.ruta, titulo: '📄 Boarding Pass - ' + nombres, imagen: 'img/portadas/boarding.jpg' });
+        } else if (tipoTexto.indexOf('seguro') >= 0 || tipoTexto.indexOf('insurance') >= 0) {
+            $("#pie_seguro").show();
+            pdfsGlobales.seguro.push({ url: doc.urlFirmada, ruta: doc.ruta, titulo: '🔒 Seguro de viajes - ' + nombres, imagen: 'img/portadas/seguro.jpg' });
+        } else {
+            $("#pie_otro").show();
+            pdfsGlobales.extras.push({ url: doc.urlFirmada, ruta: doc.ruta, titulo: '📄 Documento Adicional - ' + nombres, imagen: 'img/portadas/extras.jpg' });
+        }
+    }
+
     if(element.documentos.length>0){
         element.documentos.forEach(documento => {
             if(Number(documento.mostrarTrip) == 1){
                 if(billeteraConjuntaUsuario){
-                    documento.docs.forEach(doc => {
-                        if(doc.idTipoDocumento == 5){
-                            $("#pie_sim").show()
-                            let titulo = "📲 SIM -"+documento.nombres +" "+ documento.apellidos;
-                            pdfsGlobales.sim.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/sim.jpg"
-                            })
-                        }
-
-                        // BOARDING
-                        if(doc.idTipoDocumento == 3){
-                            $("#pie_boarding").show()
-                            let titulo = "📄 Boarding Pass -"+documento.nombres +" "+ documento.apellidos;
-                            pdfsGlobales.boarding.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/boarding.jpg"
-                            })
-                        }
-
-                        // SEGURO VIAJE
-                        if(doc.idTipoDocumento == 4){
-                            $("#pie_seguro").show()
-                            let titulo = "🔒 Seguro de viajes -"+documento.nombres +" "+ documento.apellidos;
-                            pdfsGlobales.seguro.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/seguro.jpg"
-                            })
-                        }
-
-
-                        // OTRO
-                        if(doc.idTipoDocumento == 99){
-                            $("#pie_otro").show()
-                            let titulo = "📄 Documento Adicional -"+documento.nombres +" "+ documento.apellidos;
-                            pdfsGlobales.extras.push({
-                                url: doc.urlFirmada,
-                                ruta: doc.ruta,
-                                titulo: titulo,
-                                imagen: "img/portadas/extras.jpg"
-                            })
-                        }
-                        
-                    });
+                    documento.docs.forEach(doc => { _pushExtra(documento, doc); });
                 }
                 else{
-                    if(Number(documento.idViajero) !== Number(usuario.idViajero)){
-                        documento.docs.forEach(doc => {
-                            if(doc.idTipoDocumento == 5){
-                                $("#pie_sim").show()
-                                let titulo = "📲 SIM -"+documento.nombres +" "+ documento.apellidos;
-                                pdfsGlobales.sim.push({
-                                    url: doc.urlFirmada,
-                                    ruta: doc.ruta,
-                                    titulo: titulo,
-                                    imagen: "img/portadas/sim.jpg"
-                                })
-                            }
-
-                            // BOARDING
-                            if(doc.idTipoDocumento == 3){
-                                $("#pie_boarding").show()
-                                let titulo = "📄 Boarding Pass -"+documento.nombres +" "+ documento.apellidos;
-                                pdfsGlobales.boarding.push({
-                                    url: doc.urlFirmada,
-                                    ruta: doc.ruta,
-                                    titulo: titulo,
-                                    imagen: "img/portadas/boarding.jpg"
-                                })
-                            }
-
-                            // SEGURO VIAJE
-                            if(doc.idTipoDocumento == 4){
-                                $("#pie_seguro").show()
-                                let titulo = "🔒 Seguro de viajes -"+documento.nombres +" "+ documento.apellidos;
-                                pdfsGlobales.seguro.push({
-                                    url: doc.urlFirmada,
-                                    ruta: doc.ruta,
-                                    titulo: titulo,
-                                    imagen: "img/portadas/seguro.jpg"
-                                })
-                            }
-
-
-                            // OTRO
-                            if(doc.idTipoDocumento == 99){
-                                $("#pie_otro").show()
-                                let titulo = "📄 Documento Adicional -"+documento.nombres +" "+ documento.apellidos;
-                                pdfsGlobales.extras.push({
-                                    url: doc.urlFirmada,
-                                    ruta: doc.ruta,
-                                    titulo: titulo,
-                                    imagen: "img/portadas/extras.jpg"
-                                })
-                            }
-                            
-                        });
+                    if(Number(documento.idViajero) === Number(usuario.idViajero)){
+                        documento.docs.forEach(doc => { _pushExtra(documento, doc); });
                     }
                 }
-              
             }
             
         });
         
+    }
+
+    // ACTIVIDADES
+    actividadesGlobales = [];
+    if(Array.isArray(element.actividades) && element.actividades.length > 0){
+        actividadesGlobales = element.actividades.slice().sort(function(a, b){
+            return new Date((a.fechaInicio||'').replace(' ','T')) - new Date((b.fechaInicio||'').replace(' ','T'));
+        });
+        $("#pie_actividades").show();
+    } else {
+        $("#pie_actividades").hide();
     }
 
 }
@@ -610,7 +565,7 @@ function renderComplementos(idReserva){
         { id: 'seguro', title: 'Seguro de Viaje', desc: 'Protección durante el viaje', img: 'https://drakarelia.ec/mt-content/uploads/2024/01/seguros-medicos-1024x679.webp' },
         { id: 'actividades', title: 'Actividades', desc: 'Tours y experiencias', img: 'https://thumbs.dreamstime.com/b/elegante-experiencia-gastron%C3%B3mica-de-negocios-chef-profesional-que-prepara-comida-gourmet-en-una-estaci%C3%B3n-personal-con-vidrios-y-391222890.jpg' },
         { id: 'vip', title: 'Salas Vip', desc: 'Comodidad y Exclusividad', img: 'https://aeronotas.com/wp-content/uploads/2022/09/Salon-Admirals-Club-de-AA.jpg' },
-        { id: 'dias_extra', title: 'Días Extra', desc: 'Extiende tu estadía', img: 'https://confiabogado.com/blog/wp-content/uploads/2024/01/horas-extras-vacaciones.jpg' },
+        { id: 'dias_extra', title: 'Días Extra', desc: 'Extiende tu estadía', img: 'https://www.clarin.com/img/2021/06/11/o3BCiMjVA_1256x620__1.jpg' },
         { id: 'migratoria', title: 'Orientación Migratoria', desc: 'Acompañamos tu proceso de visa', img: 'https://imagenes.primicias.ec/files/image_480_270/uploads/2025/08/22/68a8a5691c2f2.jpeg'},
         { id: 'fast', title: 'Fast Track', desc: 'Evita Filas y ahorra tiempo', img: 'https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_971/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/k40dij9mmfu2c66b1lab/ServicioVIPdelAeropuertoInternacionaldeHangzhouXiaoshan.jpg'},
         { id: 'traslados', title: 'Traslados', desc: 'Aereopuerto ↔️ Hotel', img: 'https://media.tacdn.com/media/attractions-splice-spp-360x240/06/71/93/51.jpg'},
@@ -721,3 +676,138 @@ function setupPdfIndicators(){
 
 // Inicializar en carga
 try{ setupPdfIndicators(); }catch(e){console.warn('Error inicializando indicadores PDF', e)}
+
+// ── Personalización ──────────────────────────────────────────────────────────
+function mostrarModalBienvenida(nombre, p) {
+    // Saludo
+    $('#modalNombreBienvenida').text('¡Hola, ' + nombre + '! 🌟');
+
+    // Logo personalizado — modal y header
+    if (p.logo) {
+        $('#modalLogoPersonalizado').attr('src', p.logo).show();
+        // Logo en header del index
+        var headerLogo = document.getElementById('logoPersonalizadoHeader');
+        if (headerLogo) {
+            headerLogo.src = p.logo;
+            headerLogo.style.display = 'block';
+            setTimeout(function(){ headerLogo.style.opacity = '1'; }, 50);
+        }
+    }
+
+    // Imágenes
+    if (p.imagen1) { $('#modalImagen1').attr('src', p.imagen1).show(); }
+    if (p.imagen2) { $('#modalImagen2').attr('src', p.imagen2).show(); }
+
+    // Descripción del viaje
+    if (p.descripcion) {
+        $('#modalDescripcionTexto').text(p.descripcion);
+        $('#modalDescripcionViaje').show();
+    } else {
+        $('#modalDescripcionViaje').hide();
+    }
+
+    // Música — asignar fuente y mostrar botón FAB
+    if (p.musica) {
+        var audio = document.getElementById('audioPersonalizado');
+        audio.src = p.musica;
+        _audioPersonalizado = audio;
+        $('#btnMusicaFab').show();
+    }
+
+    // Al cerrar el modal el usuario YA interactuó → el navegador permite el play
+    $('#modalBienvenida').off('hidden.bs.modal.musica').on('hidden.bs.modal.musica', function(){
+        if (_audioPersonalizado && !_musicaReproduciendo) {
+            _audioPersonalizado.play().then(function(){
+                _musicaReproduciendo = true;
+                actualizarBotonMusica();
+            }).catch(function(e){
+                console.warn('[Música] No se pudo reproducir:', e);
+            });
+        }
+    });
+
+    setTimeout(function(){
+        $('#modalBienvenida').modal('show');
+
+        // Intento de autoplay inmediato (puede ser bloqueado por políticas del navegador;
+        // si falla, la música arrancará cuando el usuario cierre el modal)
+        if (_audioPersonalizado) {
+            _audioPersonalizado.play().then(function(){
+                _musicaReproduciendo = true;
+                actualizarBotonMusica();
+            }).catch(function(){
+                console.log('[Música] Autoplay bloqueado; se reproducirá al cerrar el modal.');
+            });
+        }
+    }, 800);
+}
+
+function toggleMusica() {
+    if (!_audioPersonalizado) return;
+    if (_musicaReproduciendo) {
+        _audioPersonalizado.pause();
+        _musicaReproduciendo = false;
+    } else {
+        _audioPersonalizado.play().catch(function(){});
+        _musicaReproduciendo = true;
+    }
+    actualizarBotonMusica();
+}
+
+function actualizarBotonMusica() {
+    var iconEl = document.getElementById('iconMusica');
+    if (!iconEl) return;
+    if (_musicaReproduciendo) {
+        // ícono pausa
+        iconEl.innerHTML = '<path fill="currentColor" d="M6 19h4V5H6zm8-14v14h4V5z"/>';
+        document.getElementById('btnMusicaFab').title = 'Pausar música';
+    } else {
+        // ícono play
+        iconEl.innerHTML = '<path fill="currentColor" d="M8 5v14l11-7z"/>';
+        document.getElementById('btnMusicaFab').title = 'Reproducir música';
+    }
+}
+
+
+// ── Timeline de actividades ───────────────────────────────────────────────────
+function renderTimeline() {
+    var container = document.getElementById('lista_actividades');
+    if (!container) return;
+    var inner = container.querySelector('.tl-inner');
+    if (!inner) return;
+
+    if (!actividadesGlobales.length) {
+        inner.innerHTML = '<p style="color:#888;text-align:center;padding:24px;">No hay actividades registradas.</p>';
+        return;
+    }
+
+    var html = '';
+    actividadesGlobales.forEach(function(act) {
+        var dt = (act.fechaInicio || '').replace(' ', 'T');
+        var d = new Date(dt);
+        var fecha = isNaN(d) ? (act.fechaInicio || '') :
+            d.toLocaleDateString('es', {day: '2-digit', month: 'short', year: 'numeric'});
+        var hora = isNaN(d) ? '' :
+            d.toLocaleTimeString('es', {hour: '2-digit', minute: '2-digit'});
+        var desc = act.descripcion || '';
+        if (desc.length > 220) desc = desc.substring(0, 217) + '\u2026';
+
+        html += '<div class="tl-item">';
+        html += '<div class="tl-dot-wrap"><div class="tl-dot">\uD83D\uDDFA\uFE0F</div></div>';
+        html += '<div class="tl-card">';
+        html +=   '<div class="tl-meta">';
+        html +=     '<span class="tl-date">' + escapeHtml(fecha) + '</span>';
+        if (hora)                           html += '<span class="tl-hora">\u00B7 ' + escapeHtml(hora) + '</span>';
+        if (act.ciudadNombre || act.ciudad) html += '<span class="tl-city">' + escapeHtml(act.ciudadNombre || act.ciudad) + '</span>';
+        html +=   '</div>';
+        if (act.nombre)       html += '<div class="tl-title">' + escapeHtml(act.nombre) + '</div>';
+        if (desc)             html += '<div class="tl-desc">' + escapeHtml(desc) + '</div>';
+        if (act.indicaciones) html += '<div class="tl-note">\uD83D\uDCCC ' + escapeHtml(act.indicaciones) + '</div>';
+        if (act.proveedor)    html += '<div class="tl-proveedor">\uD83C\uDFE2 ' + escapeHtml(act.proveedor) + '</div>';
+        if (act.docs && act.docs.length)
+            html += '<div class="tl-docs-count">\uD83D\uDCCE ' + act.docs.length + ' documento' + (act.docs.length > 1 ? 's' : '') + '</div>';
+        html += '</div></div>';
+    });
+
+    inner.innerHTML = html;
+}

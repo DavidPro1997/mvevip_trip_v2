@@ -1,0 +1,649 @@
+{
+    "abonos": [],
+    "actividades": [
+        {
+            "ciudad": "CTG",
+            "ciudadNombre": "CARTAGENA",
+            "descripcion": "Disfruta de un increíble tour a Isla Barú, una de las joyas del Caribe colombiano. Relájate en sus playas de arena blanca y aguas cristalinas, ideales para nadar, tomar el sol y desconectarte del estrés. El recorrido incluye transporte desde Cartagena, almuerzo típico y acceso a zonas exclusivas de playa. Además, tendrás tiempo libre para explorar, tomar fotografías",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-20",
+                    "fechaExpiracion": "2026-05-21",
+                    "idActividadReserva": 8,
+                    "idDocumento": 327,
+                    "idDocumentoActividad": 2,
+                    "idTipoDocumento": 16,
+                    "ruta": "PRUEBAS/RESERVAS/ACTIVIDAD/FACTURA_ACTIVIDAD_e58a1a2a.pdf",
+                    "tipoDocumento": "Factura Actividad",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/ACTIVIDAD/FACTURA_ACTIVIDAD_e58a1a2a.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=xrAmDCnCYBZV2HJ%2B5Y0okOvjl04%3D&Expires=1779455876"
+                },
+                {
+                    "fechaCreacion": "2026-04-24",
+                    "fechaExpiracion": "2026-05-25",
+                    "idActividadReserva": 8,
+                    "idDocumento": 1153,
+                    "idDocumentoActividad": 4,
+                    "idTipoDocumento": 16,
+                    "ruta": "PRUEBAS/RESERVAS/ACTIVIDAD/FACTURA_ACTIVIDAD_214af95d.pdf",
+                    "tipoDocumento": "Factura Actividad",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/ACTIVIDAD/FACTURA_ACTIVIDAD_214af95d.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=qGGn6lUxKJnnCfid3b%2FCOXpBw2c%3D&Expires=1779822179"
+                }
+            ],
+            "fechaInicio": "2025-07-04 16:59:00",
+            "fechaMaximaPago": null,
+            "fechaPago": null,
+            "forma_pago": null,
+            "idActividad": "5",
+            "idActividadReserva": 8,
+            "idFormaPago": null,
+            "idProveedor": 9,
+            "idReserva": 3,
+            "imagen": "PRUEBAS/RESERVAS/ACTIVIDADES/CTG/baru.jpg",
+            "indicaciones": null,
+            "nombre": "Baru",
+            "numReservaProveedor": "123456",
+            "observaciones": null,
+            "observacionesPago": null,
+            "proveedor": "Rate",
+            "urgentePago": 0,
+            "valorAproximado": "50.00",
+            "valorReal": "0.00"
+        },
+        {
+            "ciudad": "CTG",
+            "ciudadNombre": "CARTAGENA",
+            "descripcion": "Vive una experiencia completa con nuestro tour a Isla Barú y visita al Oceanario. Comienza el día con un viaje en lancha desde Cartagena hacia la paradisíaca Isla Barú, donde podrás relajarte en playas de arena blanca y mar\r\nturquesa. Luego, disfruta de una visita al Oceanario de las Islas del Rosario,\r\ndonde conocerás de cerca la vida marina del Caribe: peces tropicales,\r\ntiburones, tortugas y más.\r\nNO INCLUYE: Entrada al Oceanario 40.000 cop/ 10 usd por persona, gastos\r\nno especificados",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-24",
+                    "fechaExpiracion": "2026-05-25",
+                    "idActividadReserva": 9,
+                    "idDocumento": 1150,
+                    "idDocumentoActividad": 3,
+                    "idTipoDocumento": 16,
+                    "ruta": "PRUEBAS/RESERVAS/ACTIVIDAD/FACTURA_ACTIVIDAD_5eeb02da.pdf",
+                    "tipoDocumento": "Factura Actividad",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/ACTIVIDAD/FACTURA_ACTIVIDAD_5eeb02da.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=4XPHJVJAOrSs0CC%2Fhd%2BHth96uZg%3D&Expires=1779822179"
+                }
+            ],
+            "fechaInicio": "2025-07-04 21:02:00",
+            "fechaMaximaPago": null,
+            "fechaPago": null,
+            "forma_pago": "BGR",
+            "idActividad": "3",
+            "idActividadReserva": 9,
+            "idFormaPago": 12,
+            "idProveedor": 10,
+            "idReserva": 3,
+            "imagen": "PRUEBAS/RESERVAS/ACTIVIDADES/CTG/baru_oscenario.jpg",
+            "indicaciones": null,
+            "nombre": "Baru + oceanario ",
+            "numReservaProveedor": "12345",
+            "observaciones": null,
+            "observacionesPago": null,
+            "proveedor": "Maya Mobile ",
+            "urgentePago": 0,
+            "valorAproximado": "320.00",
+            "valorReal": "320.00"
+        }
+    ],
+    "asesor": null,
+    "asesorCelular": null,
+    "asesorCorreo": "dproano@mvevip.com",
+    "autos": [
+        {
+            "cedula": "1001756582",
+            "ciudad": "CTG",
+            "ciudadDevolucion": "CTG",
+            "ciudadNombre": "CARTAGENA",
+            "ciudadNombreDevolucion": "CARTAGENA",
+            "descripcion": "Un auto compacto es un vehículo de tamaño reducido diseñado para ofrecer eficiencia, facilidad de manejo y bajo consumo de combustible. Es ideal para uso urbano, ya que permite moverse con agilidad en el tráfico y estacionar con mayor facilidad, manteniendo comodidad básica para pocos pasajeros.",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-15",
+                    "fechaExpiracion": "2026-05-13",
+                    "idAutoReserva": 1,
+                    "idDocumento": 15,
+                    "idDocumentoAuto": 1,
+                    "idTipoDocumento": 12,
+                    "ruta": "PRUEBAS/RESERVAS/AUTOMOVIL/COMPR_AUTO_de1328a9.pdf",
+                    "tipoDocumento": "Autos",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/AUTOMOVIL/COMPR_AUTO_de1328a9.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=43niagsjf1fYJQjTr56GU6Kwp%2Bk%3D&Expires=1778773811"
+                },
+                {
+                    "fechaCreacion": "2026-04-27",
+                    "fechaExpiracion": "2026-05-25",
+                    "idAutoReserva": 1,
+                    "idDocumento": 1465,
+                    "idDocumentoAuto": 25,
+                    "idTipoDocumento": 18,
+                    "ruta": "PRUEBAS/RESERVAS/AUTOMOVIL/FACTURA_AUTO_6b12a7c0.pdf",
+                    "tipoDocumento": "Factura Autos",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/AUTOMOVIL/FACTURA_AUTO_6b12a7c0.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=xt0BC7BlEsXgTzft5DfEpoovDAw%3D&Expires=1779822179"
+                },
+                {
+                    "fechaCreacion": "2026-04-27",
+                    "fechaExpiracion": "2026-05-25",
+                    "idAutoReserva": 1,
+                    "idDocumento": 1499,
+                    "idDocumentoAuto": 26,
+                    "idTipoDocumento": 18,
+                    "ruta": "PRUEBAS/RESERVAS/AUTOMOVIL/FACTURA_AUTO_21812187.pdf",
+                    "tipoDocumento": "Factura Autos",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/AUTOMOVIL/FACTURA_AUTO_21812187.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=Wnt1uCGxUaKStC%2Bh9eVLK5Qy2fg%3D&Expires=1779822179"
+                }
+            ],
+            "fechaExpiracion": "2026-05-13",
+            "fechaExpiracion_rentadora": null,
+            "fechaMaximaPago": null,
+            "fechaPago": null,
+            "fin": "2025-07-05 01:08:00",
+            "forma_pago": "BANCO SOLIDARIO",
+            "idAuto": 1,
+            "idAutoReserva": 1,
+            "idConductor": 2,
+            "idFormaPago": 2,
+            "idProveedor": 41,
+            "idRentadora": 23,
+            "idReserva": 3,
+            "imagen": "PRUEBAS/RESERVAS/AUTOS/picanto.jpg",
+            "indicaciones": null,
+            "inicio": "2025-07-05 22:03:00",
+            "nombreAuto": "Auto Compacto",
+            "nombreConductor": "GUZMAN GUAJAN CARLOS HUMBERTO",
+            "numReservaProveedor": "156",
+            "observaciones": null,
+            "observacionesPago": null,
+            "proveedor": "BOOKOLIS ",
+            "rentadora": "DriveNow",
+            "ruta_imagen": null,
+            "urgentePago": 0,
+            "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/AUTOS/picanto.jpg?response-content-disposition=inline&response-content-type=image%2Fjpeg&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=kumWlqJZhVHQujf0UaHLtBLgYrg%3D&Expires=1778773814",
+            "urlFirmada_rentadora": null,
+            "valorAproximado": "75.00",
+            "valorReal": "69.00"
+        }
+    ],
+    "cli_apellido": "ASTUDILLO CAMACHO",
+    "cli_cedula": "1103726095",
+    "cli_ciudad": "LOJA",
+    "cli_nombre": "JENNY IBELIA",
+    "comentarioCancelacion": null,
+    "correos": [],
+    "descripcion": null,
+    "destino": [
+        {
+            "ciudad": "Tonsupa",
+            "fechaViaje": "2025-07-06 12:30:00",
+            "urlImagen": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/HOTELES_IMGS/IMAGEN_EC2_4f39f.JPG?response-content-disposition=inline&response-content-type=image%2Fjpeg&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=3IWmI68phMb5KExqkfz5EyPutPw%3D&Expires=1779823822"
+        }
+    ],
+    "documentos": [
+        {
+            "apellidos": "GUZMAN GUAJAN",
+            "billeteraConjunta": 1,
+            "cedula": "1001756582",
+            "docs": [
+                {
+                    "fechaExpiracion": "2026-05-13",
+                    "idDocFacturaExtra": 1,
+                    "idDocsReserva": 1,
+                    "idDocumento": 16,
+                    "idTipoDocumento": 3,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_1b82a541.pdf",
+                    "tipoDocumento": "Boarding Pass",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_1b82a541.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=btHVa%2BH6BC%2B%2BvsPtA7zyfQ6cp9Y%3D&Expires=1778773817"
+                },
+                {
+                    "fechaExpiracion": "2026-05-21",
+                    "idDocFacturaExtra": 2,
+                    "idDocsReserva": 1,
+                    "idDocumento": 331,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_FACTURA_89b5ea6a.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_FACTURA_89b5ea6a.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=oLfuDGHofvWBsdzUHBVl671wDYY%3D&Expires=1779455877"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 9,
+                    "idDocsReserva": 1,
+                    "idDocumento": 1471,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_672e8f49.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_672e8f49.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=e%2Ft%2BIh%2BegPHYO4AYcKAf1RWVsis%3D&Expires=1779822179"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 13,
+                    "idDocsReserva": 1,
+                    "idDocumento": 1490,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_d6195452.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_d6195452.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=EZ4FalEwL%2BzbN4DhPE7LOYMdYqc%3D&Expires=1779822179"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 16,
+                    "idDocsReserva": 1,
+                    "idDocumento": 1494,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_b7fb2d1c.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_b7fb2d1c.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=DKVqbHQqRHUdMiL5sdXzGQxG5kg%3D&Expires=1779822179"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 17,
+                    "idDocsReserva": 1,
+                    "idDocumento": 1497,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_04088b05.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_04088b05.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=jtRV1rII8C733zb%2FwEDAvJDypEI%3D&Expires=1779822179"
+                }
+            ],
+            "fechaMaximaPago": null,
+            "fechaPago": null,
+            "forma_pago": null,
+            "idDocsReserva": 1,
+            "idFormaPago": null,
+            "idProveedor": null,
+            "idReserva": 3,
+            "idTipoDocumento": 3,
+            "idViajero": 2,
+            "indicaciones": null,
+            "mostrarTrip": 1,
+            "nombres": "CARLOS HUMBERTO",
+            "numReservaProveedor": "50",
+            "observaciones": null,
+            "observacionesPago": "Factura compartida (PLANIFICACIÓN.pdf) — aplicada a: #3/extra:1 - Boarding Pass, #3/extra:5 - Sim Card",
+            "proveedor": null,
+            "tipoDocumento": "Boarding Pass",
+            "urgentePago": 0,
+            "valorAproximado": "44.00",
+            "valorReal": "42.00"
+        },
+        {
+            "apellidos": "REYES ROSILLO",
+            "billeteraConjunta": 0,
+            "cedula": "1102609664",
+            "docs": [
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 8,
+                    "idDocsReserva": 5,
+                    "idDocumento": 1466,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_2cdb4bca.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_2cdb4bca.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=9mDGp1cMqpY4HgWf4u%2BDL%2FlPwhk%3D&Expires=1779822179"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 10,
+                    "idDocsReserva": 5,
+                    "idDocumento": 1472,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_942fac28.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_942fac28.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=b70d7jOG7r1oJYpsQjQLUmUyW3g%3D&Expires=1779822179"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 14,
+                    "idDocsReserva": 5,
+                    "idDocumento": 1491,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_a6c93c7d.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_a6c93c7d.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=%2FDBR7x16CSnwEtp1qKgNJKz%2B7WQ%3D&Expires=1779822179"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 15,
+                    "idDocsReserva": 5,
+                    "idDocumento": 1493,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_93c950a2.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_93c950a2.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=g7trT8Bw%2Bd9Na%2BLw9NSRVt3%2B2CU%3D&Expires=1779822179"
+                },
+                {
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocFacturaExtra": 18,
+                    "idDocsReserva": 5,
+                    "idDocumento": 1498,
+                    "idTipoDocumento": 19,
+                    "ruta": "PRUEBAS/RESERVAS/OTRO/EXTRA_122f4510.pdf",
+                    "tipoDocumento": "Factura Extra",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/OTRO/EXTRA_122f4510.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=2tlPHLfeqBrRog3sX1KE8YC0IDA%3D&Expires=1779822179"
+                }
+            ],
+            "fechaMaximaPago": "2025-06-05",
+            "fechaPago": "2025-06-06",
+            "forma_pago": "DIRECTO CLIENTE ",
+            "idDocsReserva": 5,
+            "idFormaPago": 17,
+            "idProveedor": null,
+            "idReserva": 3,
+            "idTipoDocumento": 4,
+            "idViajero": 3,
+            "indicaciones": "te daran 24 horas antes",
+            "mostrarTrip": 1,
+            "nombres": "FRANITO AMALIZA",
+            "numReservaProveedor": "123456",
+            "observaciones": null,
+            "observacionesPago": "Factura compartida (PLANIFICACIÓN.pdf) — aplicada a: #3/extra:1 - Boarding Pass, #3/extra:5 - Sim Card",
+            "proveedor": null,
+            "tipoDocumento": "Sim Card",
+            "urgentePago": 0,
+            "valorAproximado": "61.00",
+            "valorReal": "60.50"
+        }
+    ],
+    "estadoColor": "66bb6a",
+    "estadoComentarios": null,
+    "estadoReserva": null,
+    "estadoTickets": null,
+    "estadoViajeros": null,
+    "fechaCreacion": "2026-04-15",
+    "fechaExpiracionReservaCompleta": "2026-05-21",
+    "hoteles": "EC2 - 2025-07-06 12:30:00<br>Grand Diamond Beach",
+    "idAsesor": 1,
+    "idCliente": null,
+    "idDocumentoReservaCompleta": 387,
+    "idEstado": null,
+    "idReserva": 3,
+    "impuestos": [],
+    "observaciones": null,
+    "pdfActualizacion": null,
+    "politicas": [],
+    "rutaReservaCompleta": "PRUEBAS/RESERVAS/CONFIRMACION_RESERVAS_NUEVAS/RESERVA_3.pdf",
+    "telefonos": [],
+    "tickets": [
+        {
+            "fechaCreacion": "2026-04-15",
+            "fechaExpiracion": "2026-05-13",
+            "idAereolina": 1,
+            "idDocumento": 7,
+            "idReserva": 3,
+            "idTicket": 3,
+            "numRecord": "AW1BAM",
+            "numTicket": "2302983881271",
+            "proveedor": "Copa Airlines",
+            "ruta": "PRUEBAS/RESERVAS/TICKET_AEREO/TICKET_82119b42.pdf",
+            "tipoDocumento": "Tickets Aereos",
+            "tramos": [
+                {
+                    "ciudadDestino": "Panama",
+                    "ciudadSalida": "Punta Cana",
+                    "codigoCiudadDestino": "PTY",
+                    "codigoCiudadSalida": "PUJ",
+                    "fechaDestino": "2025-07-01 20:42:00",
+                    "fechaSalida": "2025-07-01 18:58:00",
+                    "idTicket": 3,
+                    "idTramo": 1
+                },
+                {
+                    "ciudadDestino": "Quito",
+                    "ciudadSalida": "Panama",
+                    "codigoCiudadDestino": "UIO",
+                    "codigoCiudadSalida": "PTY",
+                    "fechaDestino": "2025-07-02 05:32:00",
+                    "fechaSalida": "2025-07-02 03:37:00",
+                    "idTicket": 3,
+                    "idTramo": 2
+                }
+            ],
+            "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/TICKET_AEREO/TICKET_82119b42.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=8xGkaf98H%2Fmi1%2FkHoU%2BBixQHVRk%3D&Expires=1778773795",
+            "viajeros": [
+                {
+                    "apellidos": "REYES ROSILLO",
+                    "billeteraConjunta": 0,
+                    "cedula": "1102609664",
+                    "idTicket": 3,
+                    "idTicketViajero": 1,
+                    "idViajero": 3,
+                    "nombres": "FRANITO AMALIZA"
+                }
+            ]
+        },
+        {
+            "fechaCreacion": "2026-04-16",
+            "fechaExpiracion": "2026-05-21",
+            "idAereolina": 1,
+            "idDocumento": 19,
+            "idReserva": 3,
+            "idTicket": 4,
+            "numRecord": "ATFL2A",
+            "numTicket": "230215229777",
+            "proveedor": "Copa Airlines",
+            "ruta": "PRUEBAS/RESERVAS/TICKET_AEREO/TICKET_a61c6eda.pdf",
+            "tipoDocumento": "Tickets Aereos",
+            "tramos": [
+                {
+                    "ciudadDestino": "Panama City",
+                    "ciudadSalida": "Quito",
+                    "codigoCiudadDestino": "PTY",
+                    "codigoCiudadSalida": "UIO",
+                    "fechaDestino": "2025-07-04 10:57:00",
+                    "fechaSalida": "2025-07-04 06:00:00",
+                    "idTicket": 4,
+                    "idTramo": 3
+                },
+                {
+                    "ciudadDestino": "Orlando",
+                    "ciudadSalida": "Panama City",
+                    "codigoCiudadDestino": "MCO",
+                    "codigoCiudadSalida": "PTY",
+                    "fechaDestino": "2025-07-05 17:37:00",
+                    "fechaSalida": "2025-07-04 14:07:00",
+                    "idTicket": 4,
+                    "idTramo": 4
+                },
+                {
+                    "ciudadDestino": "Panama City",
+                    "ciudadSalida": "Orlando",
+                    "codigoCiudadDestino": "PTY",
+                    "codigoCiudadSalida": "MCO",
+                    "fechaDestino": "2025-07-06 20:11:00",
+                    "fechaSalida": "2025-07-05 16:44:00",
+                    "idTicket": 4,
+                    "idTramo": 5
+                },
+                {
+                    "ciudadDestino": "Quito",
+                    "ciudadSalida": "Panama City",
+                    "codigoCiudadDestino": "UIO",
+                    "codigoCiudadSalida": "PTY",
+                    "fechaDestino": "2025-07-06 23:00:00",
+                    "fechaSalida": "2025-07-06 21:58:00",
+                    "idTicket": 4,
+                    "idTramo": 6
+                }
+            ],
+            "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/TICKET_AEREO/TICKET_a61c6eda.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=ufcdqNvZ5RfAik16AKEXksh%2FhYU%3D&Expires=1779455860",
+            "viajeros": [
+                {
+                    "apellidos": "QUICHPILEMA LAGUATA SIGSI",
+                    "billeteraConjunta": 1,
+                    "cedula": "AB302667",
+                    "idTicket": 4,
+                    "idTicketViajero": 2,
+                    "idViajero": 5,
+                    "nombres": "LIONEL ADAM"
+                }
+            ]
+        }
+    ],
+    "transfer": [
+        {
+            "ciudad": "CTG",
+            "ciudadNombre": "CARTAGENA",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-27",
+                    "fechaExpiracion": "2026-05-25",
+                    "idDocumento": 1464,
+                    "idDocumentoTransfer": 46,
+                    "idTipoDocumento": 17,
+                    "idTransfer": 3,
+                    "ruta": "PRUEBAS/RESERVAS/TRANSFER/FACTURA_TRANSFER_7e178eb3.pdf",
+                    "tipoDocumento": "Factura Transfer",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/TRANSFER/FACTURA_TRANSFER_7e178eb3.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=TLXY2hh8wR%2BLDZ3AcSwkmQNv0S0%3D&Expires=1779822179"
+                }
+            ],
+            "fechaExpiracion": "2026-05-13",
+            "fechaMaximaPago": null,
+            "fechaPago": null,
+            "forma_pago": "PRODUBANCO TATY",
+            "idFormaPago": 14,
+            "idProveedor": 9,
+            "idReserva": 3,
+            "idTipo": 1,
+            "idTransfer": 3,
+            "imagen": "PRUEBAS/RESERVAS/ACTIVIDADES/tranfer.jpg",
+            "indicaciones": null,
+            "numReservaProveedor": "4568",
+            "numVuelo": "AV88",
+            "observaciones": null,
+            "observacionesPago": null,
+            "proveedor": "Rate",
+            "salida": "2025-07-03 21:37:00",
+            "tipoTransfer": "Aeropuerto → Hotel",
+            "urgentePago": 0,
+            "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/ACTIVIDADES/tranfer.jpg?response-content-disposition=inline&response-content-type=image%2Fjpeg&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=Aenq9piDxMEyGMP5fwmMeP8Hu3I%3D&Expires=1778773816",
+            "valorAproximado": "550.00",
+            "valorReal": "502.00"
+        }
+    ],
+    "trip": true,
+    "urlFirmadaReservaCompleta": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/CONFIRMACION_RESERVAS_NUEVAS/RESERVA_3.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=Mb84dzSpDpngPXc9Zt2qtx%2F7rgE%3D&Expires=1779455883",
+    "viajeros": [
+        {
+            "apellidos": "QUICHPILEMA LAGUATA SIGSI",
+            "billeteraConjunta": 1,
+            "categoria": "Adulto 16 años con 4 meses",
+            "cedula": "AB302667",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-16",
+                    "fechaEmision": "2022-10-05",
+                    "fechaExpiracion": "2026-05-21",
+                    "fechaVencimiento": "2032-10-05",
+                    "idDocumento": 18,
+                    "idReserva": 3,
+                    "idTipoDocumento": 8,
+                    "idViajeroDocumento": 4,
+                    "numDoc": "AB302667",
+                    "ruta": "PRUEBAS/RESERVAS/DOCS_PERSONALES/Pasaporte_04b8da5c.pdf",
+                    "tipoDocumento": "Pasaporte",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/DOCS_PERSONALES/Pasaporte_04b8da5c.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=LS385ZjPbdWoAvvlFvICKyF96WU%3D&Expires=1779455856"
+                }
+            ],
+            "fechaNacimiento": "2010-01-01",
+            "idNacionalidad": 1,
+            "idSexo": 1,
+            "idViajero": 5,
+            "nacionalidad": "Ecuatoriano",
+            "nombres": "LIONEL ADAM",
+            "sexo": "Masculino"
+        },
+        {
+            "apellidos": "REYES ROSILLO",
+            "billeteraConjunta": 0,
+            "categoria": "Tercera Edad 71 años con 1 meses",
+            "cedula": "1102609664",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-15",
+                    "fechaEmision": "2022-06-22",
+                    "fechaExpiracion": "2026-05-13",
+                    "fechaVencimiento": "2032-06-22",
+                    "idDocumento": 2,
+                    "idReserva": 3,
+                    "idTipoDocumento": 7,
+                    "idViajeroDocumento": 2,
+                    "numDoc": "1102609664",
+                    "ruta": "PRUEBAS/RESERVAS/DOCS_PERSONALES/Cedula Identidad_1c0b4aec.pdf",
+                    "tipoDocumento": "Cedula Identidad",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/DOCS_PERSONALES/Cedula%20Identidad_1c0b4aec.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=S0B71Mw8DcwjvOdf6HCyJup6zN4%3D&Expires=1778773792"
+                }
+            ],
+            "fechaNacimiento": "1955-03-19",
+            "idNacionalidad": 1,
+            "idSexo": 1,
+            "idViajero": 3,
+            "nacionalidad": "Ecuatoriano",
+            "nombres": "FRANITO AMALIZA",
+            "sexo": "Masculino"
+        },
+        {
+            "apellidos": "GUZMAN GUAJAN",
+            "billeteraConjunta": 1,
+            "categoria": "Adulto 59 años con 4 meses",
+            "cedula": "1001756582",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-15",
+                    "fechaEmision": "2023-02-03",
+                    "fechaExpiracion": "2026-05-13",
+                    "fechaVencimiento": "2033-02-01",
+                    "idDocumento": 1,
+                    "idReserva": 3,
+                    "idTipoDocumento": 9,
+                    "idViajeroDocumento": 1,
+                    "numDoc": "2023033886003",
+                    "ruta": "PRUEBAS/RESERVAS/DOCS_PERSONALES/Visa Americana_14cf782d.pdf",
+                    "tipoDocumento": "Visa Americana",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/DOCS_PERSONALES/Visa%20Americana_14cf782d.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=uHQYhIGKWIjXC7funJaVFsU2abA%3D&Expires=1778773793"
+                }
+            ],
+            "fechaNacimiento": "1966-12-12",
+            "idNacionalidad": 1,
+            "idSexo": 1,
+            "idViajero": 2,
+            "nacionalidad": "Ecuatoriano",
+            "nombres": "CARLOS HUMBERTO",
+            "sexo": "Masculino"
+        },
+        {
+            "apellidos": "GUZMAN MANAY",
+            "billeteraConjunta": 1,
+            "categoria": "Adulto 17 años con 10 meses",
+            "cedula": "752179968",
+            "docs": [
+                {
+                    "fechaCreacion": "2026-04-16",
+                    "fechaEmision": "2023-02-03",
+                    "fechaExpiracion": "2026-05-21",
+                    "fechaVencimiento": "2033-02-01",
+                    "idDocumento": 17,
+                    "idReserva": 3,
+                    "idTipoDocumento": 9,
+                    "idViajeroDocumento": 3,
+                    "numDoc": "202233388660001",
+                    "ruta": "PRUEBAS/RESERVAS/DOCS_PERSONALES/Visa Americana_69128538.pdf",
+                    "tipoDocumento": "Visa Americana",
+                    "urlFirmada": "https://mvevipv2.s3.amazonaws.com/PRUEBAS/RESERVAS/DOCS_PERSONALES/Visa%20Americana_69128538.pdf?response-content-disposition=inline&response-content-type=application%2Fpdf&AWSAccessKeyId=AKIAQKGGXHGRYQYCR7HX&Signature=XxBFS5%2FK9kyoGqntukOVG7Ff2%2BM%3D&Expires=1779455857"
+                }
+            ],
+            "fechaNacimiento": "2008-07-09",
+            "idNacionalidad": 1,
+            "idSexo": 2,
+            "idViajero": 4,
+            "nacionalidad": "Ecuatoriano",
+            "nombres": "DULCE MARIA",
+            "sexo": "Femenino"
+        }
+    ],
+    "viajerosTipos": {
+        "adultos": 3,
+        "infantes": 0,
+        "ninos": 0,
+        "terceraEdad": 1
+    }
+}

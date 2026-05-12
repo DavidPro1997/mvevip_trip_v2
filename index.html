@@ -176,10 +176,13 @@
         
         <div class="container">
             <div class="row">
-                <div class="col-3">
+                <div class="col-3" style="display:flex;align-items:center;gap:12px;">
                     <div id="logo_home">
                     	<h1><a href="#" title="Web site mkv">Marketing Vip web site</a></h1>
                     </div>
+                    <!-- Logo personalizado (se muestra si hay personalizacion) -->
+                    <img id="logoPersonalizadoHeader" src="" alt="Logo" 
+                         style="height:32px;object-fit:contain;border-radius:8px;display:none;opacity:0;transition:opacity .4s;">
                 </div>
                 <nav class="col-9" >
                     <ul id="top_tools">
@@ -195,6 +198,69 @@
     
     <main ng-view>
     </main>
+
+    <!-- Audio personalizado -->
+    <audio id="audioPersonalizado" loop style="display:none;"></audio>
+
+    <!-- Modal Bienvenida Personalizada -->
+    <div class="modal fade" id="modalBienvenida" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="false" style="z-index:99999;">
+        <div class="modal-dialog modal-dialog-centered" role="document"
+             style="max-width:480px;width:92%;margin:auto;">
+            <div class="modal-content"
+                 style="background:linear-gradient(180deg,#cdf0bc 0%,#c5f277 20%,#9AC31C 100%);
+                        border:1px solid rgba(154,195,28,0.3);border-radius:20px;overflow:hidden;
+                        max-height:92dvh;display:flex;flex-direction:column;">
+
+                <!-- Logos -->
+                <div style="display:flex;justify-content:center;align-items:center;gap:16px;padding:20px 20px 0;flex-shrink:0;">
+                    <img id="modalLogoPersonalizado" src="" alt="Logo"
+                         style="height:52px;object-fit:contain;display:none;border-radius:10px;">
+                    <img src="img/logo_sticky.png" alt="Marketing Vip"
+                         style="height:42px;object-fit:contain;">
+                </div>
+
+                <!-- Saludo -->
+                <div style="text-align:center;padding:14px 20px 8px;flex-shrink:0;">
+                    <h2 id="modalNombreBienvenida"
+                        style="font-size:clamp(1.1rem,4vw,1.4rem);font-weight:900;color:#3a5a0a;margin-bottom:6px;line-height:1.3;"></h2>
+                    <p style="color:#4a5240;font-size:clamp(0.8rem,3vw,0.9rem);margin:0;line-height:1.5;">
+                        ✨ Mira lo que <strong style="color:#2d3a1a;">Marketing Vip</strong> tiene preparado especialmente para ti en este viaje 🌍
+                    </p>
+                </div>
+
+                <!-- Cuerpo con scroll -->
+                <div style="overflow-y:auto;flex:1 1 auto;min-height:0;padding:0 20px 4px;display:flex;flex-direction:column;gap:10px;">
+
+                    <!-- Imágenes -->
+                    <div id="modalImagenesContainer" style="display:flex;gap:8px;">
+                        <img id="modalImagen1" src="" alt="Imagen 1"
+                             style="flex:1;width:50%;height:clamp(100px,28vw,160px);object-fit:cover;border-radius:12px;display:none;">
+                        <img id="modalImagen2" src="" alt="Imagen 2"
+                             style="flex:1;width:50%;height:clamp(100px,28vw,160px);object-fit:cover;border-radius:12px;display:none;">
+                    </div>
+
+                    <!-- Descripción del viaje -->
+                    <div id="modalDescripcionViaje"
+                         style="display:none;background:rgba(255,255,255,0.45);border-radius:12px;padding:12px 14px;">
+                        <p id="modalDescripcionTexto"
+                           style="color:#3a4a2a;font-size:clamp(0.78rem,3vw,0.88rem);line-height:1.6;margin:0;white-space:pre-wrap;"></p>
+                    </div>
+
+                </div>
+
+                <!-- Botón cerrar -->
+                <div style="padding:10px 20px 22px;text-align:center;flex-shrink:0;">
+                    <button onclick="$('#modalBienvenida').modal('hide')"
+                            style="background:linear-gradient(135deg,#9AC31C,#7aa315);color:#fff;border:none;
+                                   padding:11px 36px;border-radius:999px;font-weight:800;
+                                   font-size:clamp(0.85rem,3vw,1rem);cursor:pointer;
+                                   box-shadow:0 8px 24px rgba(154,195,28,0.35);letter-spacing:.5px;">
+                        ¡Empecemos este viaje! 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 	
