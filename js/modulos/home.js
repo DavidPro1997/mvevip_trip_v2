@@ -511,11 +511,17 @@ function renderReservations(reservas) {
             desc: primeraFecha || ''
         };
         lista += `
-            <div class="comp-card" role="button" tabindex="0" onclick='showReservaId(${JSON.stringify(destinos)})'>
+            <div class="comp-card" role="button" tabindex="0" onclick='showReservaId(${JSON.stringify(destinos)})' style="cursor:pointer;position:relative;overflow:hidden;">
                 <img src="${escapeHtml(it.img)}" alt="${escapeHtml(it.title)}">
                 <div class="comp-body">
                     <div class="comp-title">${escapeHtml(it.title)}</div>
-                    <div class="comp-desc">${escapeHtml(it.desc)}</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;">
+                        <div class="comp-desc" style="margin:0;">${escapeHtml(it.desc)}</div>
+                        <div style="flex-shrink:0;display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#5baf2a,#3a8a10);color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px;box-shadow:0 3px 10px rgba(58,138,16,0.35);white-space:nowrap;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            Ver mi reserva
+                        </div>
+                    </div>
                 </div>
             </div>
         `
@@ -569,7 +575,7 @@ function renderComplementos(idReserva){
 
     const defaults = [
         { id: 'esim', title: 'eSIM', desc: 'Mantente conectado', img: 'https://i.insider.com/608c561d35c46f0018c0bb1c?width=1200&format=jpeg' },
-        { id: 'seguro', title: 'Seguro de Viaje', desc: 'Protección durante el viaje', img: 'https://drakarelia.ec/mt-content/uploads/2024/01/seguros-medicos-1024x679.webp' },
+        { id: 'seguro', title: 'Seguro de Viaje', desc: 'Protección durante el viaje', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOJFHut6qWQxX2BNrWn1QUC7xMJQxPgLfjzQ&s' },
         { id: 'actividades', title: 'Actividades', desc: 'Tours y experiencias', img: 'https://thumbs.dreamstime.com/b/elegante-experiencia-gastron%C3%B3mica-de-negocios-chef-profesional-que-prepara-comida-gourmet-en-una-estaci%C3%B3n-personal-con-vidrios-y-391222890.jpg' },
         { id: 'vip', title: 'Salas Vip', desc: 'Comodidad y Exclusividad', img: 'https://aeronotas.com/wp-content/uploads/2022/09/Salon-Admirals-Club-de-AA.jpg' },
         { id: 'dias_extra', title: 'Días Extra', desc: 'Extiende tu estadía', img: 'https://www.clarin.com/img/2021/06/11/o3BCiMjVA_1256x620__1.jpg' },
