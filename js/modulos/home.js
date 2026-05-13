@@ -271,7 +271,7 @@ const ocultarSpinnerPdf = () => {
 var pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
 
 function construirDOMPDFS(idReserva){
-    pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], extras: []}
+    pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
     let element = Array.isArray(reservasGlobales) ? reservasGlobales.slice() : [];
     if (typeof idReserva !== 'undefined' && idReserva !== null && idReserva !== '') {
         element = element.filter(r => String(r.idReserva) === String(idReserva));
@@ -405,7 +405,7 @@ function construirDOMPDFS(idReserva){
             pdfsGlobales.seguro.push({ url: doc.urlFirmada, ruta: doc.ruta, titulo: '🔒 Seguro de viajes - ' + nombres, imagen: 'img/portadas/seguro.jpg' });
         } else {
             $("#pie_otro").show();
-            pdfsGlobales.extras.push({ url: doc.urlFirmada, ruta: doc.ruta, titulo: '📄 Documento Adicional - ' + nombres, imagen: 'img/portadas/extras.jpg' });
+            pdfsGlobales.otro.push({ url: doc.urlFirmada, ruta: doc.ruta, titulo: '📄 Documento Adicional - ' + nombres, imagen: 'img/portadas/extras.jpg' });
         }
     }
 
