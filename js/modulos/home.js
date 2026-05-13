@@ -104,8 +104,9 @@ function selectSubPestana(id){
         var item = `
             
             <div class="pdf-item" style="position:relative;">
-            <a href="#" data-documento='${JSON.stringify(doc)}' onclick="abrirModalPdfFullscreen(this); return false;" aria-label="Abrir en pantalla completa" style="position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#007bff;color:#fff;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:10;font-size:14px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            <a href="#" data-documento='${JSON.stringify(doc)}' onclick="abrirModalPdfFullscreen(this); return false;" aria-label="Ver PDF en pantalla completa" style="position:absolute;top:25px;left:10px;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:24px;background:linear-gradient(135deg,#007bff,#0056d6);color:#fff;text-decoration:none;box-shadow:0 4px 14px rgba(0,100,255,0.45);z-index:10;font-size:12px;font-weight:700;letter-spacing:.4px;white-space:nowrap;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 6px 18px rgba(0,100,255,0.55)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 14px rgba(0,100,255,0.45)'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex-shrink:0;"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                Ver PDF
             </a>
 
             <div class="pdf-title" style="font-weight:600;font-size:8px;text-align:center;margin-bottom:8px;">
