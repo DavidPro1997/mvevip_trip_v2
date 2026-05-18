@@ -44,6 +44,7 @@ function quitarFooter(){
     $("#pie_boarding").hide()
     $("#pie_seguro").hide()
     $("#pie_otro").hide()
+    $("#pie_clima").hide()
 }
 
 
@@ -71,7 +72,7 @@ function selectPestana(id,idReserva){
 
 
 function selectSubPestana(id){
-    if(id == 'home' || id == 'actividades'){
+    if(id == 'home' || id == 'actividades' || id == 'clima'){
         $("#pdfViewer").hide()
     }
     else{
@@ -93,6 +94,8 @@ function selectSubPestana(id){
 
     // Timeline para actividades — muestra itinerario, no el carrusel de PDFs
     if(id === 'actividades'){ renderTimeline(); return; }
+    // Clima — muestra mapa + pronóstico + recomendaciones
+    if(id === 'clima'){ renderClima(); return; }
 
     // <div class="pdf-footer">
     //                 <a href="#" class="btn btn-sm btn-primary" onclick="descargarDocumento('${doc.ruta}'); return false;">Descargar</a>
@@ -270,6 +273,8 @@ const ocultarSpinnerPdf = () => {
 
 
 var pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
+var climaGlobales = { ubicaciones: [], tipos: [] };
+var climaRenderData = null;
 
 function construirDOMPDFS(idReserva){
     pdfsGlobales = {tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
@@ -436,6 +441,15 @@ function construirDOMPDFS(idReserva){
         $("#pie_actividades").show();
     } else {
         $("#pie_actividades").hide();
+    }
+
+    // CLIMA
+    if(Array.isArray(element.clima) && element.clima.length > 0){
+        climaGlobales = { ubicaciones: element.clima, tipos: element.clima_tipoa || element.clima_tipos || [] };
+        $("#pie_clima").show();
+    } else {
+        climaGlobales = { ubicaciones: [], tipos: [] };
+        $("#pie_clima").hide();
     }
 
 }
@@ -783,6 +797,223 @@ function actualizarBotonMusica() {
         iconEl.innerHTML = '<path fill="currentColor" d="M8 5v14l11-7z"/>';
         document.getElementById('btnMusicaFab').title = 'Reproducir música';
     }
+}
+
+
+// ── Clima helpers ─────────────────────────────────────────────────────────────
+function wmoToClimaId(code, tempMax, tempMin) {
+    if (code >= 95) return 0;                                                          // Tormenta
+    if (code === 0) return 1;                                                          // Despejado
+    if (code === 1) return 2;                                                          // Mayormente despejado
+    if (code === 2) return 3;                                                          // Parcialmente nublado
+    if (code === 3) return 4;                                                          // Nublado
+    if (code >= 45 && code <= 48) return 5;                                            // Neblina
+    if (code >= 51 && code <= 57) return 6;                                            // Llovizna
+    if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return 7;           // Lluvia
+    if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) return 9;           // Nieve
+    if (typeof tempMax === 'number' && tempMax > 35) return 11;                        // Calor extremo
+    if (typeof tempMin === 'number' && tempMin < 0) return 12;                         // Frío extremo
+    return 1;
+}
+
+function wmoEmoji(code) {
+    if (code === 0) return '☀️';
+    if (code === 1) return '🌤️';
+    if (code === 2) return '⛅';
+    if (code === 3) return '☁️';
+    if (code >= 45 && code <= 48) return '🌫️';
+    if (code >= 51 && code <= 57) return '🌦️';
+    if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return '🌧️';
+    if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) return '❄️';
+    if (code >= 95) return '⛈️';
+    return '🌡️';
+}
+
+function buildClimaDay(day, recomendaciones, tipoNombreMap) {
+    if (!day) return '';
+    var recs = recomendaciones[day.climaId] || [];
+    var nombre = tipoNombreMap[day.climaId] || day.nombre || 'Despejado';
+    var d = new Date(day.date + 'T12:00:00');
+    var fechaLabel = d.toLocaleDateString('es', { weekday: 'long', day: '2-digit', month: 'long' });
+
+    var html = '';
+    html += '<div style="background:linear-gradient(135deg,#e8f4fd,#f0f7ff);border-radius:12px;padding:16px;margin-top:4px;">';
+
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">';
+    html += '<div style="font-size:12px;color:#667;text-transform:capitalize;font-weight:600;">' + escapeHtml(fechaLabel) + '</div>';
+    html += '<span style="background:#007bff;color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">' + escapeHtml(nombre) + '</span>';
+    html += '</div>';
+
+    html += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">';
+    html += '<span style="font-size:52px;line-height:1;">' + day.emoji + '</span>';
+    html += '<div>';
+    if (day.tempMax !== null && day.tempMax !== undefined) {
+        html += '<div style="font-size:28px;font-weight:800;color:#1a1a2e;line-height:1.1;">' + Math.round(day.tempMax) + '°C</div>';
+        html += '<div style="font-size:13px;color:#888;margin-top:2px;">Mín: ' + Math.round(day.tempMin) + '°C</div>';
+    }
+    html += '</div></div>';
+
+    if (recs.length > 0) {
+        html += '<div style="border-top:1px solid rgba(0,123,255,0.15);padding-top:10px;">';
+        html += '<div style="font-size:12px;font-weight:700;color:#0056d6;margin-bottom:8px;display:flex;align-items:center;gap:6px;"><i class="fas fa-lightbulb" style="color:#ffc107;"></i> Recomendaciones</div>';
+        html += '<ul style="margin:0;padding:0;list-style:none;">';
+        recs.forEach(function(rec) {
+            html += '<li style="font-size:12px;color:#444;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:#007bff;font-weight:700;">•</span>' + escapeHtml(rec) + '</li>';
+        });
+        html += '</ul></div>';
+    }
+
+    html += '</div>';
+    return html;
+}
+
+function climaSelectDay(locIdx, dayIdx) {
+    if (!climaRenderData) return;
+    var loc = climaRenderData.locations[locIdx];
+    if (!loc || !loc.forecast[dayIdx]) return;
+    var day = loc.forecast[dayIdx];
+
+    // Update pill styles
+    var strip = document.querySelector('[data-loc="' + locIdx + '"]');
+    if (strip) {
+        Array.prototype.forEach.call(strip.querySelectorAll('button'), function(btn, i) {
+            var isActive = i === dayIdx;
+            btn.style.background = isActive ? 'linear-gradient(135deg,#007bff,#0056d6)' : '#fff';
+            btn.style.color = isActive ? '#fff' : '#555';
+            btn.style.border = isActive ? 'none' : '1px solid #dee2e6';
+            btn.style.fontWeight = isActive ? '700' : '500';
+        });
+    }
+
+    var detail = document.getElementById('clima-detail-' + locIdx);
+    if (detail) {
+        detail.innerHTML = buildClimaDay(day, climaRenderData.recomendaciones, climaRenderData.tipoNombreMap);
+    }
+}
+
+function renderClima() {
+    var $content = $('#clima_content');
+    if (!climaGlobales.ubicaciones.length) {
+        $content.html('<p style="padding:24px;color:#888;text-align:center;">No hay datos de clima disponibles.</p>');
+        return;
+    }
+
+    $content.html('<div style="display:flex;flex-direction:column;align-items:center;padding:40px 16px;gap:12px;"><div class="spinner-border text-primary" style="width:36px;height:36px;" role="status"></div><div style="color:#667;font-size:14px;">Consultando el clima...</div></div>');
+
+    var ubicaciones = climaGlobales.ubicaciones;
+    var tipos = climaGlobales.tipos || [];
+
+    var tipoNombreMap = {};
+    tipos.forEach(function(t) { tipoNombreMap[t.id] = t.nombre || t.tipo || ('Tipo ' + t.id); });
+
+    var fetchPromises = ubicaciones.map(function(ub) {
+        var lat = ub.latitud, lon = ub.longitud;
+        var weatherUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto';
+        var geoUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon;
+
+        return Promise.all([
+            fetch(weatherUrl).then(function(r) { return r.json(); }),
+            fetch(geoUrl).then(function(r) { return r.json(); }).catch(function() { return {}; })
+        ]).then(function(results) {
+            var weather = results[0];
+            var geo = results[1];
+            var addr = geo && geo.address;
+            var city = (addr && (addr.city || addr.town || addr.village || addr.county)) || (geo && geo.display_name) || (lat + ', ' + lon);
+
+            var forecast = [];
+            if (weather && weather.daily) {
+                var d = weather.daily;
+                (d.time || []).forEach(function(date, i) {
+                    var wmoCode = d.weathercode ? (d.weathercode[i] || 0) : 0;
+                    var tempMax = d.temperature_2m_max ? d.temperature_2m_max[i] : null;
+                    var tempMin = d.temperature_2m_min ? d.temperature_2m_min[i] : null;
+                    var climaId = wmoToClimaId(wmoCode, tempMax, tempMin);
+                    forecast.push({
+                        date: date,
+                        tempMax: tempMax,
+                        tempMin: tempMin,
+                        wmoCode: wmoCode,
+                        climaId: climaId,
+                        emoji: wmoEmoji(wmoCode),
+                        nombre: tipoNombreMap[climaId] || 'Despejado'
+                    });
+                });
+            }
+            return { ub: ub, city: city, forecast: forecast };
+        });
+    });
+
+    Promise.all(fetchPromises).then(function(locations) {
+        // Collect unique climaIds across all days and locations
+        var tipoSet = {};
+        locations.forEach(function(loc) {
+            loc.forecast.forEach(function(day) { tipoSet[day.climaId] = true; });
+        });
+        var idTiposList = Object.keys(tipoSet).map(Number);
+
+        // Fetch recommendations from backend
+        Enviar_API_Trip(JSON.stringify({ idTipos: idTiposList }), '/obtenerRecomendacionesClima', function(datos) {
+            var recomendaciones = {};
+            if (datos && datos.estado && Array.isArray(datos.consulta)) {
+                datos.consulta.forEach(function(rec) {
+                    if (!recomendaciones[rec.idTipo]) recomendaciones[rec.idTipo] = [];
+                    recomendaciones[rec.idTipo].push(rec.recomendacion);
+                });
+            }
+
+            var html = '';
+            locations.forEach(function(loc, locIdx) {
+                var forecast = loc.forecast;
+
+                html += '<div style="background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);margin-bottom:20px;overflow:hidden;">';
+
+                // Location header
+                html += '<div style="padding:12px 16px 8px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px;">';
+                html += '<span style="font-size:18px;">📍</span>';
+                html += '<span style="font-weight:700;font-size:15px;color:#1a1a2e;">' + escapeHtml(loc.city) + '</span>';
+                html += '</div>';
+
+                // Day pills
+                html += '<div style="padding:12px 16px 8px;">';
+                html += '<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;" data-loc="' + locIdx + '">';
+                forecast.forEach(function(day, dIdx) {
+                    var pillDate = new Date(day.date + 'T12:00:00');
+                    var dayLabel = pillDate.toLocaleDateString('es', { weekday: 'short' });
+                    var dayNum = pillDate.getDate();
+                    var isActive = dIdx === 0;
+                    var tempMaxStr = day.tempMax !== null && day.tempMax !== undefined ? Math.round(day.tempMax) + '°' : '--';
+                    var tempMinStr = day.tempMin !== null && day.tempMin !== undefined ? Math.round(day.tempMin) + '°' : '--';
+                    html += '<button type="button" onclick="climaSelectDay(' + locIdx + ',' + dIdx + ')"';
+                    html += ' style="flex-shrink:0;padding:6px 10px;border-radius:14px;';
+                    html += 'border:' + (isActive ? 'none' : '1px solid #dee2e6') + ';';
+                    html += 'background:' + (isActive ? 'linear-gradient(135deg,#007bff,#0056d6)' : '#fff') + ';';
+                    html += 'color:' + (isActive ? '#fff' : '#555') + ';';
+                    html += 'font-size:11px;font-weight:' + (isActive ? '700' : '500') + ';cursor:pointer;text-align:center;min-width:50px;">';
+                    html += '<div style="font-size:16px;line-height:1.1;">' + day.emoji + '</div>';
+                    html += '<div style="margin-top:2px;text-transform:capitalize;font-size:10px;">' + escapeHtml(dayLabel) + ' ' + dayNum + '</div>';
+                    html += '<div style="margin-top:3px;font-size:10px;font-weight:700;opacity:0.95;">' + tempMaxStr + '</div>';
+                    html += '<div style="font-size:9px;opacity:0.7;">mín ' + tempMinStr + '</div>';
+                    html += '</button>';
+                });
+                html += '</div></div>';
+
+                // Day detail (first day shown by default)
+                html += '<div id="clima-detail-' + locIdx + '" style="padding:0 16px 16px;">';
+                html += buildClimaDay(forecast[0], recomendaciones, tipoNombreMap);
+                html += '</div>';
+
+                html += '</div>'; // end location card
+            });
+
+            $content.html(html);
+
+            // Store for day-switching
+            climaRenderData = { locations: locations, recomendaciones: recomendaciones, tipoNombreMap: tipoNombreMap };
+        });
+    }).catch(function(err) {
+        console.error('Error consultando clima:', err);
+        $content.html('<div style="padding:32px 16px;text-align:center;color:#dc3545;"><i class="fas fa-exclamation-circle" style="font-size:32px;margin-bottom:12px;display:block;"></i><div>No se pudo cargar el clima. Verifica tu conexión.</div></div>');
+    });
 }
 
 
