@@ -3,6 +3,22 @@ var _audioPersonalizado = null;
 var _musicaReproduciendo = false;
 var actividadesGlobales = [];
 
+
+
+function initApp(){
+    const dataFresca = sessionStorage.getItem('_dataFrescaLogin');
+    if (dataFresca) {
+        // Datos ya traídos por el login, no necesitamos volver a llamar al backend
+        sessionStorage.removeItem('_dataFrescaLogin');
+        cargarInformacion();
+    } else if (navigator.onLine) {
+        verificarSession();
+    } else {
+        cargarInformacion();
+    }
+}
+
+
 function cargarInformacion(){
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     reservasGlobales = JSON.parse(localStorage.getItem("reservas"));

@@ -144,6 +144,7 @@ function conSession(datos){
     const rutaActual = window.location.pathname;
     $("#botonCerrarSession").show()
     if (rutaActual === "/" || rutaActual === "/login") {
+        sessionStorage.setItem('_dataFrescaLogin', '1');
         window.location.href = "/home";
     }
     else{
