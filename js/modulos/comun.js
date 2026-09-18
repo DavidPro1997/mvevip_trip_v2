@@ -1,4 +1,4 @@
-var numeroTelefono = "+593987547922"
+var numeroTelefono = "+593987933325"
 var email = "info@mvevip.com"
 var facebook = "https://www.facebook.com/share/eAaQqQzrMvU7T4MV"
 var instagram = "https://www.instagram.com/marketingvipecuador"
@@ -9,7 +9,7 @@ var youtube = "https://www.youtube.com/channel/UCTb9vJwhQcB7Ea_1va1o7bg"
 
 
 
-function abrirSpinner(mensaje){
+function abrirSpinner(mensaje) {
     $("#mensajeSpinner").html(mensaje)
     $("#centermodal").modal({
         backdrop: 'static',
@@ -18,23 +18,23 @@ function abrirSpinner(mensaje){
 }
 
 
-function cerrarSpinner(){
+function cerrarSpinner() {
     $("#centermodal").modal('hide');
 }
 
 
 
 
-function mensajeUsuario(icono,titulo,mensaje,si_no = null){
-    if(!si_no){
-        return Swal.fire( {
+function mensajeUsuario(icono, titulo, mensaje, si_no = null) {
+    if (!si_no) {
+        return Swal.fire({
             title: titulo,
             text: mensaje,
             icon: icono,
             confirmButtonText: 'Entendido'
         });
     }
-    else{
+    else {
         return Swal.fire({
             title: titulo,
             text: mensaje,
@@ -58,7 +58,7 @@ function scrollTop() {
 
 
 function abrirChatWhatsApp(mensaje) {
-    if(!mensaje){
+    if (!mensaje) {
         mensaje = "Hola quiero información sobre sus servicios..."
     }
     const mensajeCodificado = encodeURIComponent(mensaje);
@@ -66,16 +66,16 @@ function abrirChatWhatsApp(mensaje) {
     window.open(url, '_blank');
 }
 
-function obtenerCorreo(){
+function obtenerCorreo() {
     return email
 }
 
-function obtenerNumero(){
+function obtenerNumero() {
     return numeroTelefono
 }
 
 
-function abrirLlamada(){
+function abrirLlamada() {
     window.location.href = `tel:${numeroTelefono}`;
 }
 
@@ -84,24 +84,24 @@ function enviarCorreo(asunto, cuerpo) {
     window.location.href = mailtoLink;
 }
 
-function abrirFacebook(){
+function abrirFacebook() {
     window.open(facebook, '_blank');
 }
 
-function abrirInstagram(){
+function abrirInstagram() {
     window.open(instagram, '_blank');
 }
 
-function abrirTiktok(){
+function abrirTiktok() {
     window.open(tiktok, '_blank');
 }
 
-function abrirYoutube(){
+function abrirYoutube() {
     window.open(youtube, '_blank');
 }
 
-function cerrarMenu(){
-    $('.main-menu').removeClass('show'); 
+function cerrarMenu() {
+    $('.main-menu').removeClass('show');
     $('.layer').removeClass('layer-is-visible');
 }
 
@@ -111,8 +111,8 @@ function cerrarMenu(){
 
 
 
-function verificarSession(){
-    pdfsGlobales = {reserva:[], tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: []}
+function verificarSession() {
+    pdfsGlobales = { reserva: [], tickets: [], hotel: [], documentos: [], boarding: [], sim: [], seguro: [], otro: [] }
     abrirSpinner("Consultando sus documentos")
     if (navigator.onLine) {
         Obtener_API_Trip(null, '/verificarSession', datos => {
@@ -122,13 +122,13 @@ function verificarSession(){
             if (datos.estado) {
                 conSession(datos)
             }
-            else{
+            else {
                 sinSession()
             }
         })
     } else {
         // verificarSessionSinConexion()
-    }        
+    }
 }
 
 
@@ -136,8 +136,8 @@ function verificarSession(){
 
 
 
-function conSession(datos){
-    if(datos.consulta){
+function conSession(datos) {
+    if (datos.consulta) {
         localStorage.setItem("usuario", JSON.stringify(datos.consulta));
     }
     localStorage.setItem("reservas", JSON.stringify(datos.reservas));
@@ -147,9 +147,9 @@ function conSession(datos){
         sessionStorage.setItem('_dataFrescaLogin', '1');
         window.location.href = "/home";
     }
-    else{
+    else {
         cargarInformacion()
-    }  
+    }
 }
 
 
@@ -157,27 +157,27 @@ function conSession(datos){
 
 
 
-function sinSession(mensaje){
+function sinSession(mensaje) {
     localStorage.removeItem("usuario");
     localStorage.removeItem("token");
     $("#botonCerrarSession").hide()
-    
-    if(mensaje){
-        mensajeUsuario('info','Información',mensaje).then(()=>{
+
+    if (mensaje) {
+        mensajeUsuario('info', 'Información', mensaje).then(() => {
             const rutaActual = window.location.pathname;
             if (rutaActual !== "/login") {
                 window.location.href = "/login";
             }
         })
     }
-    else{
+    else {
         const rutaActual = window.location.pathname;
         if (rutaActual !== "/login") {
             window.location.href = "/login";
         }
     }
-    
-    
+
+
 }
 
 
