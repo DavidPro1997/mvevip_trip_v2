@@ -1,0 +1,30 @@
+services:
+  # Desarrollo (por defecto): `docker compose up -d`
+  # Cada cambio que guardes en src/ se ve al instante en el navegador, sin reiniciar el contenedor.
+  trip-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: mvevip-trip:dev
+    container_name: mvevip-trip-dev
+    ports:
+      - "${PUERTO:-8095}:8095"
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:5006}
+    volumes:
+      - ./:/app # el código de tu carpeta
+      - /app/node_modules # las dependencias se quedan las de la imagen (Linux)
+    restart: unless-stopped
+
+  # Producción (nginx con la app compilada): `docker compose --profile prod up -d --build`
+  trip:
+    profiles: ["prod"]
+    build:
+      context: .
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5006}
+    image: mvevip-trip:latest
+    container_name: mvevip-trip
+    ports:
+      - "${PUERTO_PROD:-8096}:8095"
+    restart: unless-stopped

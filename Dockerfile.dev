@@ -1,0 +1,12 @@
+# Desarrollo con recarga en caliente: Vite sirve el código de la carpeta montada (ver docker-compose.yml).
+FROM node:22-alpine
+WORKDIR /app
+
+# Las dependencias se instalan en la imagen (las de Linux), no se usan las de Windows
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+
+ENV VITE_EN_DOCKER=true
+ENV PUERTO_DEV=8095
+EXPOSE 8095
+CMD ["npm", "run", "dev"]
